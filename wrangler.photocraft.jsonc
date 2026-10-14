@@ -1,0 +1,9 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "glow-photocraft",
+  "compatibility_date": "2026-10-14",
+  "assets": {
+    "directory": "./dist/photocraft",
+    "not_found_handling": "404-page"
+  }
+}

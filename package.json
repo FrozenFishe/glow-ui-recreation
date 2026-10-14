@@ -1,0 +1,13 @@
+{
+  "name": "glow-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "deploy:affinity": "npm run build && wrangler deploy -c wrangler.affinity.jsonc",
+    "deploy:photocraft": "npm run build && wrangler deploy -c wrangler.photocraft.jsonc"
+  },
+  "devDependencies": {
+    "wrangler": "4.151.0"
+  }
+}

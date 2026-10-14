@@ -1,0 +1,306 @@
+[
+{
+"name": "logo_glow",
+"box": [
+48,
+30,
+104,
+66
+]
+},
+{
+"name": "logo_sparkle",
+"box": [
+150,
+28,
+26,
+26
+]
+},
+{
+"name": "nav_pin",
+"box": [
+1146,
+50,
+24,
+27
+]
+},
+{
+"name": "nav_chevron",
+"box": [
+1293,
+55,
+18,
+16
+]
+},
+{
+"name": "h1_sparkle",
+"box": [
+655,
+340,
+44,
+44
+]
+},
+{
+"name": "search_icon",
+"box": [
+76,
+567,
+30,
+30
+]
+},
+{
+"name": "search_pin",
+"box": [
+363,
+568,
+24,
+28
+]
+},
+{
+"name": "search_chevron",
+"box": [
+529,
+573,
+18,
+16
+]
+},
+{
+"name": "feat_search",
+"box": [
+100,
+680,
+40,
+40
+]
+},
+{
+"name": "feat_book",
+"box": [
+261,
+680,
+40,
+40
+]
+},
+{
+"name": "feat_enjoy",
+"box": [
+421,
+680,
+40,
+40
+]
+},
+{
+"name": "feat_trusted",
+"box": [
+579,
+680,
+40,
+40
+]
+},
+{
+"name": "status_bars",
+"box": [
+1300,
+199,
+17,
+15
+],
+"threshold": 0.35
+},
+{
+"name": "status_wifi",
+"box": [
+1319,
+197,
+17,
+16
+],
+"threshold": 0.35
+},
+{
+"name": "status_battery",
+"box": [
+1339,
+197,
+25,
+16
+],
+"threshold": 0.35
+},
+{
+"name": "app_search",
+"box": [
+1106,
+317,
+18,
+18
+]
+},
+{
+"name": "app_filter",
+"box": [
+1337,
+315,
+24,
+24
+]
+},
+{
+"name": "tile_facials",
+"box": [
+1104,
+408,
+36,
+40
+],
+"threshold": 0.35
+},
+{
+"name": "tile_nails",
+"box": [
+1159,
+408,
+36,
+40
+],
+"threshold": 0.35
+},
+{
+"name": "tile_brows",
+"box": [
+1214,
+408,
+36,
+40
+],
+"threshold": 0.35
+},
+{
+"name": "tile_hair",
+"box": [
+1270,
+408,
+36,
+40
+],
+"threshold": 0.35
+},
+{
+"name": "tile_makeup",
+"box": [
+1325,
+408,
+36,
+40
+],
+"threshold": 0.35
+},
+{
+"name": "card_bookmark",
+"box": [
+1344,
+544,
+17,
+19
+]
+},
+{
+"name": "card_star",
+"box": [
+1193,
+567,
+10,
+10
+]
+},
+{
+"name": "tab_home",
+"box": [
+1104,
+797,
+22,
+22
+],
+"threshold": 0.35
+},
+{
+"name": "tab_search",
+"box": [
+1162,
+797,
+22,
+22
+],
+"threshold": 0.35
+},
+{
+"name": "tab_bookings",
+"box": [
+1221,
+797,
+22,
+22
+],
+"threshold": 0.35
+},
+{
+"name": "tab_favourites",
+"box": [
+1280,
+797,
+22,
+22
+],
+"threshold": 0.35
+},
+{
+"name": "tab_profile",
+"box": [
+1339,
+797,
+20,
+22
+],
+"threshold": 0.35
+},
+{
+"name": "badge_sparkle",
+"box": [
+1420,
+839,
+20,
+20
+]
+},
+{
+"name": "logo",
+"box": [
+100,
+945,
+1340,
+60
+],
+"split": true,
+"min_gap": 30,
+"names": [
+"logo_mecca",
+"logo_adorebeauty",
+"logo_benefit",
+"logo_endota",
+"logo_sephora",
+"logo_elleebana",
+"logo_kevinmurphy"
+],
+"threshold": 0.28
+}
+]

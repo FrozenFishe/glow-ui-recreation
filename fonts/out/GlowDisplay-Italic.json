@@ -1,0 +1,9 @@
+{
+ "family": "Glow Display",
+ "style": "Italic",
+ "otf": "GlowDisplay-Italic.otf",
+ "woff2": "GlowDisplay-Italic.woff2",
+ "font_size_px": 73.15,
+ "characters": "adeimrs",
+ "note": "Set the font size to font_size_px (image pixels) to reproduce the design; add a fallback font for characters not listed."
+}

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glow — Sydney's Beauty Marketplace</title>
+<meta name="description" content="Glow connects you with trusted beauty retailers and service providers across Sydney. Discover, compare and book with ease.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Libre+Caslon+Display&family=Libre+Caslon+Text:ital@1&display=swap" rel="stylesheet">
+<link rel="preload" href="framework/fonts/GlowDisplay-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="framework/glow.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<!--icons-->
+
+<div class="page">
+  <section class="stage">
+    <header class="nav">
+      <a class="logo" href="/" aria-label="Glow home"><svg class="ti logo-word" style="--w:101;--h:57" aria-hidden="true"><use href="#gl-logo_glow"/></svg><svg class="ti logo-spark" style="--w:18;--h:19" aria-hidden="true"><use href="#gl-logo_sparkle"/></svg></a>
+      <nav class="links" aria-label="Main">
+        <a href="#clients">For Clients</a>
+        <a href="#providers">For Providers</a>
+        <a href="#how">How It Works</a>
+        <a href="#about">About Us</a>
+      </nav>
+      <button class="loc-pill" type="button"><svg class="ti" style="--w:16;--h:20" aria-hidden="true"><use href="#gl-nav_pin"/></svg><span>Sydney, Australia</span><svg class="ti chev" style="--w:12;--h:8" aria-hidden="true"><use href="#gl-nav_chevron"/></svg></button>
+      <a class="signup" href="#signup">Sign Up / Log In</a>
+    </header>
+
+    <div class="copy">
+      <p class="eyebrow">Sydney's Beauty Marketplace</p>
+      <h1>Searching and booking<br>for beauty <em>made easier</em><svg class="ti h1-spark" style="--w:37;--h:38" aria-hidden="true"><use href="#gl-h1_sparkle"/></svg></h1>
+      <p class="intro">Glow connects you with trusted beauty retailers and service providers across Sydney. Discover, compare and book with ease.</p>
+
+      <form class="search" role="search" onsubmit="event.preventDefault()">
+        <label class="field q"><svg class="ti" style="--w:20;--h:20" aria-hidden="true"><use href="#gl-search_icon"/></svg><input type="search" placeholder="Search services or treatments" aria-label="Search services or treatments"></label>
+        <label class="field where"><svg class="ti" style="--w:18;--h:20" aria-hidden="true"><use href="#gl-search_pin"/></svg>
+          <select aria-label="Location"><option>Sydney, Australia</option><option>Melbourne, Australia</option><option>Brisbane, Australia</option></select>
+          <svg class="ti chev" style="--w:12;--h:7" aria-hidden="true"><use href="#gl-search_chevron"/></svg></label>
+        <button type="submit">Search</button>
+      </form>
+
+      <ul class="features">
+        <li><span class="ring"><svg class="ti" style="--w:29;--h:31" aria-hidden="true"><use href="#gl-feat_search"/></svg></span><strong>Search</strong><span>Find the perfect<br>service</span></li>
+        <li><span class="ring"><svg class="ti" style="--w:29;--h:29" aria-hidden="true"><use href="#gl-feat_book"/></svg></span><strong>Book</strong><span>Instant booking<br>in seconds</span></li>
+        <li><span class="ring"><svg class="ti" style="--w:30;--h:28" aria-hidden="true"><use href="#gl-feat_enjoy"/></svg></span><strong>Enjoy</strong><span>Feel amazing,<br>every time</span></li>
+        <li><span class="ring"><svg class="ti" style="--w:29;--h:33" aria-hidden="true"><use href="#gl-feat_trusted"/></svg></span><strong>Trusted</strong><span>Verified reviews<br>you can trust</span></li>
+      </ul>
+    </div>
+
+    <div class="visual">
+      <div class="art">
+        <img class="hero" src="assets/hero_hd.jpg" srcset="assets/hero_hd.jpg 824w, assets/hero_hd-2x.jpg 1648w" sizes="(min-width: 1024px) 53.6vw, 100vw" width="824" height="894" alt="Woman with her hair in a loose bun, looking down over her shoulder, with Sydney Harbour in the background">
+
+        <div class="phone" aria-label="Glow app preview">
+          <div class="screen">
+            <div class="status"><span class="time">9:41</span><span class="island"></span>
+              <span class="sys"><svg class="ti" style="--w:14;--h:11"><use href="#gl-status_bars"/></svg><svg class="ti" style="--w:13;--h:12"><use href="#gl-status_wifi"/></svg><svg class="ti" style="--w:23;--h:12"><use href="#gl-status_battery"/></svg></span></div>
+            <h2>Welcome to Glow</h2>
+            <p class="sub">Your beauty, your way.</p>
+            <div class="app-search"><div class="box"><svg class="ti" style="--w:15;--h:15"><use href="#gl-app_search"/></svg>Search services, treatments or providers</div><div class="filter"><svg class="ti" style="--w:16;--h:15"><use href="#gl-app_filter"/></svg></div></div>
+            <div class="row-head"><h3>Popular Services</h3><a href="#">See all</a></div>
+            <div class="tiles">
+              <div><svg class="ti" style="--w:23;--h:29"><use href="#gl-tile_facials"/></svg>Facials</div>
+              <div><svg class="ti" style="--w:21;--h:29"><use href="#gl-tile_nails"/></svg>Nails</div>
+              <div><svg class="ti" style="--w:25;--h:19"><use href="#gl-tile_brows"/></svg>Brows</div>
+              <div><svg class="ti" style="--w:24;--h:29"><use href="#gl-tile_hair"/></svg>Hair</div>
+              <div><svg class="ti" style="--w:15;--h:30"><use href="#gl-tile_makeup"/></svg>Makeup</div>
+            </div>
+            <h3 class="top">Top Rated in Sydney</h3>
+            <article class="card">
+              <img src="assets/thumb_facial_hd.jpg" srcset="assets/thumb_facial_hd.jpg 1x, assets/thumb_facial_hd-2x.jpg 2x" alt="Woman relaxing during a facial" width="80" height="97">
+              <div class="info"><h4>The Facial Room</h4><p class="meta"><svg class="ti star" style="--w:9;--h:9"><use href="#gl-card_star"/></svg><b>4.9</b> (128) &nbsp;·&nbsp; Surry Hills</p><p class="svc">Signature Glow Facial</p><p class="price">$149</p></div>
+              <svg class="ti bm" style="--w:12;--h:14"><use href="#gl-card_bookmark"/></svg><a class="book" href="#">Book</a>
+            </article>
+            <article class="card">
+              <img src="assets/thumb_lash_hd.jpg" srcset="assets/thumb_lash_hd.jpg 1x, assets/thumb_lash_hd-2x.jpg 2x" alt="Close-up of lash extensions" width="80" height="96">
+              <div class="info"><h4>Lash &amp; Co.</h4><p class="meta"><svg class="ti star" style="--w:9;--h:9"><use href="#gl-card_star"/></svg><b>4.9</b> (96) &nbsp;·&nbsp; Bondi Junction</p><p class="svc">Classic Lash Extensions</p><p class="price">$129</p></div>
+              <svg class="ti bm" style="--w:12;--h:14"><use href="#gl-card_bookmark"/></svg><a class="book" href="#">Book</a>
+            </article>
+            <nav class="tabbar" aria-label="App tabs">
+              <span class="on"><svg class="ti" style="--w:18;--h:18"><use href="#gl-tab_home"/></svg>Home</span>
+              <span><svg class="ti" style="--w:17;--h:18"><use href="#gl-tab_search"/></svg>Search</span>
+              <span><svg class="ti" style="--w:17;--h:18"><use href="#gl-tab_bookings"/></svg>Bookings</span>
+              <span><svg class="ti" style="--w:20;--h:16"><use href="#gl-tab_favourites"/></svg>Favourites</span>
+              <span><svg class="ti" style="--w:18;--h:18"><use href="#gl-tab_profile"/></svg>Profile</span>
+            </nav>
+            <i class="home-ind"></i>
+          </div>
+        </div>
+
+        <div class="badge" aria-label="Trusted by 1000+ happy clients">
+          <svg viewBox="0 0 140 140" class="arc" aria-hidden="true"><defs><path id="arcp" d="M24 76a46 46 0 0 1 92 0"/></defs><text><textPath href="#arcp" startOffset="50%" text-anchor="middle">TRUSTED BY</textPath></text></svg>
+          <strong>1000+</strong><span>HAPPY CLIENTS</span><svg class="ti b-spark" style="--w:16;--h:16" aria-hidden="true"><use href="#gl-badge_sparkle"/></svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="brands">
+    <p class="eyebrow">Trusted by Sydney's leading beauty brands</p>
+    <!--logos-->
+  </section>
+  <footer class="made"><!--made-with--></footer>
+</div>
+</body>
+</html>

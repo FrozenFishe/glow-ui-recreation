@@ -1,0 +1,9 @@
+node_modules
+.wrangler
+dist
+tools/.venv
+tools/esrgan
+tools/.fontcache
+__pycache__
+.DS_Store
+*~lock~
