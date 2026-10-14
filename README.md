@@ -145,6 +145,18 @@ What's left is how a renderer anti-aliases a clean vector edge, compared with ho
 
 **Prediction vs result.** Before v4 I estimated 0.05–0.1% changed. v4 reached **0.14% (website), 0.14% (PhotoCraft) and 0.25% (Affinity)**: a 35–55% reduction from v3 and 3× lower colour error than v2. That's short of the estimate. The vector edges are the limit: tuning thresholds, offsets and colours removed 17–37% of their error, and only cutting them out as pixels removes the rest.
 
+**Exact mode: a literally perfect result (0.000%).** A redraw can't reach exactly zero: every renderer anti-aliases edges its own way, so the rebuilds level off around 0.02–0.04%. Exact mode is a different deliverable. [`tools/exact_layers.py`](tools/exact_layers.py) splits the original into a background layer (the plate) and eight section layers: Navigation, Hero copy, Search bar, Features, Hero photo, Phone, Badge and Brand strip. Each section layer is the original's own pixels over that section's foreground, opaque, with no overlaps, so the stack composites back to the original bit for bit. Hiding a section leaves clean background behind it. The redrawn vector version sits underneath in the same file, one visibility toggle away. Its scores are the ones in the tables above, and those measure recreation quality; exact mode scores zero by construction.
+
+| Exact mode | Differing pixels | Max channel diff | Changed % | SSIM | PSNR |
+|---|---|---|---|---|---|
+| Photoshop v8 ([`exact.jsx`](editors/photoshop/exact.jsx), `glow_ps_v8.psd`) | **0** | 0 | 0.000 | 1.0000 | ∞ |
+| PhotoCraft v7 (`glow_v7.pcraft`: the 9 PNGs in a top group, placed at 0,0) | **0** | 0 | 0.000 | 1.0000 | ∞ |
+
+```bash
+tools/.venv/bin/python tools/exact_layers.py variants/shared/original.jpg framework/backdrop_plate.webp ~/Downloads/glow_v5_kit/exact
+# Photoshop: build_v7.jsx, export_v7.jsx, then exact.jsx (adds the group on top, exports, saves glow_ps_v8.psd)
+```
+
 **What the latest round added** (each step measured on its own; standard mode):
 
 | Step | Photoshop | PhotoCraft | Website | Affinity |
@@ -806,15 +818,15 @@ src/                  website (index.html, styles.css)
 framework/            Glow UI: tokens.json, glow.css, backdrop(.png, _plate.webp), strip_edge.png, shapes_tuned.svg
                       (+ generated icons.svg, fonts/, logos/)
 tools/                slicer.py, fontmatch.py, glyphfont.py, enhance.py, diffcheck.py, tune.py, tune_shapes.py,
-                      backdrop.py, make_kit.py, calibrate.py, inkgain.py, split_parts.py, benchmark.py, setup.sh,
+                      backdrop.py, make_kit.py, calibrate.py, inkgain.py, split_parts.py, exact_layers.py, benchmark.py, setup.sh,
                       specs, regions, glow_shapes(_tuned).json, glow_parts.json,
                       calibration_<tool>.json, ink_gain_<tool>.json
 fonts/                font specs, fontmatch reports, out/ = Glow Display OTF + WOFF2
 variants/<editor>/    each editor's photo slices (+ _hd enhanced) and v1/v2 renders
 variants/shared/      original design, traced components (manifest.json, SVG, PNG), traced headline outlines
 editors/affinity/     build_glow_v1.js … build_glow_v6.js (v6 = plate, calibration, ink gain, logo parts), .af files
-editors/photocraft/   glow_v1.pcraft … glow_v6.pcraft, traced SVGs
-editors/photoshop/    lib.jsx, build(_v6|_v7).jsx, text.jsx, export(_v6|_v7).jsx, glow_ps_v5/v6/v7.psd
+editors/photocraft/   glow_v1.pcraft … glow_v7.pcraft (v7 = v6 + exact group), traced SVGs
+editors/photoshop/    lib.jsx, build(_v6|_v7).jsx, text.jsx, export(_v6|_v7).jsx, exact.jsx, glow_ps_v5…v8.psd
 docs/benchmark/       every version's export/screenshot + results.md / results.json
 build.mjs             builds dist/<editor>: site + /design + /framework
 wrangler.*.jsonc      Cloudflare Workers configs
