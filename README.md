@@ -1,6 +1,21 @@
 # Glow UI recreation: pixel-perfect design rebuilds with Affinity, PhotoCraft and Claude
 
-A one-to-one recreation of a landing-page design (the **Glow** beauty marketplace), built twice: once in **Affinity** and once in **PhotoCraft**, both driven by Claude through their MCP servers. It's then turned into a responsive website and a reusable UI framework, deployed on Cloudflare Workers.
+A one-to-one recreation of a landing-page design (the **Glow** beauty marketplace), rebuilt in **PhotoCraft**, **Photoshop** and **Affinity**, all driven by Claude, and as a responsive **website** with a reusable UI framework, deployed on Cloudflare Workers.
+
+## Latest results
+
+**Perfect (exact mode): 0 pixels different** in Photoshop and PhotoCraft. The original is split into named, editable layers (background plus eight page sections) that rebuild it bit for bit. See [Exact mode](#exact-mode-a-literally-perfect-result).
+
+**Redrawn (vectors, shapes, traced text), % of pixels changed vs. the original:**
+
+| Tool | Exact mode | Redraw, standard | Redraw, max-fidelity |
+|---|---|---|---|
+| **PhotoCraft** | **0.000%** (v7) | **0.034%** (v6) | **0.020%** (v6) |
+| **Photoshop** | **0.000%** (v8) | 0.041% (v7) | 0.025% (v7) |
+| Website | — | 0.041% (v7) | 0.026% (v7) |
+| Affinity | — | 0.068% (v6) | 0.026% (v6) |
+
+A redraw can't reach exactly 0: every renderer anti-aliases edges its own way. Under ~0.05% is invisible side by side. Full history and method in [Results](#results).
 
 This repo has everything: the tools that made the recreations accurate, the editor build scripts and files, the website, the design system, and a playbook for getting recreations right.
 
@@ -9,7 +24,7 @@ This repo has everything: the tools that made the recreations accurate, the edit
 | **PhotoCraft version:** site, design notes, framework | [site](https://glow-photocraft.i-quietus.workers.dev) · [**/design**](https://glow-photocraft.i-quietus.workers.dev/design) · [/framework](https://glow-photocraft.i-quietus.workers.dev/framework) |
 | **Affinity version:** site, design notes, framework | [site](https://glow-affinity.i-quietus.workers.dev) · [**/design**](https://glow-affinity.i-quietus.workers.dev/design) · [/framework](https://glow-affinity.i-quietus.workers.dev/framework) |
 
-The `/design` pages have drag-to-compare sliders (original vs. v2, and v1 vs. v2) and a side-by-side table of the two editors' runs.
+The `/design` pages have drag-to-compare sliders (original vs. the latest version, and v1 vs. the latest) and a side-by-side table of the editors' runs.
 
 ![Original design](docs/images/original.jpg)
 
@@ -20,7 +35,7 @@ The `/design` pages have drag-to-compare sliders (original vs. v2, and v1 vs. v2
 1. [Results](#results)
 2. [What made the recreations accurate](#what-made-the-recreations-accurate): the fixes
 3. [The pipeline](#the-pipeline)
-4. [Tools](#tools): slicer, font finder, custom font builder, photo enhancer, diff checker, tuner, shape tuner, backdrop extractor, kit builder, benchmark
+4. [Tools](#tools): slicer, font finder, custom font builder, photo enhancer, diff checker, tuner, shape tuner, backdrop extractor, kit builder, calibration, ink gain, logo parts, exact layers, benchmark
 5. [Affinity guide](#affinity-guide) · [Photoshop guide](#photoshop-guide)
 6. [PhotoCraft guide](#photocraft-guide)
 7. [Glow UI framework](#glow-ui-framework)
@@ -145,7 +160,9 @@ What's left is how a renderer anti-aliases a clean vector edge, compared with ho
 
 **Prediction vs result.** Before v4 I estimated 0.05–0.1% changed. v4 reached **0.14% (website), 0.14% (PhotoCraft) and 0.25% (Affinity)**: a 35–55% reduction from v3 and 3× lower colour error than v2. That's short of the estimate. The vector edges are the limit: tuning thresholds, offsets and colours removed 17–37% of their error, and only cutting them out as pixels removes the rest.
 
-**Exact mode: a literally perfect result (0.000%).** A redraw can't reach exactly zero: every renderer anti-aliases edges its own way, so the rebuilds level off around 0.02–0.04%. Exact mode is a different deliverable. [`tools/exact_layers.py`](tools/exact_layers.py) splits the original into a background layer (the plate) and eight section layers: Navigation, Hero copy, Search bar, Features, Hero photo, Phone, Badge and Brand strip. Each section layer is the original's own pixels over that section's foreground, opaque, with no overlaps, so the stack composites back to the original bit for bit. Hiding a section leaves clean background behind it. The redrawn vector version sits underneath in the same file, one visibility toggle away. Its scores are the ones in the tables above, and those measure recreation quality; exact mode scores zero by construction.
+#### Exact mode: a literally perfect result
+
+**0.000%.** A redraw can't reach exactly zero: every renderer anti-aliases edges its own way, so the rebuilds level off around 0.02–0.04%. Exact mode is a different deliverable. [`tools/exact_layers.py`](tools/exact_layers.py) splits the original into a background layer (the plate) and eight section layers: Navigation, Hero copy, Search bar, Features, Hero photo, Phone, Badge and Brand strip. Each section layer is the original's own pixels over that section's foreground, opaque, with no overlaps, so the stack composites back to the original bit for bit. Hiding a section leaves clean background behind it. The redrawn vector version sits underneath in the same file, one visibility toggle away. Its scores are the ones in the tables above, and those measure recreation quality; exact mode scores zero by construction.
 
 | Exact mode | Differing pixels | Max channel diff | Changed % | SSIM | PSNR |
 |---|---|---|---|---|---|
