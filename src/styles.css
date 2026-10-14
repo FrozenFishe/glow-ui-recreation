@@ -184,8 +184,8 @@ h1 .l2 em { margin-left: calc(-1.5 * var(--k)); }
   /* tiny elements: original-pixel cutouts on standard screens, vectors on high-DPI screens */
   .px-r { display: none; }
   /* the original's real background shading, extracted by tools/backdrop.py (192x128, stretched smoothly) */
-  .pixel .stage { background: url(framework/backdrop.png) 0 0 / 100% calc(100% * 1024 / 894) no-repeat; }
-  .pixel .brands { background: url(framework/backdrop.png) 0 100% / 100% calc(100% * 1024 / 130) no-repeat; border-top-color: transparent; }
+  .pixel .stage { background: url(framework/backdrop_plate.webp) 0 0 / 100% calc(100% * 1024 / 894) no-repeat; }
+  .pixel .brands { background: url(framework/backdrop_plate.webp) 0 100% / 100% calc(100% * 1024 / 130) no-repeat; border-top-color: transparent; }
   .pixel :is(.links a, .loc-pill span, .signup, .copy .eyebrow, h1, .intro, .search button, .features strong, .features span:last-child,
     .time, .screen h2, .screen .sub, .app-search .box, .row-head h3, .row-head a, .tiles div, .screen h3.top, .info h4, .info .meta, .info .meta b,
     .info .svc, .info .price, .book, .tabbar span, .badge strong, .badge span, .brands .eyebrow) { color: transparent; }
@@ -193,6 +193,13 @@ h1 .l2 em { margin-left: calc(-1.5 * var(--k)); }
   .pixel .search input::placeholder { color: transparent; }
   .pixel .badge .arc { fill: transparent; }
   .pixel .stage .ti:not(.logo-word), .pixel .logos { visibility: hidden; }  /* drawn by the overlay at exact positions */
+  /* shapes are drawn by the overlay's shapes SVG: the CSS ones stay (clickable, focusable) but transparent */
+  .pixel :is(.search, .loc-pill, .signup, .search button, .ring, .screen, .island, .app-search .box, .app-search .filter,
+    .tiles div, .card, .book, .home-ind, .badge, .tabbar) { background: transparent !important; border-color: transparent !important; box-shadow: none !important; }
+  .pixel .field.q { border-right-color: transparent; }
+  .pixel .features li + li::before { border-left-color: transparent; }
+  .pixel .card img { visibility: hidden; }
+  .px-shapes { pointer-events: none; }
   .pixel h1 .h1-spark { color: var(--ink); }
   .pixel .tabbar span .ti { color: #8c8c8c; }
   .pixel .tabbar span.on .ti { color: #111; }
@@ -206,4 +213,5 @@ h1 .l2 em { margin-left: calc(-1.5 * var(--k)); }
   /* max-fidelity: every traced element as original pixels (remove class "max" from <html> to use tuned vectors) */
   .pixel.max .px-r { display: block; }
   .pixel.max .px-t.has-rmax { display: none; }
+  .pixel.max .px-r.part { display: none; } /* split-out parts (tools/split_parts.py): the parent's full cutout already has them */
 }

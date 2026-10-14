@@ -23,6 +23,9 @@ def main():
     ap.add_argument("--mask", action="append", default=[], help="x,y,w,h of a non-background area (photo, shape)")
     ap.add_argument("--cell", type=int, default=8)
     ap.add_argument("--pad", type=int, default=4, help="grow masks by this many px (anti-aliased edges, shadows)")
+    ap.add_argument("--plate", help="also write a full-resolution background plate: the original's own background pixels\n"
+                    "wherever nothing is drawn on top, and the smooth backdrop under the masked foreground")
+    ap.add_argument("--plate-pad", type=int, default=3, help="extra px around the foreground left to the smooth backdrop in the plate")
     a = ap.parse_args()
 
     im = np.asarray(Image.open(a.design).convert("RGB"), dtype=np.float64)
@@ -38,6 +41,8 @@ def main():
     # anything that still stands out from its neighbourhood (hairlines, borders) is not background
     grey = np.asarray(Image.fromarray(im.astype(np.uint8)).convert("L"), dtype=np.float64)
     local = np.asarray(Image.fromarray(grey.astype(np.uint8)).filter(ImageFilter.MedianFilter(15)), dtype=np.float64)
+    boxes = mask.copy()  # traced elements + given shapes/photos
+    edges = np.abs(grey - local) > 12  # real edges and hairlines (JPEG grain stays below this)
     mask |= np.abs(grey - local) > 4
     mask = np.asarray(Image.fromarray(mask.astype(np.uint8) * 255).filter(ImageFilter.MaxFilter(5))) > 0
 
@@ -58,7 +63,16 @@ def main():
         p = np.pad(filled, ((1, 1), (1, 1), (0, 0)), mode="edge")
         avg = (p[:-2, 1:-1] + p[2:, 1:-1] + p[1:-1, :-2] + p[1:-1, 2:]) / 4
         filled[~known] = avg[~known]
-    Image.fromarray(np.clip(np.round(filled), 0, 255).astype(np.uint8)).save(a.out)
+    small = Image.fromarray(np.clip(np.round(filled), 0, 255).astype(np.uint8))
+    small.save(a.out)
+    if a.plate:
+        smooth = np.asarray(small.resize((W, H), Image.BILINEAR), dtype=np.float64)
+        fgm = boxes | edges
+        fg = np.asarray(Image.fromarray(fgm.astype(np.uint8) * 255).filter(ImageFilter.MaxFilter(2 * a.plate_pad + 1))) > 0
+        plate = np.where(fg[..., None], smooth, im)
+        Image.fromarray(np.clip(np.round(plate), 0, 255).astype(np.uint8)).save(a.plate, lossless=True) if a.plate.endswith(".webp") \
+            else Image.fromarray(np.clip(np.round(plate), 0, 255).astype(np.uint8)).save(a.plate)
+        print(f"plate {W}x{H}: {100 - fg.mean() * 100:.0f}% original background pixels, rest from the smooth backdrop")
     print(f"backdrop {w}x{h} (cell {C}px), {known.mean() * 100:.0f}% of cells measured, rest filled")
 
 

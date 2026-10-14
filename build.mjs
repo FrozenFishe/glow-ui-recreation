@@ -15,12 +15,18 @@ const tuned = (name) => TUNED.find((t) => t.name === name);
 const RASTERS = [...TEXT, ...TUNED].filter((c) => c.raster).map((c) => ({ dir: TEXT.includes(c) ? "text_all_tuned" : "components_tuned", file: c.raster }));
 // every element: a tuned vector plus an original-pixel cutout. On standard-resolution desktop screens the cutout
 // is shown for tiny elements (r-auto) or, in max-fidelity mode (html.max), for everything; high-DPI screens get vectors.
+// ink gain (tools/inkgain.py): Chrome anti-aliases the traced fills a little light; a same-colour hairline stroke,
+// picked per element from a stroke-width sweep (GLOW_INK_ALL=W renders the sweep), restores the edge coverage
+const INK = process.env.GLOW_INK_ALL ? null : existsSync("tools/ink_gain_website.json") ? JSON.parse(readFileSync("tools/ink_gain_website.json", "utf8")) : {};
+const inkOf = (n) => (INK ? INK[n.replace(/_2$/, "")] || 0 : Number(process.env.GLOW_INK_ALL));
 const pxItem = (c, dy = 0) => {
   const auto = c.mode === "raster";
-  const svg = `<svg class="px-t has-rmax${auto ? " has-r" : ""}" data-n="${c.name}" style="--x:${c.box[0]};--y:${c.box[1] - dy};--w:${c.box[2]};--h:${c.box[3]}" viewBox="0 0 ${c.box[2]} ${c.box[3]}"><path fill="${c.colour}" d="${c.d}"/></svg>`;
+  const ink = inkOf(c.name);
+  const stroke = ink ? ` stroke="${c.colour}" stroke-width="${ink}" stroke-linejoin="round"` : "";
+  const svg = `<svg class="px-t has-rmax${auto ? " has-r" : ""}" data-n="${c.name}" style="--x:${c.box[0]};--y:${c.box[1] - dy};--w:${c.box[2]};--h:${c.box[3]}${ink ? ";overflow:visible" : ""}" viewBox="0 0 ${c.box[2]} ${c.box[3]}"><path fill="${c.colour}"${stroke} d="${c.d}"/></svg>`;
   if (!c.raster) return svg.replace(" has-rmax", "");
   const [x, y, w, h] = c.raster_box;
-  return svg + `<img class="px-t px-r${auto ? " r-auto" : ""}" data-n="${c.name}" src="framework/px/${c.raster}" width="${w}" height="${h}" alt="" loading="lazy" style="--x:${x};--y:${y - dy};--w:${w};--h:${h}">`;
+  return svg + `<img class="px-t px-r${auto ? " r-auto" : ""}${c.part_of ? " part" : ""}" data-n="${c.name}" src="framework/px/${c.raster}" width="${w}" height="${h}" alt="" loading="lazy" style="--x:${x};--y:${y - dy};--w:${w};--h:${h}">`;
 };
 // icons too: on the page they sit in flex layouts (0.5-1px off); the overlay puts them at their exact design boxes
 const shiftY = (c, dy) => ({ ...c, name: c.name + "_2", box: [c.box[0], c.box[1] + dy, c.box[2], c.box[3]] });
@@ -30,7 +36,11 @@ const PX_ICONS = [...icons.filter((c) => c.name !== "logo_glow").map((c) => tune
     if (t.raster_box) t.raster_box = [t.raster_box[0], t.raster_box[1] + 121, t.raster_box[2], t.raster_box[3]];
     return t;
   })];
-const PX_STAGE = `<div class="px" aria-hidden="true">${[...PX_ICONS, ...TEXT.filter((c) => c.box[1] < 893)].map((c) => pxItem(c)).join("")}</div>`;
+// every drawn shape from the same tuned-shapes SVG the editors use (tools/make_kit.py), at exact design coordinates;
+// the CSS shapes underneath stay functional but transparent. Card photos sit above the shapes, as in the original.
+const PX_SHAPES = `<img class="px-t px-shapes" src="framework/shapes_tuned.svg" alt="" width="1536" height="1024" style="--x:0;--y:0;--w:1536;--h:1024">`;
+const PX_PHOTOS = `<img class="px-t px-photo" src="assets/thumb_facial_exact.webp" alt="" width="80" height="97" style="--x:1104;--y:543;--w:80;--h:97"><img class="px-t px-photo" src="assets/thumb_lash_exact.webp" alt="" width="80" height="96" style="--x:1104;--y:664;--w:80;--h:96">`;
+const PX_STAGE = `<div class="px" aria-hidden="true">${PX_SHAPES}${PX_PHOTOS}${[...PX_ICONS, ...TEXT.filter((c) => c.box[1] < 893)].map((c) => pxItem(c)).join("")}</div>`;
 // the photo's bottom edge and the strip's hairline blend over rows 892-895: original pixels, not a drawn line
 const STRIP_EDGE = `<img class="px-t px-edge" src="framework/strip_edge.png" width="1536" height="4" alt="" style="--x:0;--y:-3;--w:1536;--h:4">`;
 const PX_BRANDS = `<div class="px px-brands" aria-hidden="true">${STRIP_EDGE}${[...TEXT.filter((c) => c.box[1] >= 893),
@@ -38,7 +48,13 @@ const PX_BRANDS = `<div class="px px-brands" aria-hidden="true">${STRIP_EDGE}${[
 // tuned shapes (tools/tune_shapes.py): exact geometry and colours as a desktop pixel-mode stylesheet.
 // Each shape is moved by the difference from what the page draws (tools/glow_shapes.json) and resized.
 const SHAPES0 = Object.fromEntries(JSON.parse(readFileSync("tools/glow_shapes.json", "utf8")).map((s) => [s.name, s]));
-const SHAPES = JSON.parse(readFileSync("tools/glow_shapes_tuned.json", "utf8"));
+// per-renderer calibration (tools/calibrate.py, measured from the browser's own render) on top of the tuning
+const CAL = existsSync("tools/calibration_website.json") ? JSON.parse(readFileSync("tools/calibration_website.json", "utf8")) : {};
+const SHAPES = JSON.parse(readFileSync("tools/glow_shapes_tuned.json", "utf8")).map((t) => {
+  const c = CAL[t.name];
+  if (!c) return t;
+  return { ...t, box: [t.box[0] + c.dx, t.box[1] + c.dy, t.box[2] + c.dw, t.box[3] + c.dh], tune: { ...(t.tune || {}), kept: false } };
+});
 const SHAPE_SEL = {
   search_bar: [".search", "u"], location_pill: [".loc-pill", "u"], signup: [".signup", "u"], search_button: [".search button", "u"],
   ring_search: [".features li:nth-child(1) .ring", "u"], ring_book: [".features li:nth-child(2) .ring", "u"],
@@ -113,6 +129,8 @@ const STATS = [
   ["v5 tuned shapes: changed / SSIM", "0.163% / 0.9818", "0.064% / 0.9852"],
   ["v5 max-fidelity: changed / SSIM", "0.079% / 0.9847", "0.032% / 0.9867"],
   ["Photoshop v6 (same kit, best overall)", "0.054% / 0.9866 standard, 0.026% / 0.9880 max", "same"],
+  ["Latest: changed standard / max", "Affinity v6: 0.068% / 0.026% (SSIM 0.9882)", "PhotoCraft v6: 0.034% / 0.020% (best; SSIM 0.9881)"],
+  ["Latest: what moved it", "Background plate, shapes calibrated against Affinity's own render, ink gain, logo parts", "Background plate, ink gain (sub-pixel strokes via shape.edit), logo parts"],
   ["Measured-fix pass", "2 script runs after an Affinity restart (fonts), ≈15k tokens", "≈22 tool calls, ≈65k tokens (type.setStyle echoes)"],
   ["v2 headline", "Live text in the custom Glow Display font", "Traced outlines (the server started before the font was installed)"],
   ["Measured mismatch (tools/diffcheck.py)", "3.80% of pixels → 2.28% after measured corrections", "2.22% (traced headline) → 1.76% after measured corrections"],
@@ -143,12 +161,12 @@ function designPage(key) {
 <h1>Glow, recreated in ${v.name}</h1>
 <p class="lede">A one-to-one rebuild of the Glow landing-page design using ${esc(v.method)}. The photographic parts (hero photo, card thumbnails, brand logos) are slices cut from the original. Everything else is editable text and shapes. The live site at <a href="/">/</a> is responsive HTML and CSS built from these slices.</p>
 
-<h2>Original vs. ${v.name} v5</h2>
-<p class="hint">Drag the handle to compare. v4: every text block traced from the original and auto-tuned (live text kept, hidden), original-pixel cutouts for tiny elements, the original's background, measured colours, the photographed phone bezel. See the benchmark in the README.</p>
-${slider("design/original.jpg?v=3", "Original", "design/render-v5.jpg?v=5", v.name + " v3")}
-<h2>${v.name} v1 → v5</h2>
+<h2>Original vs. ${v.name} v6</h2>
+<p class="hint">Drag the handle to compare. v6: every text block traced from the original and auto-tuned (live text kept, hidden), original-pixel cutouts for tiny elements, the original's own background pixels, shapes calibrated against the tool's real render, per-renderer ink gain, the photographed phone bezel. See the benchmark in the README.</p>
+${slider("design/original.jpg?v=3", "Original", "design/render-v6.jpg?v=6", v.name + " v6")}
+<h2>${v.name} v1 → v6</h2>
 <p class="hint">v1 had hand-drawn icons, a single logo strip and lookalike fonts. v2 added traced icons and logos, a custom font and upscaled photos.</p>
-${slider("design/render.jpg?v=3", v.name + " v1", "design/render-v5.jpg?v=5", v.name + " v3")}
+${slider("design/render.jpg?v=3", v.name + " v1", "design/render-v6.jpg?v=6", v.name + " v6")}
 <p class="crumb" style="margin-top:28px"><a href="/framework">Glow UI framework →</a> <a href="https://github.com/FrozenFishe/glow-ui-recreation">Source on GitHub →</a></p>
 
 <h2>Affinity vs. PhotoCraft</h2>
@@ -267,14 +285,16 @@ for (const key of Object.keys(VARIANTS)) {
   mkdirSync(`${out}/framework/px`, { recursive: true });
   for (const r of RASTERS) cpSync(`variants/shared/${r.dir}/${r.file}`, `${out}/framework/px/${r.file}`);
   cpSync("framework/backdrop.png", `${out}/framework/backdrop.png`);
+  cpSync("framework/backdrop_plate.webp", `${out}/framework/backdrop_plate.webp`);
   cpSync("framework/strip_edge.png", `${out}/framework/strip_edge.png`);
+  cpSync("framework/shapes_tuned.svg", `${out}/framework/shapes_tuned.svg`);
   writeFileSync(`${out}/framework/shapes.css`, SHAPES_CSS);
   writeFileSync(`${out}/framework/icons.svg`, SPRITE.replace(' style="display:none"', ""));
   writeFileSync(`${out}/framework/docs.css`, DOCS_CSS);
   writeFileSync(`${out}/framework.html`, frameworkPage());
   cpSync(`variants/${key}/render.jpg`, `${out}/design/render.jpg`);
   cpSync("variants/shared/original.jpg", `${out}/design/original.jpg`);
-  for (const r of ["render-v2.jpg", "render-v3.jpg", "render-v4.jpg", "render-v5.jpg"]) if (existsSync(`variants/${key}/${r}`)) cpSync(`variants/${key}/${r}`, `${out}/design/${r}`);
+  for (const r of ["render-v2.jpg", "render-v3.jpg", "render-v4.jpg", "render-v5.jpg", "render-v6.jpg"]) if (existsSync(`variants/${key}/${r}`)) cpSync(`variants/${key}/${r}`, `${out}/design/${r}`);
   writeFileSync(`${out}/design.html`, designPage(key));
   writeFileSync(`${out}/design.css`, DESIGN_CSS);
   writeFileSync(`${out}/404.html`, NOT_FOUND);
