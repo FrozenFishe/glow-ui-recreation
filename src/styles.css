@@ -185,7 +185,7 @@ h1 .l2 em { margin-left: calc(-1.5 * var(--k)); }
   .px-r { display: none; }
   /* the original's real background shading, extracted by tools/backdrop.py (192x128, stretched smoothly) */
   .pixel .stage { background: url(framework/backdrop.png) 0 0 / 100% calc(100% * 1024 / 894) no-repeat; }
-  .pixel .brands { background: url(framework/backdrop.png) 0 100% / 100% calc(100% * 1024 / 130) no-repeat; }
+  .pixel .brands { background: url(framework/backdrop.png) 0 100% / 100% calc(100% * 1024 / 130) no-repeat; border-top-color: transparent; }
   .pixel :is(.links a, .loc-pill span, .signup, .copy .eyebrow, h1, .intro, .search button, .features strong, .features span:last-child,
     .time, .screen h2, .screen .sub, .app-search .box, .row-head h3, .row-head a, .tiles div, .screen h3.top, .info h4, .info .meta, .info .meta b,
     .info .svc, .info .price, .book, .tabbar span, .badge strong, .badge span, .brands .eyebrow) { color: transparent; }

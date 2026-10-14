@@ -31,7 +31,9 @@ const PX_ICONS = [...icons.filter((c) => c.name !== "logo_glow").map((c) => tune
     return t;
   })];
 const PX_STAGE = `<div class="px" aria-hidden="true">${[...PX_ICONS, ...TEXT.filter((c) => c.box[1] < 893)].map((c) => pxItem(c)).join("")}</div>`;
-const PX_BRANDS = `<div class="px px-brands" aria-hidden="true">${[...TEXT.filter((c) => c.box[1] >= 893),
+// the photo's bottom edge and the strip's hairline blend over rows 892-895: original pixels, not a drawn line
+const STRIP_EDGE = `<img class="px-t px-edge" src="framework/strip_edge.png" width="1536" height="4" alt="" style="--x:0;--y:-3;--w:1536;--h:4">`;
+const PX_BRANDS = `<div class="px px-brands" aria-hidden="true">${STRIP_EDGE}${[...TEXT.filter((c) => c.box[1] >= 893),
   ...TUNED.filter((c) => c.name.startsWith("logo_") && !["logo_glow", "logo_sparkle"].includes(c.name))].map((c) => pxItem(c, 895)).join("")}</div>`;
 // tuned shapes (tools/tune_shapes.py): exact geometry and colours as a desktop pixel-mode stylesheet.
 // Each shape is moved by the difference from what the page draws (tools/glow_shapes.json) and resized.
@@ -110,7 +112,7 @@ const STATS = [
   ["v4 tuned: changed / SSIM / ΔE2000", "0.245% / 0.9797 / 0.364", "0.143% / 0.9815 / 0.356"],
   ["v5 tuned shapes: changed / SSIM", "0.163% / 0.9818", "0.064% / 0.9852"],
   ["v5 max-fidelity: changed / SSIM", "0.079% / 0.9847", "0.032% / 0.9867"],
-  ["Photoshop v5 (same kit, for reference)", "0.104% / 0.9840 standard, 0.076% / 0.9854 max", "same"],
+  ["Photoshop v6 (same kit, best overall)", "0.054% / 0.9866 standard, 0.026% / 0.9880 max", "same"],
   ["Measured-fix pass", "2 script runs after an Affinity restart (fonts), ≈15k tokens", "≈22 tool calls, ≈65k tokens (type.setStyle echoes)"],
   ["v2 headline", "Live text in the custom Glow Display font", "Traced outlines (the server started before the font was installed)"],
   ["Measured mismatch (tools/diffcheck.py)", "3.80% of pixels → 2.28% after measured corrections", "2.22% (traced headline) → 1.76% after measured corrections"],
@@ -265,6 +267,7 @@ for (const key of Object.keys(VARIANTS)) {
   mkdirSync(`${out}/framework/px`, { recursive: true });
   for (const r of RASTERS) cpSync(`variants/shared/${r.dir}/${r.file}`, `${out}/framework/px/${r.file}`);
   cpSync("framework/backdrop.png", `${out}/framework/backdrop.png`);
+  cpSync("framework/strip_edge.png", `${out}/framework/strip_edge.png`);
   writeFileSync(`${out}/framework/shapes.css`, SHAPES_CSS);
   writeFileSync(`${out}/framework/icons.svg`, SPRITE.replace(' style="display:none"', ""));
   writeFileSync(`${out}/framework/docs.css`, DOCS_CSS);

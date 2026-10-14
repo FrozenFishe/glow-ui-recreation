@@ -2,6 +2,8 @@
 any of them can place (Photoshop, PhotoCraft, Affinity, Illustrator...).
 
   backdrop.png                      the original's background shading (from framework/backdrop.png)
+  strip_edge.png                    rows 892-895 of the original, full width: the photo's bottom edge and the
+                                    brand strip's hairline, which blend there (place at 0,892 above the hero)
   hero_exact.png, thumb_*_exact.png lossless photo slices
   shapes_tuned.svg                  every drawn shape, geometry/colours from tools/glow_shapes_tuned.json
   vectors_tuned.svg                 tuned vectors for elements drawn as vectors
@@ -10,7 +12,7 @@ any of them can place (Photoshop, PhotoCraft, Affinity, Illustrator...).
   cutouts_tiny.png                  original-pixel cutouts of the tiny elements (standard mode)
   cutouts_all_max_fidelity.png      original-pixel cutouts of every traced element (max-fidelity mode)
 
-All files are 1536x1024 design coordinates. Layer order, bottom to top: backdrop, hero, shapes,
+All files are 1536x1024 design coordinates. Layer order, bottom to top: backdrop, hero, strip edge, shapes,
 card photos, vectors, tiny cutouts (+ hidden max-fidelity cutouts).
 
 usage: make_kit.py <out-dir>
@@ -44,8 +46,9 @@ def shapes_svg(tuned):
     def line(n, x1, y1, x2, y2, c):
         return f'<line id="{n}" x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="{c}" stroke-width="1"/>'
 
-    S = [line("strip_divider", 0, 893.5, 1536, 893.5, "#ECECEC"),
-         rect("location_pill", 1132, 39, 192, 48, 24, "#F7F7F7", "#E6E6E6"), rect("signup", 1338, 38, 161, 50, 25, "#000001"),
+    # (the strip divider is not a drawn line: the photo's bottom edge and a faint hairline blend over rows
+    # 893-895, so it ships as original pixels in strip_edge.png instead)
+    S = [rect("location_pill", 1132, 39, 192, 48, 24, "#F7F7F7", "#E6E6E6"), rect("signup", 1338, 38, 161, 50, 25, "#000001"),
          rect("search_bar", 58, 545, 636, 72, 26, "#FEFEFE", "#E9E9E9"), line("search_divider", 347.5, 557, 347.5, 605, "#E6E6E6"),
          rect("search_button", 569, 557, 113, 48, 18, "#111214")]
     for n, x in [("ring_search", 87), ("ring_book", 248), ("ring_enjoy", 408), ("ring_trusted", 566)]:
@@ -76,6 +79,7 @@ def main(out):
     o.crop((712, 0, 1536, 894)).save(os.path.join(out, "hero_exact.png"))
     o.crop((1104, 543, 1184, 640)).save(os.path.join(out, "thumb_facial_exact.png"))
     o.crop((1104, 664, 1184, 760)).save(os.path.join(out, "thumb_lash_exact.png"))
+    o.crop((0, 892, 1536, 896)).save(os.path.join(out, "strip_edge.png"))
     Image.open(p("framework/backdrop.png")).convert("RGB").resize((1536, 1024), Image.BILINEAR).save(os.path.join(out, "backdrop.png"))
     open(os.path.join(out, "shapes_tuned.svg"), "w").write(shapes_svg(json.load(open(p("tools/glow_shapes_tuned.json")))))
 
