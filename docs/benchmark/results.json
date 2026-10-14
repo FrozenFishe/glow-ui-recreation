@@ -1,0 +1,117 @@
+{
+ "jpeg_quality": 75,
+ "rows": [
+  {
+   "label": "Floor: original re-saved as JPEG q75",
+   "changed_pct": 0.0,
+   "ssim": 0.9997,
+   "dE_mean": 0.025,
+   "dE_p95": 0.2,
+   "psnr": 54.9
+  },
+  {
+   "label": "Floor: original re-saved as JPEG q95",
+   "changed_pct": 0.0,
+   "ssim": 0.9995,
+   "dE_mean": 0.087,
+   "dE_p95": 0.639,
+   "psnr": 52.96
+  },
+  {
+   "label": "Affinity v1",
+   "changed_pct": 4.109,
+   "ssim": 0.9014,
+   "dE_mean": 2.137,
+   "dE_p95": 4.29,
+   "psnr": 19.23
+  },
+  {
+   "label": "Affinity v2",
+   "changed_pct": 2.284,
+   "ssim": 0.9349,
+   "dE_mean": 1.464,
+   "dE_p95": 3.824,
+   "psnr": 23.78
+  },
+  {
+   "label": "Affinity v3",
+   "changed_pct": 0.352,
+   "ssim": 0.9774,
+   "dE_mean": 0.675,
+   "dE_p95": 2.167,
+   "psnr": 31.54
+  },
+  {
+   "label": "**Affinity v4**",
+   "changed_pct": 0.245,
+   "ssim": 0.9797,
+   "dE_mean": 0.364,
+   "dE_p95": 1.662,
+   "psnr": 32.87
+  },
+  {
+   "label": "PhotoCraft v1",
+   "changed_pct": 4.06,
+   "ssim": 0.9028,
+   "dE_mean": 2.178,
+   "dE_p95": 5.044,
+   "psnr": 19.1
+  },
+  {
+   "label": "PhotoCraft v2",
+   "changed_pct": 1.758,
+   "ssim": 0.9413,
+   "dE_mean": 1.396,
+   "dE_p95": 4.174,
+   "psnr": 24.67
+  },
+  {
+   "label": "PhotoCraft v3",
+   "changed_pct": 0.193,
+   "ssim": 0.9801,
+   "dE_mean": 0.548,
+   "dE_p95": 1.906,
+   "psnr": 32.61
+  },
+  {
+   "label": "**PhotoCraft v4**",
+   "changed_pct": 0.143,
+   "ssim": 0.9815,
+   "dE_mean": 0.356,
+   "dE_p95": 1.754,
+   "psnr": 34.12
+  },
+  {
+   "label": "Website v2",
+   "changed_pct": 5.137,
+   "ssim": 0.8728,
+   "dE_mean": 2.772,
+   "dE_p95": 8.817,
+   "psnr": 18.25
+  },
+  {
+   "label": "Website v2, measured corrections",
+   "changed_pct": 2.514,
+   "ssim": 0.932,
+   "dE_mean": 1.539,
+   "dE_p95": 4.741,
+   "psnr": 23.78
+  },
+  {
+   "label": "Website v3",
+   "changed_pct": 0.217,
+   "ssim": 0.9773,
+   "dE_mean": 0.61,
+   "dE_p95": 2.083,
+   "psnr": 32.76
+  },
+  {
+   "label": "**Website v4**",
+   "changed_pct": 0.141,
+   "ssim": 0.9792,
+   "dE_mean": 0.345,
+   "dE_p95": 1.69,
+   "psnr": 34.32
+  }
+ ]
+}

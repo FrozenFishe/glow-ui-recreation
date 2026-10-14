@@ -181,6 +181,11 @@ h1 .l2 em { margin-left: calc(-1.5 * var(--k)); }
   .pixel .px { display: block; position: absolute; inset: 0; z-index: 5; pointer-events: none; }
   .px-t { position: absolute; left: calc(var(--x) * var(--u)); top: calc(var(--y) * var(--u)); width: calc(var(--w) * var(--u)); height: calc(var(--h) * var(--u)); overflow: visible; }
   .pixel .px-brands { top: 0; }
+  /* tiny elements: original-pixel cutouts on standard screens, vectors on high-DPI screens */
+  .px-r { display: none; }
+  /* the original's real background shading, extracted by tools/backdrop.py (192x128, stretched smoothly) */
+  .pixel .stage { background: url(framework/backdrop.png) 0 0 / 100% calc(100% * 1024 / 894) no-repeat; }
+  .pixel .brands { background: url(framework/backdrop.png) 0 100% / 100% calc(100% * 1024 / 130) no-repeat; }
   .pixel :is(.links a, .loc-pill span, .signup, .copy .eyebrow, h1, .intro, .search button, .features strong, .features span:last-child,
     .time, .screen h2, .screen .sub, .app-search .box, .row-head h3, .row-head a, .tiles div, .screen h3.top, .info h4, .info .meta, .info .meta b,
     .info .svc, .info .price, .book, .tabbar span, .badge strong, .badge span, .brands .eyebrow) { color: transparent; }
@@ -194,4 +199,8 @@ h1 .l2 em { margin-left: calc(-1.5 * var(--k)); }
   .pixel .tiles .ti { color: #2d2c2a; }
   .pixel.typed .px [data-n="tx_search_placeholder"], .pixel.picked .px [data-n="tx_search_location"] { display: none; }
   .pixel.picked .search select { color: var(--gl-text); }
+}
+@media (min-width: 1024px) and (max-resolution: 1.49dppx) {
+  .pixel .px-r { display: block; }
+  .pixel .px-t.has-r { display: none; }
 }

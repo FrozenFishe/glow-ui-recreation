@@ -7,15 +7,29 @@ const TOKENS = JSON.parse(readFileSync("framework/tokens.json", "utf8"));
 const icons = MANIFEST.filter((c) => !c.name.startsWith("logo_") || c.name === "logo_glow" || c.name === "logo_sparkle");
 const brands = MANIFEST.filter((c) => c.name.startsWith("logo_") && !["logo_glow", "logo_sparkle"].includes(c.name));
 // pixel-exact text: every text block traced from the original (tools/text_all_spec.json)
-const TEXT = JSON.parse(readFileSync("variants/shared/text_all/manifest.json", "utf8"));
-const pxItem = (c, dy = 0) => `<svg class="px-t" data-n="${c.name}" style="--x:${c.box[0]};--y:${c.box[1] - dy};--w:${c.box[2]};--h:${c.box[3]}" viewBox="0 0 ${c.box[2]} ${c.box[3]}"><path fill="${c.colour}" d="${c.d}"/></svg>`;
+// tuned by tools/tune.py: best trace threshold, sub-pixel offset and solved fill colour per element;
+// "raster" elements also ship an original-pixel cutout, shown on standard-resolution screens
+const TEXT = JSON.parse(readFileSync("variants/shared/text_all_tuned/manifest.json", "utf8"));
+const TUNED = JSON.parse(readFileSync("variants/shared/components_tuned/manifest.json", "utf8"));
+const tuned = (name) => TUNED.find((t) => t.name === name);
+const RASTERS = [...TEXT, ...TUNED].filter((c) => c.mode === "raster").map((c) => ({ dir: TEXT.includes(c) ? "text_all_tuned" : "components_tuned", file: c.raster }));
+const pxItem = (c, dy = 0) => {
+  const svg = `<svg class="px-t${c.mode === "raster" ? " has-r" : ""}" data-n="${c.name}" style="--x:${c.box[0]};--y:${c.box[1] - dy};--w:${c.box[2]};--h:${c.box[3]}" viewBox="0 0 ${c.box[2]} ${c.box[3]}"><path fill="${c.colour}" d="${c.d}"/></svg>`;
+  if (c.mode !== "raster") return svg;
+  const [x, y, w, h] = c.raster_box;
+  return svg + `<img class="px-t px-r" data-n="${c.name}" src="framework/px/${c.raster}" width="${w}" height="${h}" alt="" style="--x:${x};--y:${y - dy};--w:${w};--h:${h}">`;
+};
 // icons too: on the page they sit in flex layouts (0.5-1px off); the overlay puts them at their exact design boxes
 const shiftY = (c, dy) => ({ ...c, name: c.name + "_2", box: [c.box[0], c.box[1] + dy, c.box[2], c.box[3]] });
-const PX_ICONS = [...icons.filter((c) => c.name !== "logo_glow"),
-  ...["card_bookmark", "card_star"].map((n) => shiftY(MANIFEST.find((m) => m.name === n), 121))]; // card 2 reuses card 1's icons
+const PX_ICONS = [...icons.filter((c) => c.name !== "logo_glow").map((c) => tuned(c.name) || c),
+  ...["card_bookmark", "card_star"].map((n) => {
+    const t = shiftY(tuned(n), 121); // card 2 reuses card 1's icons
+    if (t.raster_box) t.raster_box = [t.raster_box[0], t.raster_box[1] + 121, t.raster_box[2], t.raster_box[3]];
+    return t;
+  })];
 const PX_STAGE = `<div class="px" aria-hidden="true">${[...PX_ICONS, ...TEXT.filter((c) => c.box[1] < 893)].map((c) => pxItem(c)).join("")}</div>`;
 const PX_BRANDS = `<div class="px px-brands" aria-hidden="true">${[...TEXT.filter((c) => c.box[1] >= 893),
-  ...MANIFEST.filter((c) => c.name.startsWith("logo_") && !["logo_glow", "logo_sparkle"].includes(c.name))].map((c) => pxItem(c, 895)).join("")}</div>`;
+  ...TUNED.filter((c) => c.name.startsWith("logo_") && !["logo_glow", "logo_sparkle"].includes(c.name))].map((c) => pxItem(c, 895)).join("")}</div>`;
 const BRAND_NAMES = { logo_mecca: "MECCA", logo_adorebeauty: "Adore Beauty", logo_benefit: "Benefit Cosmetics", logo_endota: "Endota Spa",
   logo_sephora: "Sephora", logo_elleebana: "Elleebana", logo_kevinmurphy: "Kevin.Murphy" };
 
@@ -55,6 +69,7 @@ const STATS = [
   ["v2 upgrade: tool calls", "≈10 (2 build runs + checks)", "81"],
   ["v2 upgrade: tokens", "≈25k (script + 2 runs; the shared tools did the heavy lifting)", "≈151k (two 133-layer doc_inspect dumps ≈50k)"],
   ["v3 pixel-exact: mismatch", "0.35% (similarity 0.9941)", "0.19% (similarity 0.9946)"],
+  ["v4 tuned: changed / SSIM / ΔE2000", "0.245% / 0.9797 / 0.364", "0.143% / 0.9815 / 0.356"],
   ["Measured-fix pass", "2 script runs after an Affinity restart (fonts), ≈15k tokens", "≈22 tool calls, ≈65k tokens (type.setStyle echoes)"],
   ["v2 headline", "Live text in the custom Glow Display font", "Traced outlines (the server started before the font was installed)"],
   ["Measured mismatch (tools/diffcheck.py)", "3.80% of pixels → 2.28% after measured corrections", "2.22% (traced headline) → 1.76% after measured corrections"],
@@ -85,12 +100,12 @@ function designPage(key) {
 <h1>Glow, recreated in ${v.name}</h1>
 <p class="lede">A one-to-one rebuild of the Glow landing-page design using ${esc(v.method)}. The photographic parts (hero photo, card thumbnails, brand logos) are slices cut from the original. Everything else is editable text and shapes. The live site at <a href="/">/</a> is responsive HTML and CSS built from these slices.</p>
 
-<h2>Original vs. ${v.name} v3 (pixel-exact)</h2>
-<p class="hint">Drag the handle to compare. v3 draws every text block as an outline traced from the original (the live text is kept, hidden, for editing), uses the photographed phone bezel and the measured surface colours.</p>
-${slider("design/original.jpg?v=3", "Original", "design/render-v3.jpg?v=3", v.name + " v3")}
-<h2>${v.name} v1 → v3</h2>
+<h2>Original vs. ${v.name} v4 (tuned pixel-exact)</h2>
+<p class="hint">Drag the handle to compare. v4: every text block traced from the original and auto-tuned (live text kept, hidden), original-pixel cutouts for tiny elements, the original's background, measured colours, the photographed phone bezel. See the benchmark in the README.</p>
+${slider("design/original.jpg?v=3", "Original", "design/render-v4.jpg?v=4", v.name + " v3")}
+<h2>${v.name} v1 → v4</h2>
 <p class="hint">v1 had hand-drawn icons, a single logo strip and lookalike fonts. v2 added traced icons and logos, a custom font and upscaled photos.</p>
-${slider("design/render.jpg?v=3", v.name + " v1", "design/render-v3.jpg?v=3", v.name + " v3")}
+${slider("design/render.jpg?v=3", v.name + " v1", "design/render-v4.jpg?v=4", v.name + " v3")}
 <p class="crumb" style="margin-top:28px"><a href="/framework">Glow UI framework →</a> <a href="https://github.com/FrozenFishe/glow-ui-recreation">Source on GitHub →</a></p>
 
 <h2>Affinity vs. PhotoCraft</h2>
@@ -206,12 +221,15 @@ for (const key of Object.keys(VARIANTS)) {
   for (const f of readdirSync("fonts/out")) if (f.endsWith(".woff2") || f.endsWith(".otf")) cpSync(`fonts/out/${f}`, `${out}/framework/fonts/${f}`);
   mkdirSync(`${out}/framework/logos`, { recursive: true });
   for (const c of brands) cpSync(`variants/shared/components/${c.svg}`, `${out}/framework/logos/${c.svg}`);
+  mkdirSync(`${out}/framework/px`, { recursive: true });
+  for (const r of RASTERS) cpSync(`variants/shared/${r.dir}/${r.file}`, `${out}/framework/px/${r.file}`);
+  cpSync("framework/backdrop.png", `${out}/framework/backdrop.png`);
   writeFileSync(`${out}/framework/icons.svg`, SPRITE.replace(' style="display:none"', ""));
   writeFileSync(`${out}/framework/docs.css`, DOCS_CSS);
   writeFileSync(`${out}/framework.html`, frameworkPage());
   cpSync(`variants/${key}/render.jpg`, `${out}/design/render.jpg`);
   cpSync("variants/shared/original.jpg", `${out}/design/original.jpg`);
-  for (const r of ["render-v2.jpg", "render-v3.jpg"]) if (existsSync(`variants/${key}/${r}`)) cpSync(`variants/${key}/${r}`, `${out}/design/${r}`);
+  for (const r of ["render-v2.jpg", "render-v3.jpg", "render-v4.jpg"]) if (existsSync(`variants/${key}/${r}`)) cpSync(`variants/${key}/${r}`, `${out}/design/${r}`);
   writeFileSync(`${out}/design.html`, designPage(key));
   writeFileSync(`${out}/design.css`, DESIGN_CSS);
   writeFileSync(`${out}/404.html`, NOT_FOUND);
