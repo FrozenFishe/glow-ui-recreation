@@ -1,0 +1,552 @@
+[
+{
+"name": "tx_nav_clients",
+"box": [
+258,
+52,
+85,
+22
+],
+"threshold": 0.45
+},
+{
+"name": "tx_nav_providers",
+"box": [
+377,
+52,
+103,
+22
+],
+"threshold": 0.45
+},
+{
+"name": "tx_nav_how",
+"box": [
+514,
+52,
+104,
+22
+],
+"threshold": 0.45
+},
+{
+"name": "tx_nav_about",
+"box": [
+651,
+52,
+74,
+22
+],
+"threshold": 0.45
+},
+{
+"name": "tx_pill_location",
+"box": [
+1172,
+55,
+118,
+20
+],
+"threshold": 0.45
+},
+{
+"name": "tx_signup",
+"box": [
+1360,
+53,
+118,
+22
+],
+"threshold": 0.45
+},
+{
+"name": "tx_eyebrow",
+"box": [
+55,
+189,
+320,
+18
+],
+"threshold": 0.45
+},
+{
+"name": "tx_headline_1",
+"box": [
+52,
+248,
+644,
+82
+],
+"threshold": 0.45
+},
+{
+"name": "tx_headline_2_roman",
+"box": [
+52,
+326,
+290,
+78
+],
+"threshold": 0.45
+},
+{
+"name": "tx_headline_2_italic",
+"box": [
+344,
+326,
+312,
+72
+],
+"threshold": 0.45
+},
+{
+"name": "tx_intro_1",
+"box": [
+55,
+425,
+445,
+26
+],
+"threshold": 0.45
+},
+{
+"name": "tx_intro_2",
+"box": [
+55,
+455,
+440,
+26
+],
+"threshold": 0.45
+},
+{
+"name": "tx_intro_3",
+"box": [
+55,
+485,
+175,
+22
+],
+"threshold": 0.45
+},
+{
+"name": "tx_search_placeholder",
+"box": [
+110,
+572,
+215,
+20
+],
+"threshold": 0.45
+},
+{
+"name": "tx_search_location",
+"box": [
+390,
+572,
+120,
+22
+],
+"threshold": 0.45
+},
+{
+"name": "tx_search_button",
+"box": [
+597,
+571,
+58,
+22
+],
+"threshold": 0.45
+},
+{
+"name": "tx_feat_title_search",
+"box": [
+90,
+754,
+62,
+20
+],
+"threshold": 0.45
+},
+{
+"name": "tx_feat_title_book",
+"box": [
+258,
+754,
+48,
+20
+],
+"threshold": 0.45
+},
+{
+"name": "tx_feat_title_enjoy",
+"box": [
+416,
+754,
+52,
+20
+],
+"threshold": 0.45
+},
+{
+"name": "tx_feat_title_trusted",
+"box": [
+566,
+754,
+66,
+20
+],
+"threshold": 0.45
+},
+{
+"name": "tx_feat_sub_search",
+"box": [
+65,
+783,
+112,
+38
+],
+"threshold": 0.45
+},
+{
+"name": "tx_feat_sub_book",
+"box": [
+228,
+783,
+106,
+38
+],
+"threshold": 0.45
+},
+{
+"name": "tx_feat_sub_enjoy",
+"box": [
+394,
+783,
+94,
+38
+],
+"threshold": 0.45
+},
+{
+"name": "tx_feat_sub_trusted",
+"box": [
+545,
+783,
+110,
+38
+],
+"threshold": 0.45
+},
+{
+"name": "tx_phone_time",
+"box": [
+1110,
+199,
+40,
+16
+],
+"threshold": 0.45
+},
+{
+"name": "tx_phone_title",
+"box": [
+1095,
+250,
+155,
+24
+],
+"threshold": 0.45
+},
+{
+"name": "tx_phone_sub",
+"box": [
+1095,
+277,
+120,
+14
+],
+"threshold": 0.45
+},
+{
+"name": "tx_phone_search",
+"box": [
+1126,
+320,
+180,
+13
+],
+"threshold": 0.45
+},
+{
+"name": "tx_phone_popular",
+"box": [
+1095,
+370,
+95,
+15
+],
+"threshold": 0.45
+},
+{
+"name": "tx_phone_seeall",
+"box": [
+1333,
+371,
+37,
+13
+],
+"threshold": 0.45
+},
+{
+"name": "tx_phone_top",
+"box": [
+1095,
+504,
+115,
+15
+],
+"threshold": 0.45
+},
+{
+"name": "tx_badge_arc",
+"box": [
+1385,
+745,
+90,
+30
+],
+"threshold": 0.45
+},
+{
+"name": "tx_badge_number",
+"box": [
+1388,
+783,
+86,
+30
+],
+"threshold": 0.45
+},
+{
+"name": "tx_badge_happy",
+"box": [
+1383,
+816,
+95,
+14
+],
+"threshold": 0.45
+},
+{
+"name": "tx_brands_eyebrow",
+"box": [
+540,
+922,
+460,
+17
+],
+"threshold": 0.45
+},
+{
+"name": "tx_tile_facials",
+"box": [
+1098,
+453,
+48,
+12
+],
+"threshold": 0.4
+},
+{
+"name": "tx_tile_nails",
+"box": [
+1153,
+453,
+48,
+12
+],
+"threshold": 0.4
+},
+{
+"name": "tx_tile_brows",
+"box": [
+1209,
+453,
+48,
+12
+],
+"threshold": 0.4
+},
+{
+"name": "tx_tile_hair",
+"box": [
+1264,
+453,
+48,
+12
+],
+"threshold": 0.4
+},
+{
+"name": "tx_tile_makeup",
+"box": [
+1319,
+453,
+48,
+12
+],
+"threshold": 0.4
+},
+{
+"name": "tx_card1_title",
+"box": [
+1192,
+546,
+95,
+15
+],
+"threshold": 0.45
+},
+{
+"name": "tx_card1_meta",
+"box": [
+1203,
+567,
+100,
+12
+],
+"threshold": 0.4
+},
+{
+"name": "tx_card1_service",
+"box": [
+1192,
+588,
+110,
+13
+],
+"threshold": 0.4
+},
+{
+"name": "tx_card1_price",
+"box": [
+1192,
+616,
+35,
+15
+],
+"threshold": 0.45
+},
+{
+"name": "tx_card1_book",
+"box": [
+1318,
+617,
+30,
+13
+],
+"threshold": 0.4
+},
+{
+"name": "tx_card2_title",
+"box": [
+1192,
+667,
+95,
+15
+],
+"threshold": 0.45
+},
+{
+"name": "tx_card2_meta",
+"box": [
+1203,
+688,
+100,
+12
+],
+"threshold": 0.4
+},
+{
+"name": "tx_card2_service",
+"box": [
+1192,
+709,
+110,
+13
+],
+"threshold": 0.4
+},
+{
+"name": "tx_card2_price",
+"box": [
+1192,
+737,
+35,
+15
+],
+"threshold": 0.45
+},
+{
+"name": "tx_card2_book",
+"box": [
+1318,
+738,
+30,
+13
+],
+"threshold": 0.4
+},
+{
+"name": "tx_tab_home",
+"box": [
+1089,
+823,
+52,
+11
+],
+"threshold": 0.4
+},
+{
+"name": "tx_tab_search",
+"box": [
+1147,
+823,
+52,
+11
+],
+"threshold": 0.4
+},
+{
+"name": "tx_tab_bookings",
+"box": [
+1206,
+823,
+52,
+11
+],
+"threshold": 0.4
+},
+{
+"name": "tx_tab_favourites",
+"box": [
+1265,
+823,
+52,
+11
+],
+"threshold": 0.4
+},
+{
+"name": "tx_tab_profile",
+"box": [
+1323,
+823,
+52,
+11
+],
+"threshold": 0.4
+}
+]

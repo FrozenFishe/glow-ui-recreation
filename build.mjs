@@ -6,6 +6,16 @@ const MANIFEST = JSON.parse(readFileSync("variants/shared/components/manifest.js
 const TOKENS = JSON.parse(readFileSync("framework/tokens.json", "utf8"));
 const icons = MANIFEST.filter((c) => !c.name.startsWith("logo_") || c.name === "logo_glow" || c.name === "logo_sparkle");
 const brands = MANIFEST.filter((c) => c.name.startsWith("logo_") && !["logo_glow", "logo_sparkle"].includes(c.name));
+// pixel-exact text: every text block traced from the original (tools/text_all_spec.json)
+const TEXT = JSON.parse(readFileSync("variants/shared/text_all/manifest.json", "utf8"));
+const pxItem = (c, dy = 0) => `<svg class="px-t" data-n="${c.name}" style="--x:${c.box[0]};--y:${c.box[1] - dy};--w:${c.box[2]};--h:${c.box[3]}" viewBox="0 0 ${c.box[2]} ${c.box[3]}"><path fill="${c.colour}" d="${c.d}"/></svg>`;
+// icons too: on the page they sit in flex layouts (0.5-1px off); the overlay puts them at their exact design boxes
+const shiftY = (c, dy) => ({ ...c, name: c.name + "_2", box: [c.box[0], c.box[1] + dy, c.box[2], c.box[3]] });
+const PX_ICONS = [...icons.filter((c) => c.name !== "logo_glow"),
+  ...["card_bookmark", "card_star"].map((n) => shiftY(MANIFEST.find((m) => m.name === n), 121))]; // card 2 reuses card 1's icons
+const PX_STAGE = `<div class="px" aria-hidden="true">${[...PX_ICONS, ...TEXT.filter((c) => c.box[1] < 893)].map((c) => pxItem(c)).join("")}</div>`;
+const PX_BRANDS = `<div class="px px-brands" aria-hidden="true">${[...TEXT.filter((c) => c.box[1] >= 893),
+  ...MANIFEST.filter((c) => c.name.startsWith("logo_") && !["logo_glow", "logo_sparkle"].includes(c.name))].map((c) => pxItem(c, 895)).join("")}</div>`;
 const BRAND_NAMES = { logo_mecca: "MECCA", logo_adorebeauty: "Adore Beauty", logo_benefit: "Benefit Cosmetics", logo_endota: "Endota Spa",
   logo_sephora: "Sephora", logo_elleebana: "Elleebana", logo_kevinmurphy: "Kevin.Murphy" };
 
@@ -44,6 +54,7 @@ const STATS = [
   ["v2 upgrade: approach", "One 13 KB script reading the shared manifest (traced icons, logos, fonts, 2x photos)", "Wrote all traced paths to one SVG, opened it, pasted the group in place"],
   ["v2 upgrade: tool calls", "≈10 (2 build runs + checks)", "81"],
   ["v2 upgrade: tokens", "≈25k (script + 2 runs; the shared tools did the heavy lifting)", "≈151k (two 133-layer doc_inspect dumps ≈50k)"],
+  ["v3 pixel-exact: mismatch", "0.35% (similarity 0.9941)", "0.19% (similarity 0.9946)"],
   ["Measured-fix pass", "2 script runs after an Affinity restart (fonts), ≈15k tokens", "≈22 tool calls, ≈65k tokens (type.setStyle echoes)"],
   ["v2 headline", "Live text in the custom Glow Display font", "Traced outlines (the server started before the font was installed)"],
   ["Measured mismatch (tools/diffcheck.py)", "3.80% of pixels → 2.28% after measured corrections", "2.22% (traced headline) → 1.76% after measured corrections"],
@@ -74,12 +85,12 @@ function designPage(key) {
 <h1>Glow, recreated in ${v.name}</h1>
 <p class="lede">A one-to-one rebuild of the Glow landing-page design using ${esc(v.method)}. The photographic parts (hero photo, card thumbnails, brand logos) are slices cut from the original. Everything else is editable text and shapes. The live site at <a href="/">/</a> is responsive HTML and CSS built from these slices.</p>
 
-<h2>Original vs. ${v.name} v2</h2>
-<p class="hint">Drag the handle to compare. v2 uses traced icons and logos, the custom Glow Display font and AI-upscaled photos.</p>
-${slider("design/original.jpg", "Original", "design/render-v2.jpg", v.name + " v2")}
-<h2>${v.name} v1 → v2</h2>
-<p class="hint">v1 had hand-drawn icons, a single logo strip and lookalike fonts.</p>
-${slider("design/render.jpg", v.name + " v1", "design/render-v2.jpg", v.name + " v2")}
+<h2>Original vs. ${v.name} v3 (pixel-exact)</h2>
+<p class="hint">Drag the handle to compare. v3 draws every text block as an outline traced from the original (the live text is kept, hidden, for editing), uses the photographed phone bezel and the measured surface colours.</p>
+${slider("design/original.jpg?v=3", "Original", "design/render-v3.jpg?v=3", v.name + " v3")}
+<h2>${v.name} v1 → v3</h2>
+<p class="hint">v1 had hand-drawn icons, a single logo strip and lookalike fonts. v2 added traced icons and logos, a custom font and upscaled photos.</p>
+${slider("design/render.jpg?v=3", v.name + " v1", "design/render-v3.jpg?v=3", v.name + " v3")}
 <p class="crumb" style="margin-top:28px"><a href="/framework">Glow UI framework →</a> <a href="https://github.com/FrozenFishe/glow-ui-recreation">Source on GitHub →</a></p>
 
 <h2>Affinity vs. PhotoCraft</h2>
@@ -200,13 +211,14 @@ for (const key of Object.keys(VARIANTS)) {
   writeFileSync(`${out}/framework.html`, frameworkPage());
   cpSync(`variants/${key}/render.jpg`, `${out}/design/render.jpg`);
   cpSync("variants/shared/original.jpg", `${out}/design/original.jpg`);
-  if (existsSync(`variants/${key}/render-v2.jpg`)) cpSync(`variants/${key}/render-v2.jpg`, `${out}/design/render-v2.jpg`);
+  for (const r of ["render-v2.jpg", "render-v3.jpg"]) if (existsSync(`variants/${key}/${r}`)) cpSync(`variants/${key}/${r}`, `${out}/design/${r}`);
   writeFileSync(`${out}/design.html`, designPage(key));
   writeFileSync(`${out}/design.css`, DESIGN_CSS);
   writeFileSync(`${out}/404.html`, NOT_FOUND);
   const html = readFileSync(`${out}/index.html`, "utf8")
     .replace("<!--icons-->", SPRITE)
-    .replace("<!--logos-->", LOGOS)
+    .replace("<!--logos-->", LOGOS + PX_BRANDS)
+    .replace("<!--pixel-text-->", PX_STAGE)
     .replace("<!--made-with-->", `<a href="/design">How this page was made (${VARIANTS[key].name})</a> · <a href="/framework">Glow UI framework</a>`);
   writeFileSync(`${out}/index.html`, html);
   console.log("built", out);

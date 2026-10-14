@@ -34,29 +34,59 @@ The `/design` pages have drag-to-compare sliders (original vs. v2, and v1 vs. v2
 
 ## Results
 
-**v2** is the current version. It uses traced icons and logos, a custom font traced from the design, AI-upscaled photos and shared design tokens. **v1** was the first pass, with hand-drawn icons, one flat logo strip and lookalike fonts.
+**v3** (pixel-exact) is the current version: every text block is traced from the original, with the photographed bezel and the measured colours. **v2** It uses traced icons and logos, a custom font traced from the design, AI-upscaled photos and shared design tokens. **v1** was the first pass, with hand-drawn icons, one flat logo strip and lookalike fonts.
+
+| Affinity v3 (0.35% mismatch) | PhotoCraft v3 (0.19% mismatch) |
+|---|---|
+| ![Affinity v3](docs/images/affinity-v3.jpg) | ![PhotoCraft v3](docs/images/photocraft-v3.jpg) |
+
+<details><summary>v2 renders</summary>
 
 | Affinity v2 | PhotoCraft v2 |
 |---|---|
 | ![Affinity v2](docs/images/affinity-v2.jpg) | ![PhotoCraft v2](docs/images/photocraft-v2.jpg) |
 
-Detail crops, in three rows each: original, Affinity v2, PhotoCraft v2.
+</details>
 
-![Original vs Affinity v2 vs PhotoCraft v2](docs/images/v2-comparison.jpg)
+Detail crops, in three rows each: original, Affinity v3, PhotoCraft v3.
+
+![Original vs Affinity v3 vs PhotoCraft v3](docs/images/v3-comparison.jpg)
 
 ### Measured accuracy
 
 [`tools/diffcheck.py`](tools/diffcheck.py) compares each recreation with the original over 24 named regions (nav, headline lines, intro lines, search bar, phone parts, badge, logos). The figure is the share of pixels that differ by more than 12% after a 0.7px blur, so anti-aliasing noise doesn't count. Lower is better; about 2–2.5% is anti-aliasing plus the small differences between Figtree and the original body font.
 
-| Recreation | Before measured corrections | After |
-|---|---|---|
-| Website (desktop, 1536×1024) | 5.14% | **2.51%** |
-| Affinity v2 | 3.80% | **2.28%** |
-| PhotoCraft v2 | 2.22% | **1.76%** |
+| Recreation | v2 | v2, measured corrections | **v3, pixel-exact** | v3 similarity |
+|---|---|---|---|---|
+| Website (desktop, 1536×1024) | 5.14% | 2.51% | **0.22%** | 0.9948 |
+| Affinity | 3.80% | 2.28% | **0.35%** | 0.9941 |
+| PhotoCraft | 2.22% | 1.76% | **0.19%** | 0.9946 |
 
 The biggest single fix was the headline's second line on the website: **31% → 2.4%**. It came from adding pair kerning to the custom font plus a measured 5.5px baseline correction.
 
 ![Diff heatmap of the website: red marks remaining differences](docs/images/diff-heatmap-site.jpg)
+
+### Pixel-exact mode (v3): how close to 100%?
+
+Literally 100% (zero differing pixels) is only possible by showing the original image itself:
+- **Edges:** any rebuild from editable parts anti-aliases its edges a little differently.
+- **JPEG noise:** the original is a JPEG, so it carries compression noise that a clean render never reproduces.
+
+v3 gets as close as an editable rebuild can, 0.19–0.35% of pixels. What's left is edge smoothing on tiny details: the 12px status-bar icons, logo taglines and badge lettering. Side by side, it can't be seen.
+
+**What v3 changed.** A breakdown showed that about 85% of the remaining v2 mismatch was text drawn in a font that wasn't quite the original, and most of the rest was the phone bezel and photos.
+
+1. **Every text block traced from the original.** `tools/text_all_spec.json` lists 55 blocks; the slicer traces each one, and outlines are drawn on top. The live text stays:
+   - **website:** in the page, transparent on desktop (still selectable, read by screen readers and search engines), and the normal live text on mobile, where it reflows;
+   - **editors:** as hidden layers, ready to edit.
+2. **Icons and logos at exact design coordinates** (website). In flex layouts they sat 0.5–1px off; the overlay places them at their measured boxes.
+3. **The photographed phone bezel.** The hero slice already contains the real bezel, so the drawn frame was removed and only the screen is drawn, with its measured colour (#F7F7F7), bottom edge and 44px bottom radius.
+4. **The tab bar is a separate, whiter strip.** It's #FEFEFE under a #F7F7F7 screen; the PhotoCraft run spotted this.
+5. **Measured surface colours.** The original has three different blacks (#000001 Sign Up, #111214 Search, #060606 Book) and several near-whites (#FEFEFE, #FCFCFB, #FBFBFB, #F7F7F7, #EFEDEB tiles). They're all in `tokens.json`.
+6. **Original pixels at 1×.** On standard screens the page shows the untouched photo slices; retina screens get the AI-enhanced 2× versions. In the editors the enhanced photos are kept as hidden alternate layers for 2× export.
+7. **Stroke-core colour for traced elements.** Colour comes from the most-inked 20% of pixels; averaging all ink pixels made small grey text too light.
+
+The trade-off: in pixel-exact mode the visible desktop text is outlines, not live type. On the website, remove `class="pixel"` from `<html>` to go back to live text. In the editors, show the hidden text layers and hide the "Pixel-exact text" group.
 
 What changed from v1 to v2, using the phone's service icons as the example (rows: original, v1 hand-drawn, v2 traced):
 
@@ -89,6 +119,12 @@ These are the problems we hit in v1 and the fix for each. The fixes apply equall
 | **The custom font's spacing drifted along a line** (line 2 off by 7–8px at its end). | **Pair kerning.** For every neighbouring pair in the samples, the font stores the gap the advance widths miss, so sample lines are reproduced exactly (30 pairs regular, 8 italic). | `glyphfont.py` |
 | **Glow Display only had the headline's letters.** | **Multi-size samples.** Extra lines (the badge's "1000+") are normalised to the headline's scale by x-height or cap height, or by an explicit `font_size_px`. Lines marked `"reference": true` set the scale. | `glyphfont.py` |
 | **Small samples produced garbage glyphs** ("Welcome to Glow" at 20px came out unreadable, though its score looked fine). | **A proof sheet for every build**: each sample line rendered with the new font under the original, a per-line score, and a warning under 30px. Small text stays on the lookalike font. | `glyphfont.py` |
+| **The last 2% was mostly text in a near-match font** (≈85% of the remaining mismatch). | **Pixel-exact mode:** every text block traced from the original and drawn as outlines, with live text kept underneath (transparent on the web, hidden layers in the editors). | `text_all_spec.json`, `slicer.py` |
+| **Icons in flex layouts sat 0.5–1px off.** | Draw icons and logos in the overlay at their exact measured boxes. | `build.mjs` |
+| **The CSS-drawn phone bezel couldn't match the photographed one** (0.6% on its own). | Drop the drawn frame and let the hero slice's real bezel show; draw only the screen, with its measured shape. | `styles.css`, `build_glow_v3.js` |
+| **"White" and "black" weren't one colour each.** | Sample clean patches of every surface (median) and put them in the tokens: three blacks, five near-whites. | `tokens.json` |
+| Enhanced photos differ from the original at 1×. | Original slice for 1×, enhanced for 2× (`srcset`); enhanced kept as hidden alternates in the editors. | `index.html` |
+| **A build error went unnoticed** and a measurement ran on stale output. | The check script stops on build failure. Always rebuild before measuring. | — |
 | Sub-pixel CSS nudges did nothing. | At 1× Chrome snaps text to whole pixels; nudge by whole pixels. | `src/styles.css` |
 | Text sat about 0.2 em too high in Affinity. | Calibrate **first-baseline offsets** per font, measured with `diffcheck.py` (frame top = baseline − 0.73 × size for Helvetica Neue, 0.735 for Figtree, 0.75 for Bodoni 72, 0.702 for Glow Display). | `build_glow_v2.js` |
 | Affinity showed every Figtree weight as 300. | Affinity misreads Figtree's variable-weight file. Generate **fixed-weight instances** with `fonttools varLib.instancer` (400/500/600/700) and install those. | see [Fonts](#fonts-in-the-editors) |
@@ -297,6 +333,7 @@ Edges are more reliable than the shift search for evenly spaced capitals, where 
 **Build scripts:**
 - [`editors/affinity/build_glow_v1.js`](editors/affinity/build_glow_v1.js): v1, with hand-drawn icons.
 - [`editors/affinity/build_glow_v2.js`](editors/affinity/build_glow_v2.js): v2. It reads the manifest and tokens, builds every traced icon and logo as a filled `PolyCurveNode`, sets the headline in Glow Display (falling back to traced outlines if the font is missing), and places the 2× photos at 0.5 scale so a 2× export stays crisp.
+- [`editors/affinity/build_glow_v3.js`](editors/affinity/build_glow_v3.js): v3, pixel-exact. It adds a group of traced outlines for all 55 text blocks, hides the live text frames (found afterwards by walking the layer tree, because a newly added node isn't `group.children.first`), uses the photographed bezel, the measured colours and the original 1× photos, and keeps the enhanced 2× photos as hidden layers.
 
 **SDK patterns that work.** All of these are saved as Affinity SDK hints, so future sessions see them in the preamble:
 
@@ -374,6 +411,13 @@ Use a dedicated folder: the roots are the only fence on what an agent can read a
   - `type.setStyle` and `type.edit` return the full `type.info` payload every time, so batch them and skip a separate `type.info` afterwards.
   - `layer.hideLayers {"layer":id}` hides a layer by id without selecting it.
   - Check `session_list` before `doc_open`: opening a .pcraft that's already open creates a second copy, named from inside the file.
+- **Pixel-exact pass** (tested):
+  - A single 79-step `command_batch` with `"stop_on_error": false` (hides, renames, fills) ran in one call with no failures.
+  - `shape.edit` returns the whole path for every edited layer, so 20 fill edits cost about 8k tokens. Batch them anyway.
+  - `shape.edit` with `"name"` renames in the same step. `"radii"` takes one number or `[tl,tr,br,bl]`, and `"rect"` regenerates a live rounded rectangle.
+  - `layer.duplicate` followed by `shape.edit` (new rect, radii and fill) is a quick way to add a shape.
+  - `layer.select` on a group, then `edit.pasteSpecial.pasteInPlace`, puts the pasted group above that group at the top level.
+  - `doc_export` to .png doesn't change the document's save path. Use `doc_save` with an explicit new .pcraft path so the source file is never overwritten.
 - **Checking the result:** stack original and render crops vertically (ImageMagick `-append`, or Pillow) and view them. This is cheaper and sharper than `render_preview`.
 
 ---
@@ -512,8 +556,8 @@ tools/                slicer.py, fontmatch.py, glyphfont.py, enhance.py, diffche
 fonts/                font specs, fontmatch reports, out/ = Glow Display OTF + WOFF2
 variants/<editor>/    each editor's photo slices (+ _hd enhanced) and v1/v2 renders
 variants/shared/      original design, traced components (manifest.json, SVG, PNG), traced headline outlines
-editors/affinity/     build_glow_v1.js, build_glow_v2.js, .af files
-editors/photocraft/   glow_v1.pcraft, glow_v2.pcraft, v2_traced.svg
+editors/affinity/     build_glow_v1.js, build_glow_v2.js, build_glow_v3.js (pixel-exact), .af files
+editors/photocraft/   glow_v1.pcraft, glow_v2.pcraft, glow_v3.pcraft (pixel-exact), traced SVGs
 build.mjs             builds dist/<editor>: site + /design + /framework
 wrangler.*.jsonc      Cloudflare Workers configs
 docs/images/          README images

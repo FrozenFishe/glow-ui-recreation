@@ -21,9 +21,18 @@
   --gl-surface: #ffffff;
   --gl-canvas-top: #eeeeee;
   --gl-canvas: #f6f6f6;
-  --gl-strip: #fafafa;
-  --gl-tile: #f4f2f0;
+  --gl-strip: #fbfbfb;
+  --gl-tile: #efedeb;
   --gl-on-dark: #ffffff;
+  /* measured surface colours (median of clean patches in the original) */
+  --gl-btn-primary: #000001;   /* Sign Up */
+  --gl-btn-search: #111214;    /* Search */
+  --gl-btn-app: #060606;       /* Book */
+  --gl-field: #fefefe;         /* search bar, app field, badge */
+  --gl-surface-soft: #f7f7f7;  /* location pill, phone screen */
+  --gl-screen: #f7f7f7;
+  --gl-ring-fill: #fbfbfb;
+  --gl-card: #fcfcfb;
 
   --gl-font-display: "Glow Display", "Libre Caslon Display", "Bodoni 72", Georgia, serif;
   --gl-font-display-italic: "Glow Display", "Libre Caslon Text", Georgia, serif;

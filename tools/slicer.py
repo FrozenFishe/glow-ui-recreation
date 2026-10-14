@@ -137,7 +137,10 @@ def component(name, rgb, x0, y0, threshold=INK_THRESHOLD):
         return None
     bx0, by0, bx1, by1 = tb
     rgb, ink = rgb[by0:by1, bx0:bx1], ink[by0:by1, bx0:bx1]
-    strong = ink > 0.6
+    # colour of the solid core of the strokes: the most-inked 20% of ink pixels
+    # (averaging all ink pixels lets anti-aliased edges pull the colour toward the background)
+    inked = ink > 0.2
+    strong = ink >= np.percentile(ink[inked], 80) if inked.any() else ink > 0.6
     colour = rgb[strong].mean(axis=0) if strong.any() else rgb.reshape(-1, 3).mean(axis=0)
     hexcol = "#%02X%02X%02X" % tuple(int(round(c)) for c in colour)
     w, h = bx1 - bx0, by1 - by0
