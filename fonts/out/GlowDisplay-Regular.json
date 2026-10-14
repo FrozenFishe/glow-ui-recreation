@@ -4,6 +4,29 @@
  "otf": "GlowDisplay-Regular.otf",
  "woff2": "GlowDisplay-Regular.woff2",
  "font_size_px": 73.38,
- "characters": "Sabcdefghiknortuy",
- "note": "Set the font size to font_size_px (image pixels) to reproduce the design; add a fallback font for characters not listed."
+ "characters": "+01Sabcdefghiknortuy",
+ "kerning_pairs": 13,
+ "line_sizes_px": {
+  "Searching and booking": 73.38,
+  "for beauty": 73.38,
+  "1000+": 25.0
+ },
+ "note": "Set the font size to font_size_px (image pixels) to reproduce the design; add a fallback font for characters not listed.",
+ "proof": {
+  "Searching and booking": {
+   "iou": 0.757,
+   "size_px": 73.4,
+   "warning": null
+  },
+  "for beauty": {
+   "iou": 0.845,
+   "size_px": 73.4,
+   "warning": null
+  },
+  "1000+": {
+   "iou": 0.909,
+   "size_px": 25.0,
+   "warning": "sample under 30px: check the proof"
+  }
+ }
 }

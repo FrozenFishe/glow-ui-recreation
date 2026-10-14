@@ -20,7 +20,7 @@ The `/design` pages have drag-to-compare sliders (original vs. v2, and v1 vs. v2
 1. [Results](#results)
 2. [What made the recreations accurate](#what-made-the-recreations-accurate): the fixes
 3. [The pipeline](#the-pipeline)
-4. [Tools](#tools): slicer, font finder, custom font builder, photo enhancer
+4. [Tools](#tools): slicer, font finder, custom font builder, photo enhancer, diff checker
 5. [Affinity guide](#affinity-guide)
 6. [PhotoCraft guide](#photocraft-guide)
 7. [Glow UI framework](#glow-ui-framework)
@@ -43,6 +43,20 @@ The `/design` pages have drag-to-compare sliders (original vs. v2, and v1 vs. v2
 Detail crops, in three rows each: original, Affinity v2, PhotoCraft v2.
 
 ![Original vs Affinity v2 vs PhotoCraft v2](docs/images/v2-comparison.jpg)
+
+### Measured accuracy
+
+[`tools/diffcheck.py`](tools/diffcheck.py) compares each recreation with the original over 24 named regions (nav, headline lines, intro lines, search bar, phone parts, badge, logos). The figure is the share of pixels that differ by more than 12% after a 0.7px blur, so anti-aliasing noise doesn't count. Lower is better; about 2–2.5% is anti-aliasing plus the small differences between Figtree and the original body font.
+
+| Recreation | Before measured corrections | After |
+|---|---|---|
+| Website (desktop, 1536×1024) | 5.14% | **2.51%** |
+| Affinity v2 | 3.80% | **2.28%** |
+| PhotoCraft v2 | 2.22% | **1.76%** |
+
+The biggest single fix was the headline's second line on the website: **31% → 2.4%**. It came from adding pair kerning to the custom font plus a measured 5.5px baseline correction.
+
+![Diff heatmap of the website: red marks remaining differences](docs/images/diff-heatmap-site.jpg)
 
 What changed from v1 to v2, using the phone's service icons as the example (rows: original, v1 hand-drawn, v2 traced):
 
@@ -71,7 +85,12 @@ These are the problems we hit in v1 and the fix for each. The fixes apply equall
 | **Photo slices were soft** at 1× and blurry on retina screens. | **Real-ESRGAN ×4**, blended 65/35 with a Lanczos upscale (so skin keeps texture), a light unsharp mask, and a **tone lock** that restores the original low-frequency colour so the slice still blends into flat backgrounds. Exported as @1x and -2x. | [`tools/enhance.py`](tools/enhance.py) |
 | **A visible seam** where the photo met the page background. | The page background is a measured **vertical gradient** (#EEEEEE → #F6F6F6), not a flat grey. Sample it with 1-pixel rows across the seam. | measured, in `tokens.json` |
 | **Colours and sizes drifted** between the editors and the web build. | **One set of design tokens** (`framework/tokens.json`), read by the website CSS and both editor builds. | [`framework/`](framework/) |
-| Text sat about 0.2 em too high in Affinity. | Calibrate **first-baseline offsets** per font (frame top = baseline − 0.73 × size for Helvetica Neue, 0.735 for Figtree, 0.75 for Bodoni 72 and Glow Display). | `build_glow_v2.js` |
+| **Positions and letter-spacing were set by eye** and drifted by 1–8px. | **Measure, don't guess.** `diffcheck.py` finds, per region, the sub-pixel shift that best lines the recreation up with the original. If the shift removes most of the difference, that shift *is* the correction. For evenly spaced text (where the shift search is ambiguous) compare **ink edges** (left, right, top, bottom) and turn width differences into letter-spacing. | [`tools/diffcheck.py`](tools/diffcheck.py) |
+| **The custom font's spacing drifted along a line** (line 2 off by 7–8px at its end). | **Pair kerning.** For every neighbouring pair in the samples, the font stores the gap the advance widths miss, so sample lines are reproduced exactly (30 pairs regular, 8 italic). | `glyphfont.py` |
+| **Glow Display only had the headline's letters.** | **Multi-size samples.** Extra lines (the badge's "1000+") are normalised to the headline's scale by x-height or cap height, or by an explicit `font_size_px`. Lines marked `"reference": true` set the scale. | `glyphfont.py` |
+| **Small samples produced garbage glyphs** ("Welcome to Glow" at 20px came out unreadable, though its score looked fine). | **A proof sheet for every build**: each sample line rendered with the new font under the original, a per-line score, and a warning under 30px. Small text stays on the lookalike font. | `glyphfont.py` |
+| Sub-pixel CSS nudges did nothing. | At 1× Chrome snaps text to whole pixels; nudge by whole pixels. | `src/styles.css` |
+| Text sat about 0.2 em too high in Affinity. | Calibrate **first-baseline offsets** per font, measured with `diffcheck.py` (frame top = baseline − 0.73 × size for Helvetica Neue, 0.735 for Figtree, 0.75 for Bodoni 72, 0.702 for Glow Display). | `build_glow_v2.js` |
 | Affinity showed every Figtree weight as 300. | Affinity misreads Figtree's variable-weight file. Generate **fixed-weight instances** with `fonttools varLib.instancer` (400/500/600/700) and install those. | see [Fonts](#fonts-in-the-editors) |
 
 ### Results of the tools on this design
@@ -102,6 +121,8 @@ flowchart LR
   B & D & E & F --> G[Affinity build script]
   B & D & E & F --> H[PhotoCraft build]
   B & D & E & F --> I[Website + Glow UI framework]
+  G & H & I --> K[diffcheck.py<br>per-region score + exact shift]
+  K -- corrections --> G & H & I
   I --> J[Cloudflare Workers]
 ```
 
@@ -109,7 +130,7 @@ flowchart LR
 2. **Slice:** photos become raster slices (`sips` or `enhance.py`); icons and logos become traced vectors (`slicer.py`).
 3. **Fonts:** run `fontmatch.py` per text style. If the best score is under 0.80, build the font with `glyphfont.py`.
 4. **Build:** Affinity uses a pasted JavaScript build script; PhotoCraft uses batched commands plus an SVG import. Both read the same manifest and tokens.
-5. **Verify:** export, then compare zoomed crops against the original (stack crops vertically and view them). Fix, re-run, repeat.
+5. **Verify:** run `diffcheck.py` on the export. Apply the shifts it reports, and fix letter-spacing from ink-edge widths. Re-run until every region's leftover shift is ≤ 0.5px, then check zoomed crops by eye (scores can miss garbled glyphs).
 6. **Ship:** the website uses the same components, tokens and fonts. `npm run deploy:*` publishes it.
 
 ---
@@ -204,9 +225,18 @@ tools/.venv/bin/python tools/glyphfont.py design.jpg fonts/glow_display.json fon
 5. Set side bearings from the measured gaps, and the space width from word gaps.
 6. Write a CFF OpenType font with `fontTools.fontBuilder`, plus WOFF2 and a JSON report.
 
+**Upgrades from the "fix it further" pass:**
+- **Kerning:** every neighbouring pair in the samples gets a GPOS kerning value (measured gap minus what the advance widths give), including pairs around spaces.
+- **Several sizes:** add sample lines at other sizes. Each is normalised to the reference scale by x-height, or by cap/digit height if it has no x-height letters, or by `font_size_px`. Mark the main lines with `"reference": true`. When a letter appears more than once, the first sample wins, so put the largest samples first. The report lists the font size that reproduces every sample line (`line_sizes_px`).
+- **Proof sheet** (`<Family>-<Style>-proof.png`): every sample line rendered with the new font under the original, laid out with the font's own kerning, plus a per-line score and a warning for samples under 30px.
+
+![glyphfont proof sheet: original (shaded) above the rebuilt font, line by line](docs/images/glyphfont-proof.jpg)
+
+> **Lesson:** below about 30px, letters in a sample touch and segmentation fails. "Welcome to Glow" at 20px produced garbled glyphs even though its overall score looked fine. Keep small text on the lookalike font and always look at the proof sheet.
+
 **Using the result:**
 - The report includes `font_size_px`, the size that reproduces the design (73.4px here).
-- The font only contains the letters in the samples. List a lookalike after it in your font stack (`"Glow Display", "Libre Caslon Display", serif`).
+- The font only contains the letters in the samples (here: `+01GSabcdefghiknortuy` plus the italic `adeimrs`). List a lookalike after it in your font stack (`"Glow Display", "Libre Caslon Display", serif`).
 - Text whose letters aren't covered should use the lookalike directly. Mixing fonts inside one word looks wrong; that's why the wordmark is a traced logo rather than text.
 - More samples at the same size give more letters. Lines at different sizes need separate runs.
 
@@ -225,6 +255,29 @@ tools/.venv/bin/python tools/enhance.py variants/affinity/assets/hero.jpg varian
 5. Tone lock: `result + blur(original) − blur(result)` with a 6px Gaussian. This keeps the new detail but the original's colour and brightness, so slices don't show seams.
 
 Use `--blend` to tune it. Lower means more natural texture; higher means sharper.
+
+### `diffcheck.py`: measure the remaining mismatch, region by region
+
+```bash
+tools/.venv/bin/python tools/diffcheck.py original.jpg recreation.png --regions tools/glow_regions.json --out diff.png --json diff.json
+```
+
+```
+overall similarity 0.9846  changed 2.51%
+  headline_2_italic   29.59%  similarity 0.86  -> move by [-4.0, -0.5] to reach 4.44%
+  intro_2             17.45%  similarity 0.94  -> move by [2.5, -0.5] to reach 12.62%
+```
+
+**What it reports:**
+- For each named region (or a 6×4 grid): **similarity** (1 − mean colour difference after a 0.7px blur) and **changed %** (pixels off by more than 12%).
+- The **sub-pixel shift** that best lines that region up with the original (whole-pixel search, then 0.5px refinement). If the shift removes most of the difference, the content is right and only its position is wrong, so apply exactly that shift.
+- A red heatmap of every difference.
+
+**For text lines, also compare ink edges.** Take the left, right, top and bottom ink edges in the original and the recreation:
+- Width difference ÷ (characters − 1) = the letter-spacing correction per gap.
+- Top difference = the baseline correction.
+
+Edges are more reliable than the shift search for evenly spaced capitals, where many shifts look almost equally good.
 
 ---
 
@@ -313,6 +366,14 @@ Use a dedicated folder: the roots are the only fence on what an agent can read a
   - `doc_open` on a file that's already open gives a new index; always use the index it returns.
   - Closing documents renumbers higher indices, so close from the highest down.
   - The PNG export warns "layers flattened"; that's expected.
+- **Text corrections** (from the measured-fix pass):
+  - `type.setStyle` with `"range":[start,end]` sets tracking per line inside one multi-line Type layer; `type.info` `lines[].start/end` gives the ranges.
+  - Tracking is in 1/1000 em: to change a line's width by W px over n characters at size s, use Δtracking ≈ W × 1000 / ((n − 1) × s). This was accurate to about 1px.
+  - `type.edit {"move":[dx,dy]}` accepts fractional pixels. Centre-aligned text stays centred when its tracking changes.
+  - A positive `baselineShift` on a range moves those glyphs up. `firstLineIndent` of 0.5pt does nothing visible on point text, so it can't be used for sub-pixel nudges.
+  - `type.setStyle` and `type.edit` return the full `type.info` payload every time, so batch them and skip a separate `type.info` afterwards.
+  - `layer.hideLayers {"layer":id}` hides a layer by id without selecting it.
+  - Check `session_list` before `doc_open`: opening a .pcraft that's already open creates a second copy, named from inside the file.
 - **Checking the result:** stack original and render crops vertically (ImageMagick `-append`, or Pillow) and view them. This is cheaper and sharper than `render_preview`.
 
 ---
@@ -422,7 +483,9 @@ Token figures come from the context counter, not a billing meter. The runs weren
 - [ ] Name every layer after its source component.
 
 **Verify**
-- [ ] Export, then stack zoomed crops (original over recreation) for the nav, headline, controls, icons, cards and footer.
+- [ ] Run `diffcheck.py` with named regions. Fix regions where a shift removes most of the difference; turn ink-edge width differences into letter-spacing.
+- [ ] Iterate until leftover shifts are ≤ 0.5px. About 2–2.5% changed is the floor set by anti-aliasing and font-rendering differences.
+- [ ] Export, then stack zoomed crops (original over recreation) for the nav, headline, controls, icons, cards and footer. Scores can miss garbled glyphs.
 - [ ] Overlay text in a contrasting colour to check baselines and widths.
 - [ ] Check the seams where slices meet backgrounds.
 - [ ] Iterate until differences are ≤ 1px. Compare v1 and v2 with the sliders on `/design`.
@@ -431,11 +494,11 @@ Token figures come from the context counter, not a billing meter. The runs weren
 
 ## Known limits and ideas
 
-- **Glow Display only has the headline's letters.** Feeding `glyphfont.py` more samples would extend it: the wordmark, "Welcome to Glow" and "1000+" are at different sizes, so this needs per-line size normalisation (a planned feature).
+- **Glow Display covers the headline plus `0 1 +`.** The wordmark's letters are drawn differently (18% mismatch even when aligned), so it stays a traced logo. Samples under about 30px ("Welcome to Glow") segment unreliably, so that text uses the lookalike font in the editors and on the site; in PhotoCraft it's a traced outline.
 - **Text under about 3px tall** (the benefit "SAN FRANCISCO" tagline) can only trace as a dotted line. Re-type it in a matching font if it matters.
 - **Small-text font matching** can't separate close candidates at 1×. Super-resolution before matching might help.
 - **PhotoCraft's headline** is outlines in v2 because the server started before the font was installed. Restart the server and swap in live text.
-- **Affinity "Medium" weight:** after replacing the variable Figtree, restart Affinity so it drops the cached weights.
+- **Affinity fonts:** Affinity caches fonts until restarted. After replacing the variable Figtree with fixed weights (and updating Glow Display), a restart gave the correct Regular, Medium, SemiBold and Bold.
 - **Ideas:** auto-detect components (no manual boxes), centreline tracing for stroke icons (to get editable strokes instead of filled outlines), and a token exporter for Figma / Tailwind.
 
 ---
@@ -445,7 +508,7 @@ Token figures come from the context counter, not a billing meter. The runs weren
 ```
 src/                  website (index.html, styles.css)
 framework/            Glow UI: tokens.json, glow.css (+ generated icons.svg, fonts/, logos/)
-tools/                slicer.py, fontmatch.py, glyphfont.py, enhance.py, setup.sh, specs
+tools/                slicer.py, fontmatch.py, glyphfont.py, enhance.py, diffcheck.py, setup.sh, specs + regions
 fonts/                font specs, fontmatch reports, out/ = Glow Display OTF + WOFF2
 variants/<editor>/    each editor's photo slices (+ _hd enhanced) and v1/v2 renders
 variants/shared/      original design, traced components (manifest.json, SVG, PNG), traced headline outlines

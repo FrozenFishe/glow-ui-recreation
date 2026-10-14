@@ -77,7 +77,8 @@ const FONTS={};
 function font(f,t){ const k=f+t; if(!FONTS[k]){ const F=fam(f); FONTS[k]=F.fonts.find(x=>x.traitsName===t)||F.fonts[0]; } return FONTS[k]; }
 const TRAIT={Regular:'Regular',Medium:HAS_FIG?'Medium':'Medium',Bold:'Bold'};
 // first-baseline offset (fraction of size) for frame text, calibrated per font
-const ASC={'Helvetica Neue':0.73,'Bodoni 72':0.75,'Figtree':0.735,'Glow Display':0.75};
+// calibrated with tools/diffcheck.py (shift detection): frame top = baseline - ASC*size
+const ASC={'Helvetica Neue':0.73,'Bodoni 72':0.75,'Figtree':0.735,'Glow Display':0.702};
 function text(runs,x,y,size,opt={}){
   const f=opt.fam||SANS, w=opt.w||800, align=opt.align||'L';
   if(typeof runs==='string') runs=[{t:runs}];
@@ -112,31 +113,31 @@ traced('logo_sparkle');
 for(const [t,x] of [['For Clients',262],['For Providers',381],['How It Works',518],['About Us',655]]) text(t,x,69,16,{color:'#151515'});
 rrect(1132,39,192,48,24,col('surface'),'#E6E6E6',1,'Location pill');
 traced('nav_pin',{fill:col('ink')});
-text('Sydney, Australia',1175,68.5,15,{color:'#151515'});
+text('Sydney, Australia',1175,68.5,15,{color:'#151515',track:-0.016});
 traced('nav_chevron',{fill:'#222222'});
 rrect(1338,38,161,50,25,col('ink-strong'),null,1,'Sign up button');
-text('Sign Up / Log In',1418.5,69,16,{color:col('on-dark'),align:'C',w:160,trait:'Medium'});
+text('Sign Up / Log In',1418.5,69,16,{color:col('on-dark'),align:'C',w:160,trait:'Medium',track:-0.021});
 
 group('Hero copy');
-text("SYDNEY'S BEAUTY MARKETPLACE",58,202,13,{color:col('eyebrow'),track:0.3,w:500,name:'Eyebrow'});
+text("SYDNEY'S BEAUTY MARKETPLACE",58,203,13,{color:col('eyebrow'),track:0.312,w:500,name:'Eyebrow'});
 if(HAS_GLOW){
   text('Searching and booking',58.5,309,73.4,{fam:DISPLAY,w:900,name:'Headline line 1 (Glow Display)'});
   text('for beauty',56.5,384,73.4,{fam:DISPLAY,w:400,name:'Headline line 2 (Glow Display)'});
-  text('made easier',350.5,384,73.4,{fam:DISPLAY,trait:'Italic',w:400,name:'Headline italic (Glow Display Italic)'});
+  text('made easier',349.5,384,73.4,{fam:DISPLAY,trait:'Italic',w:400,name:'Headline italic (Glow Display Italic)'});
 }else{
   const T={}; for(const c of readJSON('text_paths.json')) T[c.name]=c;
   for(const n of ['text_headline_1','text_headline_2_roman','text_headline_2_italic']){ COMP[n]=T[n]; traced(n,{fill:col('ink'),label:n+' (traced, install Glow Display for live text)'}); }
 }
 traced('h1_sparkle',{fill:col('ink')});
-['Glow connects you with trusted beauty retailers and','service providers across Sydney. Discover, compare','and book with ease.'].forEach((t,i)=>text(t,58,443+i*30,18.5,{color:col('text-muted'),w:620,name:'Intro line '+(i+1)}));
+['Glow connects you with trusted beauty retailers and','service providers across Sydney. Discover, compare','and book with ease.'].forEach((t,i)=>text(t,58,443+i*30,18.5,{color:col('text-muted'),w:620,track:0.007,name:'Intro line '+(i+1)}));
 
 group('Search bar');
 rrect(58,545,636,72,26,col('surface'),'#E9E9E9',1,'Search bar');
 traced('search_icon',{fill:'#222222'});
-text('Search services or treatments',113,586.5,15.5,{color:col('text-faint'),w:240});
+text('Search services or treatments',113,586.5,15.5,{color:col('text-faint'),w:240,track:-0.009});
 line(347,557,347,605,'#E6E6E6','Divider');
 traced('search_pin',{fill:'#222222'});
-text('Sydney, Australia',393,586.5,15,{color:col('text'),w:160});
+text('Sydney, Australia',393,586.5,15,{color:col('text'),w:160,track:-0.016});
 traced('search_chevron',{fill:'#222222'});
 rrect(569,557,113,48,18,col('ink-strong'),null,1,'Search button');
 text('Search',625.5,586.5,16,{color:col('on-dark'),align:'C',w:110});
@@ -158,7 +159,7 @@ rrect(1083,188,299,674,42,col('surface'),null,1,'Screen');
 rrect(1192,196,82,24,12,'#000000',null,1,'Dynamic island');
 text('9:41',1116,211,13,{trait:HAS_FIG?'SemiBold':'Medium',w:60});
 ['status_bars','status_wifi','status_battery'].forEach(n=>traced(n,{fill:'#111111'}));
-text('Welcome to Glow',1098,268,21,{fam:SERIF,w:260});
+text('Welcome to Glow',1098,270,21.6,{fam:SERIF,w:260});
 text('Your beauty, your way.',1098,288,10.5,{color:col('text-muted'),w:200});
 rrect(1098,308,230,37,10,col('surface'),'#ECECEC',1,'App search');
 traced('app_search');
@@ -202,12 +203,12 @@ for(let i=0;i<word.length;i++){
   const xf=new TransformBuilder().rotate(th).translateXY(1430+R*Math.sin(th),802-R*Math.cos(th)).transform;
   text(word[i],0,0,10.5,{align:'C',w:20,color:'#222222',xf,name:'Badge letter '+word[i]});
 }
-text('1000+',1430,808,29,{fam:SERIF,align:'C',w:140});
+if(HAS_GLOW) text('1000+',1430,807,25,{fam:DISPLAY,align:'C',w:140,name:'1000+ (Glow Display)'}); else text('1000+',1430,808,29,{fam:SERIF,align:'C',w:140});
 text('HAPPY CLIENTS',1430,827,10.5,{align:'C',w:140,track:0.1,color:'#222222'});
 traced('badge_sparkle');
 
 group('Brands');
-text("TRUSTED BY SYDNEY'S LEADING BEAUTY BRANDS",768,935,12.5,{align:'C',w:800,track:0.32,color:'#333333',name:'Brands eyebrow'});
+text("TRUSTED BY SYDNEY'S LEADING BEAUTY BRANDS",768,935,12.5,{align:'C',w:800,track:0.292,color:'#333333',name:'Brands eyebrow'});
 for(const n of ['logo_mecca','logo_adorebeauty','logo_benefit','logo_endota','logo_sephora','logo_elleebana','logo_kevinmurphy']){
   group('Logo: '+n.slice(5)); traced(n);
 }

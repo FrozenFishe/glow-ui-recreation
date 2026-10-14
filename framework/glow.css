@@ -50,7 +50,7 @@
 .gl-display-xl { font: 400 clamp(38px, 10.4vw, 73.4px)/1.01 var(--gl-font-display); color: var(--gl-ink); }
 .gl-display-xl em { font-family: var(--gl-font-display-italic); font-style: italic; }
 .gl-display-l { font: 400 64px/1 var(--gl-font-display); }
-.gl-display-m { font: 400 29px/1.1 var(--gl-font-display); }
+.gl-display-m { font: 400 25px/1.1 var(--gl-font-display); }
 .gl-display-s { font: 400 21px/1.15 var(--gl-font-display); }
 .gl-body-l { font: 400 18.5px/30px var(--gl-font-sans); color: var(--gl-text-muted); }
 .gl-title { font: 500 17px/22px var(--gl-font-sans); color: var(--gl-ink); }
@@ -119,7 +119,7 @@
 /* ---------- seal badge ---------- */
 .gl-badge { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 140px; height: 140px;
   border-radius: 50%; border: 1px solid #e4e4e4; background: var(--gl-surface); box-shadow: var(--gl-shadow-badge); }
-.gl-badge strong { font: 400 29px/1 var(--gl-font-display); margin-top: 10px; }
+.gl-badge strong { font: 400 25px/1 var(--gl-font-display); margin-top: 10px; }
 .gl-badge span { font: 400 10.5px var(--gl-font-sans); letter-spacing: .12em; margin-top: 8px; }
 
 /* ---------- device frame ---------- */

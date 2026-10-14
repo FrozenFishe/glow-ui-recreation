@@ -3,14 +3,20 @@
 Every line of text you give it (box + the exact text) is split into glyphs,
 each glyph is traced with potrace into vector outlines, and the outlines are
 assembled into an OpenType (CFF) font with the spacing measured from the
-image. The result reproduces the design's lettering exactly for the
+image: side bearings from the median gaps, plus pair kerning for every
+neighbouring pair in the samples so the sample lines are reproduced exactly. The result reproduces the design's lettering exactly for the
 characters that appear in it; list a fallback font (fontmatch.py's best
 lookalike) after it in your font stack for any other characters.
 
 usage: glyphfont.py <image> <spec.json> <out-dir>
 
 spec: {"family": "Glow Display", "style": "Regular", "italic": false,
-       "lines": [{"box": [x, y, w, h], "text": "Searching and booking"}, ...]}
+       "lines": [{"box": [x, y, w, h], "text": "Searching and booking"},
+                 {"box": [...], "text": "glow"},                        # other sizes: scaled by x-height
+                 {"box": [...], "text": "1000+"},                       # no x-height: scaled by cap height
+                 {"box": [...], "text": "Logo", "font_size_px": 29}]}   # or by an explicit size
+Lines are normalised to the scale of the lines marked "reference": true (default: the first line); when a letter appears in several
+lines the first (put the largest, sharpest samples first) is used for its outline.
 
 Writes <Family>-<Style>.otf, .woff2 and a JSON report with the font size in
 image pixels that reproduces the design (use it as the CSS / editor size).
@@ -34,11 +40,12 @@ FLAT_TOPS = set("acemnorsuvwxz")
 ASCENDERS = set("bdfhklt") | set("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
 
 GLYPH_NAMES = {" ": "space", ".": "period", ",": "comma", "'": "quotesingle", "&": "ampersand",
-               "+": "plus", "-": "hyphen", "/": "slash", ":": "colon", "!": "exclam", "?": "question"}
+               "+": "plus", "-": "hyphen", "/": "slash", ":": "colon", "!": "exclam", "?": "question",
+               **dict(zip("0123456789", ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]))}
 
 
 def glyph_name(ch):
-    return GLYPH_NAMES.get(ch, ch if ch.isalnum() and ch.isascii() else f"uni{ord(ch):04X}")
+    return GLYPH_NAMES.get(ch, ch if ch.isalpha() and ch.isascii() else f"uni{ord(ch):04X}")
 
 
 def label(mask):
@@ -113,9 +120,34 @@ def build(spec, image_path, out_dir):
     image = np.asarray(Image.open(image_path).convert("RGB")).astype(float)
     lines = []
     for ln in spec["lines"]:
-        lines.append({"text": ln["text"], "glyphs": line_glyphs(image, ln["box"], ln["text"])})
-    em_px, xheight = measure(lines)
-    k = UPM / em_px  # font units per UP-scaled pixel
+        lines.append({"text": ln["text"], "glyphs": line_glyphs(image, ln["box"], ln["text"]),
+                      "font_size_px": ln.get("font_size_px"), "reference": ln.get("reference", False)})
+    # lines marked "reference" (default: the first line) define the scale everything is normalised to
+    ref = [ln for ln in lines if ln["reference"]] or lines[:1]
+    em_px, xheight = measure(ref)
+    ref_asc = em_px * 0.72  # measure() defines em from the ascender height
+    for ln in lines:
+        measure([ln]) if ln not in ref else None  # sets ln["baseline"]
+        if ln["font_size_px"]:
+            ln["f"] = em_px / (ln["font_size_px"] * UP)
+        elif ln in ref:
+            ln["f"] = 1.0
+        else:  # auto: match x-heights to the reference, or cap/ascender heights if the line has no x-height letters
+            xh = [ln["baseline"] - g["box"][1] for g in ln["glyphs"] if g["ch"] in FLAT_TOPS]
+            asc = [ln["baseline"] - g["box"][1] for g in ln["glyphs"] if g["ch"] in ASCENDERS]
+            if xh and xheight:
+                ln["f"] = xheight / float(np.median(xh))
+            elif asc:
+                ln["f"] = ref_asc / float(np.median(asc))
+            else:
+                ln["f"] = 1.0
+        # normalise everything on this line to reference pixels
+        f = ln["f"]
+        for g in ln["glyphs"]:
+            g["box"] = tuple(v * f for v in g["box"])
+            g["f"] = f
+        ln["baseline"] *= f
+    k = UPM / em_px  # font units per UP-scaled reference pixel
 
     # side bearings from the measured gaps between neighbouring letters
     glyphs, spaces = {}, []
@@ -132,7 +164,7 @@ def build(spec, image_path, out_dir):
                 spaces.append(next_gap)
             lsb = None if (prev_gap is None or space_before) else prev_gap / 2
             rsb = None if (next_gap is None or space_after) else next_gap / 2
-            rec = glyphs.setdefault(g["ch"], {"g": g, "baseline": ln["baseline"], "lsb": [], "rsb": []})
+            rec = glyphs.setdefault(g["ch"], {"g": g, "baseline": ln["baseline"], "f": g["f"], "lsb": [], "rsb": []})
             if lsb is not None:
                 rec["lsb"].append(lsb)
             if rsb is not None:
@@ -153,19 +185,44 @@ def build(spec, image_path, out_dir):
     space_adv = round(max(space_gap - 2 * default_sb, em_px * 0.12) * k)
     charstrings["space"], metrics["space"] = T2CharStringPen(space_adv, None).getCharString(), (space_adv, 0)
 
+    # final spacing per glyph (UP-scaled px): lsb, rsb and the template's ink width
+    final = {}
+    for ch, rec in glyphs.items():
+        final[ch] = (float(np.median(rec["lsb"])) if rec["lsb"] else default_sb,
+                     float(np.median(rec["rsb"])) if rec["rsb"] else default_sb,
+                     rec["g"]["box"][2] - rec["g"]["box"][0])
+    space_px = space_adv / k
+
+    # pair kerning: for every neighbouring pair in the samples, the difference between where the
+    # next letter actually starts and where advance widths alone would put it (measured from ink
+    # left edges, so the template widths are what count). Word gaps kern against the space glyph.
+    kerns = {}
+    for ln in lines:
+        gs, text = ln["glyphs"], ln["text"]
+        visible = [i for i, c in enumerate(text) if not c.isspace()]
+        for n in range(len(gs) - 1):
+            a, b = gs[n], gs[n + 1]
+            la, ra, wa = final[a["ch"]]
+            lb, _, _ = final[b["ch"]]
+            gap_has_space = any(text[j].isspace() for j in range(visible[n] + 1, visible[n + 1]))
+            predicted = a["box"][0] + wa + ra + (space_px if gap_has_space else 0) + lb
+            pair = (a["ch"], " ") if gap_has_space else (a["ch"], b["ch"])
+            kerns.setdefault(pair, []).append(b["box"][0] - predicted)
+
     ymin_all, ymax_all = 0, 0
     for ch, rec in glyphs.items():
         g = rec["g"]
         lsb = float(np.median(rec["lsb"])) if rec["lsb"] else default_sb
         rsb = float(np.median(rec["rsb"])) if rec["rsb"] else default_sb
         gx0, _, gx1, _ = g["box"]
-        ox, oy = g["origin"]
+        f = rec["f"]
+        ox, oy = g["origin"][0] * f, g["origin"][1] * f
         base = rec["baseline"]
         adv = round((lsb + (gx1 - gx0) + rsb) * k)
         pen = T2CharStringPen(adv, None)
         for sp in trace(g["ink"]):
             for seg in sp:
-                pts = [(round(((ox + seg[i] / UPSCALE) - gx0 + lsb) * k), round((base - (oy + seg[i + 1] / UPSCALE)) * k))
+                pts = [(round(((ox + f * seg[i] / UPSCALE) - gx0 + lsb) * k), round((base - (oy + f * seg[i + 1] / UPSCALE)) * k))
                        for i in range(1, len(seg), 2)]
                 if seg[0] == "M":
                     pen.moveTo(pts[0])
@@ -195,6 +252,14 @@ def build(spec, image_path, out_dir):
     fb.setupPost(italicAngle=-12 if italic else 0)
     fb.updateHead(macStyle=0x02 if italic else 0x00)
 
+    pairs = {(glyph_name(a), glyph_name(b)): round(float(np.median(v)) * k) for (a, b), v in kerns.items()}
+    pairs = {p: v for p, v in pairs.items() if abs(v) >= 2}
+    if pairs:
+        from fontTools.feaLib.builder import addOpenTypeFeaturesFromString
+        fea = "languagesystem DFLT dflt;\nlanguagesystem latn dflt;\nfeature kern {\n" + \
+              "".join(f"  pos {a} {b} {v};\n" for (a, b), v in sorted(pairs.items())) + "} kern;\n"
+        addOpenTypeFeaturesFromString(fb.font, fea)
+
     os.makedirs(out_dir, exist_ok=True)
     otf = os.path.join(out_dir, ps + ".otf")
     fb.save(otf)
@@ -202,10 +267,74 @@ def build(spec, image_path, out_dir):
     fb.save(os.path.join(out_dir, ps + ".woff2"))
     report = {"family": family, "style": style, "otf": os.path.basename(otf), "woff2": ps + ".woff2",
               "font_size_px": round(em_px / UP, 2), "characters": "".join(sorted(glyphs)),
+              "kerning_pairs": len(pairs),
+              "line_sizes_px": {ln["text"]: round(em_px / UP / ln["f"], 2) for ln in lines},
               "note": "Set the font size to font_size_px (image pixels) to reproduce the design; "
                       "add a fallback font for characters not listed."}
+    report["proof"] = proof(image, spec, lines, otf, em_px, os.path.join(out_dir, ps + "-proof.png"))
     json.dump(report, open(os.path.join(out_dir, ps + ".json"), "w"), indent=1)
     print(json.dumps(report, indent=1))
+
+
+def draw_kerned(draw, text, font, otf, size):
+    """Lay text out with the font's advance widths and GPOS pair kerning (Pillow's basic layout ignores kerning)."""
+    from fontTools.ttLib import TTFont
+    tt = TTFont(otf)
+    cmap, hmtx, upm = tt.getBestCmap(), tt["hmtx"], tt["head"].unitsPerEm
+    kern = {}
+    if "GPOS" in tt:
+        for lookup in tt["GPOS"].table.LookupList.Lookup:
+            for st in lookup.SubTable:
+                if getattr(st, "Format", None) == 1 and hasattr(st, "PairSet"):
+                    for first, ps in zip(st.Coverage.glyphs, st.PairSet):
+                        for rec in ps.PairValueRecord:
+                            kern[(first, rec.SecondGlyph)] = getattr(rec.Value1, "XAdvance", 0) or 0
+    x, prev = 0.0, None
+    for ch in text:
+        g = cmap.get(ord(ch))
+        if g is None:
+            continue
+        if prev:
+            x += kern.get((prev, g), 0) * size / upm
+        draw.text((x, 0), ch, font=font, fill=(17, 17, 17))
+        x += hmtx[g][0] * size / upm
+        prev = g
+
+
+def proof(image, spec, lines, otf, em_px, path):
+    """Render every sample line with the new font under the original and score it (per-line IoU).
+    Small samples (< 30px) segment unreliably, so they are flagged; always look at the proof sheet."""
+    from PIL import ImageDraw, ImageFont
+    S = 3
+    rows, scores = [], {}
+    for ln_spec, ln in zip(spec["lines"], lines):
+        x, y, w, h = ln_spec["box"]
+        orig = Image.fromarray(image[y:y + h, x:x + w].astype(np.uint8)).resize((w * S, h * S), Image.LANCZOS)
+        size = em_px / UP / ln["f"] * S
+        font = ImageFont.truetype(otf, max(1, round(size)))
+        img = Image.new("RGB", orig.size, (255, 255, 255))
+        draw_kerned(ImageDraw.Draw(img), ln["text"], font, otf, round(size))
+        # score shape agreement after aligning ink boxes
+        def ink(im):
+            a = np.asarray(im.convert("L")) < 128
+            ys, xs = np.nonzero(a)
+            return a[ys.min():ys.max() + 1, xs.min():xs.max() + 1] if len(xs) else a
+        a, b = ink(orig), ink(img)
+        b = np.array(Image.fromarray(b.astype(np.uint8) * 255).resize((a.shape[1], a.shape[0]))) > 127
+        score = float((a & b).sum() / max((a | b).sum(), 1))
+        px = em_px / UP / ln["f"]
+        scores[ln["text"]] = {"iou": round(score, 3), "size_px": round(px, 1),
+                              "warning": "sample under 30px: check the proof" if px < 30 else None}
+        rows += [orig, img]
+    W = max(r.width for r in rows)
+    sheet = Image.new("RGB", (W, sum(r.height + 8 for r in rows)), (255, 255, 255))
+    yy = 0
+    for r in rows:
+        sheet.paste(r, (0, yy)); yy += r.height + 8
+    sheet.save(path)
+    for t, v in scores.items():
+        print(f"proof: {t!r:28} IoU {v['iou']:.3f} at {v['size_px']}px" + (f"  WARNING: {v['warning']}" if v["warning"] else ""), file=sys.stderr)
+    return scores
 
 
 if __name__ == "__main__":

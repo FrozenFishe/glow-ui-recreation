@@ -1,2 +1,36 @@
-{"family":"Glow Display","style":"Regular","italic":false,
- "lines":[{"box":[52,248,644,82],"text":"Searching and booking"},{"box":[52,326,290,78],"text":"for beauty"}]}
+{
+ "family": "Glow Display",
+ "style": "Regular",
+ "italic": false,
+ "lines": [
+  {
+   "box": [
+    52,
+    248,
+    644,
+    82
+   ],
+   "text": "Searching and booking",
+   "reference": true
+  },
+  {
+   "box": [
+    52,
+    326,
+    290,
+    78
+   ],
+   "text": "for beauty",
+   "reference": true
+  },
+  {
+   "box": [
+    1390,
+    785,
+    80,
+    27
+   ],
+   "text": "1000+"
+  }
+ ]
+}

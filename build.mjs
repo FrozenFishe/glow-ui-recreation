@@ -44,7 +44,9 @@ const STATS = [
   ["v2 upgrade: approach", "One 13 KB script reading the shared manifest (traced icons, logos, fonts, 2x photos)", "Wrote all traced paths to one SVG, opened it, pasted the group in place"],
   ["v2 upgrade: tool calls", "≈10 (2 build runs + checks)", "81"],
   ["v2 upgrade: tokens", "≈25k (script + 2 runs; the shared tools did the heavy lifting)", "≈151k (two 133-layer doc_inspect dumps ≈50k)"],
+  ["Measured-fix pass", "2 script runs after an Affinity restart (fonts), ≈15k tokens", "≈22 tool calls, ≈65k tokens (type.setStyle echoes)"],
   ["v2 headline", "Live text in the custom Glow Display font", "Traced outlines (the server started before the font was installed)"],
+  ["Measured mismatch (tools/diffcheck.py)", "3.80% of pixels → 2.28% after measured corrections", "2.22% (traced headline) → 1.76% after measured corrections"],
 ];
 
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
@@ -133,7 +135,7 @@ function frameworkPage() {
 <p class="lede gl-body-l">Design tokens, components, icons and fonts measured from the original Glow design. The website, the Affinity build and the PhotoCraft build all read the same <code>tokens.json</code>, so colours, type, radii and icons stay identical everywhere.</p>
 
 <h2>Colour</h2><ul class="swatches">${swatches}</ul>
-<h2>Type</h2><p class="note">Display text uses <b>Glow Display</b>, a font traced from the design's own lettering (it only contains the letters in the headline; other display text falls back to Libre Caslon Display). Body text is Figtree, the closest match the font finder found.</p><ul class="types">${types}</ul>
+<h2>Type</h2><p class="note">Display text uses <b>Glow Display</b>, a font traced from the design's own lettering with kerning measured from the design. It covers the headline's letters plus the badge's <code>0 1 +</code>; other display text falls back to Libre Caslon Display. Body text is Figtree, the closest match the font finder found.</p><ul class="types">${types}</ul>
 <h2>Radius</h2><ul class="radii">${radii}</ul>
 
 <h2>Buttons &amp; pills</h2>
