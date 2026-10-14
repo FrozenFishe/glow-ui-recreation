@@ -132,17 +132,19 @@ def main():
         e_after = best[0]
 
         # raster candidate for tiny components: original pixels with alpha = ink, colour solved the same way
+        # every element also gets an original-pixel cutout (used for tiny elements by default,
+        # and for everything in max-fidelity mode); tiny ones use it when it's clearly closer
         mode = "vector"
-        if min(w, h) <= a.raster_max:
-            col_r = best_colour(ink, orig, bg)
-            e_r = err(ink, col_r, orig, bg)
-            if e_r < e_after * 0.7:
-                mode = "raster"
-                rgba = np.dstack([np.broadcast_to(col_r, orig.shape).astype(np.uint8), (ink * 255).astype(np.uint8)])
-                Image.fromarray(rgba).save(os.path.join(a.out, c["name"] + "-raster.png"))
-                rec["raster"] = c["name"] + "-raster.png"
-                rec["raster_box"] = [X0, Y0, rw, rh]
-                e_after = min(e_after, e_r)
+        col_r = best_colour(ink, orig, bg)
+        e_r = err(ink, col_r, orig, bg)
+        rgba = np.dstack([np.broadcast_to(col_r, orig.shape).astype(np.uint8), (ink * 255).astype(np.uint8)])
+        Image.fromarray(rgba).save(os.path.join(a.out, c["name"] + "-raster.png"))
+        rec["raster"] = c["name"] + "-raster.png"
+        rec["raster_box"] = [X0, Y0, rw, rh]
+        rec["raster_err"] = round(e_r, 3)
+        if min(w, h) <= a.raster_max and e_r < e_after * 0.7:
+            mode = "raster"
+            e_after = min(e_after, e_r)
         rec["mode"] = mode
         rec["tune"] = {"err_before": round(e_before, 3), "err_after": round(e_after, 3),
                        **({"threshold": best[1][0], "dx": best[1][1], "dy": best[1][2]} if best[1] else {})}

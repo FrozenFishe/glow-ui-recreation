@@ -1,0 +1,376 @@
+[
+ {
+  "name": "search_bar",
+  "kind": "rect",
+  "box": [
+   58.25,
+   544.25,
+   636.5,
+   73.125
+  ],
+  "r": 25.875,
+  "fill": "#FEFEFE",
+  "stroke": "#EBEBEB",
+  "sw": 1,
+  "tune": {
+   "err_before": 1.025,
+   "err_after": 0.542
+  }
+ },
+ {
+  "name": "location_pill",
+  "kind": "rect",
+  "box": [
+   1131.75,
+   39,
+   193.125,
+   48.625
+  ],
+  "r": 23.5,
+  "fill": "#F8F7F7",
+  "stroke": "#E8E4E1",
+  "sw": 1,
+  "tune": {
+   "err_before": 2.743,
+   "err_after": 1.583
+  }
+ },
+ {
+  "name": "signup",
+  "kind": "rect",
+  "box": [
+   1337.75,
+   38.5,
+   161,
+   49.25
+  ],
+  "r": 23.75,
+  "fill": "#020101",
+  "tune": {
+   "err_before": 4.346,
+   "err_after": 2.539
+  }
+ },
+ {
+  "name": "search_button",
+  "kind": "rect",
+  "box": [
+   569.25,
+   556.75,
+   113.25,
+   48.375
+  ],
+  "r": 19.0,
+  "fill": "#111214",
+  "tune": {
+   "err_before": 4.486,
+   "err_after": 2.37
+  }
+ },
+ {
+  "name": "ring_search",
+  "kind": "circle",
+  "box": [
+   87.25,
+   667.125,
+   66.5,
+   66.5
+  ],
+  "fill": "#FBFBFB",
+  "stroke": "#E9E9E9",
+  "sw": 1,
+  "r": 0,
+  "tune": {
+   "err_before": 1.154,
+   "err_after": 0.933
+  }
+ },
+ {
+  "name": "ring_book",
+  "kind": "circle",
+  "box": [
+   247.5,
+   666.75,
+   67.0,
+   67.0
+  ],
+  "fill": "#FBFBFB",
+  "stroke": "#E8E8E8",
+  "sw": 1,
+  "r": 0,
+  "tune": {
+   "err_before": 1.195,
+   "err_after": 1.013
+  }
+ },
+ {
+  "name": "ring_enjoy",
+  "kind": "circle",
+  "box": [
+   407.625,
+   666.875,
+   66.75,
+   66.75
+  ],
+  "fill": "#FBFBFB",
+  "stroke": "#E9E9E9",
+  "sw": 1,
+  "r": 0,
+  "tune": {
+   "err_before": 1.135,
+   "err_after": 0.964
+  }
+ },
+ {
+  "name": "ring_trusted",
+  "kind": "circle",
+  "box": [
+   566,
+   666.875,
+   66.75,
+   66.75
+  ],
+  "fill": "#FAFAFA",
+  "stroke": "#E9E9E9",
+  "sw": 1,
+  "r": 0,
+  "tune": {
+   "err_before": 1.15,
+   "err_after": 0.906
+  }
+ },
+ {
+  "name": "island",
+  "kind": "rect",
+  "box": [
+   1192.125,
+   196.625,
+   81.375,
+   23.625
+  ],
+  "r": 11.375,
+  "fill": "#020202",
+  "tune": {
+   "err_before": 6.951,
+   "err_after": 3.21
+  }
+ },
+ {
+  "name": "app_search",
+  "kind": "rect",
+  "box": [
+   1099.25,
+   307.875,
+   228.0,
+   37
+  ],
+  "r": 8.375,
+  "fill": "#FEFEFE",
+  "stroke": "#FDFDFD",
+  "sw": 1,
+  "tune": {
+   "err_before": 1.459,
+   "err_after": 0.486
+  }
+ },
+ {
+  "name": "app_filter",
+  "kind": "rect",
+  "box": [
+   1331.625,
+   308,
+   35.125,
+   36.875
+  ],
+  "r": 11.375,
+  "fill": "#FEFEFE",
+  "stroke": "#FDFDFD",
+  "sw": 1,
+  "tune": {
+   "err_before": 1.611,
+   "err_after": 0.774
+  }
+ },
+ {
+  "name": "tile_1",
+  "kind": "rect",
+  "box": [
+   1097.625,
+   401.25,
+   48.875,
+   77.125
+  ],
+  "r": 10.0,
+  "fill": "#EFEDEB",
+  "tune": {
+   "err_before": 1.211,
+   "err_after": 1.092
+  }
+ },
+ {
+  "name": "tile_2",
+  "kind": "rect",
+  "box": [
+   1153.55,
+   401.25,
+   47.75,
+   77.125
+  ],
+  "r": 10.0,
+  "fill": "#EFEDEB",
+  "tune": {
+   "err_before": 0.963,
+   "err_after": 0.894
+  }
+ },
+ {
+  "name": "tile_3",
+  "kind": "rect",
+  "box": [
+   1207.85,
+   401.25,
+   48.5,
+   77.125
+  ],
+  "r": 9.875,
+  "fill": "#F0EDEB",
+  "tune": {
+   "err_before": 1.05,
+   "err_after": 0.991
+  }
+ },
+ {
+  "name": "tile_4",
+  "kind": "rect",
+  "box": [
+   1263.65,
+   401.375,
+   48.125,
+   77.125
+  ],
+  "r": 9.75,
+  "fill": "#EEECE9",
+  "tune": {
+   "err_before": 1.194,
+   "err_after": 0.936
+  }
+ },
+ {
+  "name": "tile_5",
+  "kind": "rect",
+  "box": [
+   1319.325,
+   401.375,
+   47.25,
+   77
+  ],
+  "r": 9.0,
+  "fill": "#EFEDEA",
+  "tune": {
+   "err_before": 1.038,
+   "err_after": 0.981
+  }
+ },
+ {
+  "name": "card_1",
+  "kind": "rect",
+  "box": [
+   1097.25,
+   534.5,
+   270.125,
+   111.875
+  ],
+  "r": 11.125,
+  "fill": "#FDFDFD",
+  "stroke": "#F9F9F9",
+  "sw": 1,
+  "tune": {
+   "err_before": 1.838,
+   "err_after": 0.822
+  }
+ },
+ {
+  "name": "card_2",
+  "kind": "rect",
+  "box": [
+   1097.625,
+   655.75,
+   269.5,
+   112.125
+  ],
+  "r": 10.625,
+  "fill": "#FCFBFB",
+  "stroke": "#FCFCFB",
+  "sw": 1,
+  "tune": {
+   "err_before": 2.506,
+   "err_after": 2.106
+  }
+ },
+ {
+  "name": "book_1",
+  "kind": "rect",
+  "box": [
+   1306.875,
+   612.125,
+   51.875,
+   23.125
+  ],
+  "r": 9.75,
+  "fill": "#080808",
+  "tune": {
+   "err_before": 9.346,
+   "err_after": 4.804
+  }
+ },
+ {
+  "name": "book_2",
+  "kind": "rect",
+  "box": [
+   1306.625,
+   733.125,
+   52.375,
+   23.375
+  ],
+  "r": 10.875,
+  "fill": "#070707",
+  "tune": {
+   "err_before": 10.423,
+   "err_after": 3.564
+  }
+ },
+ {
+  "name": "home_indicator",
+  "kind": "rect",
+  "box": [
+   1181.125,
+   850.875,
+   103.0,
+   3.875
+  ],
+  "r": 2,
+  "fill": "#060606",
+  "tune": {
+   "err_before": 8.389,
+   "err_after": 2.282
+  }
+ },
+ {
+  "name": "badge",
+  "kind": "circle",
+  "box": [
+   1360.125,
+   733.375,
+   139.0,
+   139.0
+  ],
+  "fill": "#FEFEFE",
+  "stroke": "#F5F4F2",
+  "sw": 1,
+  "r": 0,
+  "tune": {
+   "err_before": 7.087,
+   "err_after": 6.791
+  }
+ }
+]

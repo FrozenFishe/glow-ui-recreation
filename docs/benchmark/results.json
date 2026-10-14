@@ -42,12 +42,28 @@
    "psnr": 31.54
   },
   {
-   "label": "**Affinity v4**",
+   "label": "Affinity v4",
    "changed_pct": 0.245,
    "ssim": 0.9797,
    "dE_mean": 0.364,
    "dE_p95": 1.662,
    "psnr": 32.87
+  },
+  {
+   "label": "**Affinity v5**",
+   "changed_pct": 0.163,
+   "ssim": 0.9818,
+   "dE_mean": 0.336,
+   "dE_p95": 1.616,
+   "psnr": 33.8
+  },
+  {
+   "label": "**Affinity v5 max-fidelity**",
+   "changed_pct": 0.079,
+   "ssim": 0.9847,
+   "dE_mean": 0.213,
+   "dE_p95": 1.08,
+   "psnr": 36.59
   },
   {
    "label": "PhotoCraft v1",
@@ -74,12 +90,44 @@
    "psnr": 32.61
   },
   {
-   "label": "**PhotoCraft v4**",
+   "label": "PhotoCraft v4",
    "changed_pct": 0.143,
    "ssim": 0.9815,
    "dE_mean": 0.356,
    "dE_p95": 1.754,
    "psnr": 34.12
+  },
+  {
+   "label": "**PhotoCraft v5**",
+   "changed_pct": 0.064,
+   "ssim": 0.9852,
+   "dE_mean": 0.321,
+   "dE_p95": 1.666,
+   "psnr": 36.2
+  },
+  {
+   "label": "**PhotoCraft v5 max-fidelity**",
+   "changed_pct": 0.032,
+   "ssim": 0.9867,
+   "dE_mean": 0.238,
+   "dE_p95": 1.277,
+   "psnr": 38.45
+  },
+  {
+   "label": "**Photoshop v5**",
+   "changed_pct": 0.104,
+   "ssim": 0.984,
+   "dE_mean": 0.289,
+   "dE_p95": 1.596,
+   "psnr": 35.09
+  },
+  {
+   "label": "**Photoshop v5 max-fidelity**",
+   "changed_pct": 0.076,
+   "ssim": 0.9854,
+   "dE_mean": 0.205,
+   "dE_p95": 1.068,
+   "psnr": 36.7
   },
   {
    "label": "Website v2",
@@ -106,12 +154,28 @@
    "psnr": 32.76
   },
   {
-   "label": "**Website v4**",
+   "label": "Website v4",
    "changed_pct": 0.141,
    "ssim": 0.9792,
    "dE_mean": 0.345,
    "dE_p95": 1.69,
    "psnr": 34.32
+  },
+  {
+   "label": "**Website v5**",
+   "changed_pct": 0.115,
+   "ssim": 0.983,
+   "dE_mean": 0.332,
+   "dE_p95": 1.634,
+   "psnr": 34.98
+  },
+  {
+   "label": "**Website v5 max-fidelity**",
+   "changed_pct": 0.077,
+   "ssim": 0.9849,
+   "dE_mean": 0.238,
+   "dE_p95": 1.226,
+   "psnr": 37.2
   }
  ]
 }

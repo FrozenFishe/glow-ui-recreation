@@ -201,6 +201,9 @@ h1 .l2 em { margin-left: calc(-1.5 * var(--k)); }
   .pixel.picked .search select { color: var(--gl-text); }
 }
 @media (min-width: 1024px) and (max-resolution: 1.49dppx) {
-  .pixel .px-r { display: block; }
+  .pixel .px-r.r-auto { display: block; }
   .pixel .px-t.has-r { display: none; }
+  /* max-fidelity: every traced element as original pixels (remove class "max" from <html> to use tuned vectors) */
+  .pixel.max .px-r { display: block; }
+  .pixel.max .px-t.has-rmax { display: none; }
 }
