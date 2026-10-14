@@ -130,7 +130,7 @@
    "psnr": 38.45
   },
   {
-   "label": "**PhotoCraft v6**",
+   "label": "PhotoCraft v6",
    "changed_pct": 0.034,
    "ssim": 0.9873,
    "dE_mean": 0.265,
@@ -138,12 +138,36 @@
    "psnr": 37.29
   },
   {
-   "label": "**PhotoCraft v6 max-fidelity**",
+   "label": "PhotoCraft v6 max-fidelity",
    "changed_pct": 0.02,
    "ssim": 0.9881,
    "dE_mean": 0.194,
    "dE_p95": 1.066,
    "psnr": 39.16
+  },
+  {
+   "label": "**PhotoCraft v7 exact mode**",
+   "changed_pct": 0.0,
+   "ssim": 1.0,
+   "dE_mean": 0.0,
+   "dE_p95": 0.0,
+   "psnr": Infinity
+  },
+  {
+   "label": "**PhotoCraft v8**",
+   "changed_pct": 0.02,
+   "ssim": 0.9878,
+   "dE_mean": 0.258,
+   "dE_p95": 1.45,
+   "psnr": 37.68
+  },
+  {
+   "label": "**PhotoCraft v8 max-fidelity**",
+   "changed_pct": 0.005,
+   "ssim": 0.9886,
+   "dE_mean": 0.187,
+   "dE_p95": 1.044,
+   "psnr": 39.78
   },
   {
    "label": "Photoshop v5",
@@ -178,7 +202,7 @@
    "psnr": 38.97
   },
   {
-   "label": "**Photoshop v7**",
+   "label": "Photoshop v7",
    "changed_pct": 0.041,
    "ssim": 0.9872,
    "dE_mean": 0.263,
@@ -186,12 +210,36 @@
    "psnr": 36.77
   },
   {
-   "label": "**Photoshop v7 max-fidelity**",
+   "label": "Photoshop v7 max-fidelity",
    "changed_pct": 0.025,
    "ssim": 0.9882,
    "dE_mean": 0.181,
    "dE_p95": 1.031,
    "psnr": 39.09
+  },
+  {
+   "label": "**Photoshop v8 exact mode**",
+   "changed_pct": 0.0,
+   "ssim": 1.0,
+   "dE_mean": 0.0,
+   "dE_p95": 0.0,
+   "psnr": Infinity
+  },
+  {
+   "label": "**Photoshop v9**",
+   "changed_pct": 0.024,
+   "ssim": 0.9877,
+   "dE_mean": 0.255,
+   "dE_p95": 1.45,
+   "psnr": 37.28
+  },
+  {
+   "label": "**Photoshop v9 max-fidelity**",
+   "changed_pct": 0.004,
+   "ssim": 0.9887,
+   "dE_mean": 0.173,
+   "dE_p95": 1.019,
+   "psnr": 39.99
   },
   {
    "label": "Website v2",
@@ -258,7 +306,7 @@
    "psnr": 37.47
   },
   {
-   "label": "**Website v7**",
+   "label": "Website v7",
    "changed_pct": 0.041,
    "ssim": 0.9869,
    "dE_mean": 0.271,
@@ -266,12 +314,28 @@
    "psnr": 36.52
   },
   {
-   "label": "**Website v7 max-fidelity**",
+   "label": "Website v7 max-fidelity",
    "changed_pct": 0.026,
    "ssim": 0.988,
    "dE_mean": 0.187,
    "dE_p95": 1.066,
    "psnr": 38.85
+  },
+  {
+   "label": "**Website v8**",
+   "changed_pct": 0.026,
+   "ssim": 0.9874,
+   "dE_mean": 0.263,
+   "dE_p95": 1.463,
+   "psnr": 36.94
+  },
+  {
+   "label": "**Website v8 max-fidelity**",
+   "changed_pct": 0.006,
+   "ssim": 0.9886,
+   "dE_mean": 0.177,
+   "dE_p95": 1.027,
+   "psnr": 39.79
   }
  ]
 }

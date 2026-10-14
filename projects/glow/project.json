@@ -1,0 +1,545 @@
+{
+ "name": "glow",
+ "title": "Glow beauty marketplace landing page",
+ "design": "variants/shared/original.jpg",
+ "size": [
+  1536,
+  1024
+ ],
+ "specs": {
+  "components": "tools/glow_spec.json",
+  "text": "tools/text_all_spec.json",
+  "regions": "tools/glow_regions.json"
+ },
+ "manifests": {
+  "components": "variants/shared/components_tuned/manifest.json",
+  "text": "variants/shared/text_all_tuned/manifest.json"
+ },
+ "shapes": "tools/glow_shapes.json",
+ "shapes_tuned": "tools/glow_shapes_tuned.json",
+ "parts": "tools/glow_parts.json",
+ "clips": "tools/glow_clips.json",
+ "plate": "framework/backdrop_plate.webp",
+ "backdrop": "framework/backdrop.png",
+ "photos": [
+  {
+   "name": "hero",
+   "file": "hero_exact.png",
+   "box": [
+    712,
+    0,
+    824,
+    894
+   ],
+   "patch_from_plate": [
+    [
+     712,
+     48,
+     14,
+     30
+    ]
+   ],
+   "note": "the slice starts inside 'About Us': that sliver comes from the plate so the traced text isn't drawn twice"
+  },
+  {
+   "name": "thumb_facial",
+   "file": "thumb_facial_exact.png",
+   "box": [
+    1104,
+    543,
+    80,
+    97
+   ]
+  },
+  {
+   "name": "thumb_lash",
+   "file": "thumb_lash_exact.png",
+   "box": [
+    1104,
+    664,
+    80,
+    96
+   ]
+  }
+ ],
+ "strips": [
+  {
+   "name": "strip_edge",
+   "file": "strip_edge.png",
+   "box": [
+    0,
+    892,
+    1536,
+    4
+   ],
+   "note": "the photo's bottom edge and the brand strip's hairline blend over these rows: shipped as original pixels"
+  }
+ ],
+ "photo_under": "hero",
+ "repeat": [
+  {
+   "name": "card_star",
+   "dy": 121
+  },
+  {
+   "name": "card_bookmark",
+   "dy": 121
+  }
+ ],
+ "drawn": [
+  {
+   "name": "location_pill",
+   "kind": "rect",
+   "box": [
+    1132,
+    39,
+    192,
+    48
+   ],
+   "r": 24,
+   "fill": "#F7F7F7",
+   "stroke": "#E6E6E6"
+  },
+  {
+   "name": "signup",
+   "kind": "rect",
+   "box": [
+    1338,
+    38,
+    161,
+    50
+   ],
+   "r": 25,
+   "fill": "#000001"
+  },
+  {
+   "name": "search_bar",
+   "kind": "rect",
+   "box": [
+    58,
+    545,
+    636,
+    72
+   ],
+   "r": 26,
+   "fill": "#FEFEFE",
+   "stroke": "#E9E9E9"
+  },
+  {
+   "name": "search_divider",
+   "kind": "line",
+   "points": [
+    347.5,
+    557,
+    347.5,
+    605
+   ],
+   "stroke": "#E6E6E6"
+  },
+  {
+   "name": "search_button",
+   "kind": "rect",
+   "box": [
+    569,
+    557,
+    113,
+    48
+   ],
+   "r": 18,
+   "fill": "#111214"
+  },
+  {
+   "name": "ring_search",
+   "kind": "circle",
+   "box": [
+    87,
+    667,
+    66,
+    66
+   ],
+   "fill": "#FBFBFB",
+   "stroke": "#E8E8E8"
+  },
+  {
+   "name": "ring_book",
+   "kind": "circle",
+   "box": [
+    248,
+    667,
+    66,
+    66
+   ],
+   "fill": "#FBFBFB",
+   "stroke": "#E8E8E8"
+  },
+  {
+   "name": "ring_enjoy",
+   "kind": "circle",
+   "box": [
+    408,
+    667,
+    66,
+    66
+   ],
+   "fill": "#FBFBFB",
+   "stroke": "#E8E8E8"
+  },
+  {
+   "name": "ring_trusted",
+   "kind": "circle",
+   "box": [
+    566,
+    667,
+    66,
+    66
+   ],
+   "fill": "#FBFBFB",
+   "stroke": "#E8E8E8"
+  },
+  {
+   "name": "feature_divider_1",
+   "kind": "line",
+   "points": [
+    201.5,
+    700,
+    201.5,
+    757
+   ],
+   "stroke": "#DDDDDD"
+  },
+  {
+   "name": "feature_divider_2",
+   "kind": "line",
+   "points": [
+    361.5,
+    700,
+    361.5,
+    757
+   ],
+   "stroke": "#DDDDDD"
+  },
+  {
+   "name": "feature_divider_3",
+   "kind": "line",
+   "points": [
+    520.5,
+    700,
+    520.5,
+    757
+   ],
+   "stroke": "#DDDDDD"
+  },
+  {
+   "name": "screen",
+   "kind": "squircle",
+   "box": [
+    1083,
+    188,
+    299,
+    673
+   ],
+   "r": 42,
+   "rb": 44,
+   "k": 0.5523,
+   "kb": 0.5523,
+   "fill": "#F7F7F7",
+   "over_photo": true,
+   "subtract": [
+    "badge"
+   ],
+   "note": "phone screen: top radius 42, bottom corners follow the photographed bezel (44)"
+  },
+  {
+   "name": "tab_bar_strip",
+   "kind": "squircle",
+   "box": [
+    1083,
+    791,
+    299,
+    70
+   ],
+   "r": 0,
+   "fill": "#FEFEFE",
+   "follow": "screen",
+   "over_photo": true,
+   "subtract": [
+    "badge"
+   ],
+   "note": "shares the screen's sides and bottom corners; only its top (791) is its own"
+  },
+  {
+   "name": "tab_divider",
+   "kind": "line",
+   "points": [
+    1083,
+    790.5,
+    1382,
+    790.5
+   ],
+   "stroke": "#F0F0F0"
+  },
+  {
+   "name": "island",
+   "kind": "rect",
+   "box": [
+    1192,
+    196,
+    82,
+    24
+   ],
+   "r": 12,
+   "fill": "#000000"
+  },
+  {
+   "name": "app_search",
+   "kind": "rect",
+   "box": [
+    1098,
+    308,
+    230,
+    37
+   ],
+   "r": 10,
+   "fill": "#FEFEFE",
+   "stroke": "#ECECEC"
+  },
+  {
+   "name": "app_filter",
+   "kind": "rect",
+   "box": [
+    1331,
+    308,
+    36,
+    37
+   ],
+   "r": 10,
+   "fill": "#FEFEFE",
+   "stroke": "#ECECEC"
+  },
+  {
+   "name": "tile_1",
+   "kind": "rect",
+   "box": [
+    1098.0,
+    401,
+    48,
+    77
+   ],
+   "r": 10,
+   "fill": "#EFEDEB"
+  },
+  {
+   "name": "tile_2",
+   "kind": "rect",
+   "box": [
+    1153.3,
+    401,
+    48,
+    77
+   ],
+   "r": 10,
+   "fill": "#EFEDEB"
+  },
+  {
+   "name": "tile_3",
+   "kind": "rect",
+   "box": [
+    1208.6,
+    401,
+    48,
+    77
+   ],
+   "r": 10,
+   "fill": "#EFEDEB"
+  },
+  {
+   "name": "tile_4",
+   "kind": "rect",
+   "box": [
+    1263.9,
+    401,
+    48,
+    77
+   ],
+   "r": 10,
+   "fill": "#EFEDEB"
+  },
+  {
+   "name": "tile_5",
+   "kind": "rect",
+   "box": [
+    1319.2,
+    401,
+    48,
+    77
+   ],
+   "r": 10,
+   "fill": "#EFEDEB"
+  },
+  {
+   "name": "card_1",
+   "kind": "rect",
+   "box": [
+    1097,
+    535,
+    270,
+    111
+   ],
+   "r": 10,
+   "fill": "#FCFCFB",
+   "stroke": "#EFEFEF"
+  },
+  {
+   "name": "card_2",
+   "kind": "rect",
+   "box": [
+    1097,
+    656,
+    270,
+    111
+   ],
+   "r": 10,
+   "fill": "#FCFCFB",
+   "stroke": "#EFEFEF"
+  },
+  {
+   "name": "book_1",
+   "kind": "rect",
+   "box": [
+    1307,
+    612,
+    52,
+    23
+   ],
+   "r": 11.5,
+   "fill": "#060606"
+  },
+  {
+   "name": "book_2",
+   "kind": "rect",
+   "box": [
+    1307,
+    733,
+    52,
+    23
+   ],
+   "r": 11.5,
+   "fill": "#060606"
+  },
+  {
+   "name": "home_indicator",
+   "kind": "rect",
+   "box": [
+    1181,
+    851,
+    103,
+    4
+   ],
+   "r": 2,
+   "fill": "#111111"
+  },
+  {
+   "name": "badge",
+   "kind": "circle",
+   "box": [
+    1360,
+    732,
+    140,
+    140
+   ],
+   "fill": "#FEFEFE",
+   "stroke": "#E4E4E4",
+   "over_photo": true
+  }
+ ],
+ "rims": [
+  "island",
+  "app_search",
+  "app_filter",
+  "tile_1",
+  "tile_2",
+  "tile_3",
+  "tile_4",
+  "tile_5",
+  "card_1",
+  "card_2",
+  "book_1",
+  "book_2",
+  "home_indicator"
+ ],
+ "sections": [
+  {
+   "name": "Badge",
+   "circle": [
+    1430,
+    802,
+    74
+   ]
+  },
+  {
+   "name": "Phone",
+   "rect": [
+    1068,
+    174,
+    330,
+    703
+   ]
+  },
+  {
+   "name": "Brand strip",
+   "rect": [
+    0,
+    892,
+    1536,
+    132
+   ]
+  },
+  {
+   "name": "Hero photo",
+   "rect": [
+    712,
+    0,
+    824,
+    1024
+   ]
+  },
+  {
+   "name": "Navigation",
+   "rect": [
+    0,
+    0,
+    1536,
+    110
+   ]
+  },
+  {
+   "name": "Search bar",
+   "rect": [
+    0,
+    530,
+    1536,
+    110
+   ]
+  },
+  {
+   "name": "Hero copy",
+   "rect": [
+    0,
+    0,
+    1536,
+    530
+   ]
+  },
+  {
+   "name": "Features",
+   "rest": true
+  }
+ ],
+ "raw": {
+  "components": "variants/shared/components",
+  "text": "variants/shared/text_all"
+ },
+ "calibration": "tools/calibration_{tool}.json",
+ "ink_gain": "tools/ink_gain_{tool}.json",
+ "build": "build/glow"
+}

@@ -10,8 +10,9 @@ hidden, moved or edited, and the rebuilt vector version stays underneath, one vi
   NN_<section>.png    the original's pixels over that section's foreground, opaque, transparent elsewhere.
                       Sections partition the canvas, so stacking them in any order reproduces the original.
 
-usage: exact_layers.py <original> <backdrop_plate> <out-dir>
-Writes the PNGs (all 1536x1024, place at 0,0) and layers.json (bottom to top). Lossless PNG only.
+usage: exact_layers.py <original> <backdrop_plate> <out-dir> [--project projects/<name>/project.json]
+Writes the PNGs (all design-sized, place at 0,0) and layers.json (bottom to top). Lossless PNG only.
+Sections come from the project file ("sections").
 """
 import json
 import os
@@ -20,32 +21,33 @@ import sys
 import numpy as np
 from PIL import Image
 
-W, H = 1536, 1024
-
-
-def sections():
-    """Section ownership, in priority order (the first section that claims a pixel owns it)."""
+def sections(project, W, H):
+    """Section ownership from project.json "sections", in priority order (the first section that claims a pixel
+    owns it). A section is {"name", "rect": [x, y, w, h]} or {"name", "circle": [cx, cy, r]} or {"name", "rest": true}."""
     yy, xx = np.mgrid[0:H, 0:W]
     claimed = np.zeros((H, W), bool)
     out = []
-    for name, region in [
-        ("Badge", (xx + 0.5 - 1430) ** 2 + (yy + 0.5 - 802) ** 2 <= 74 ** 2),
-        ("Phone", (xx >= 1068) & (xx < 1398) & (yy >= 174) & (yy < 877)),
-        ("Brand strip", yy >= 892),
-        ("Hero photo", xx >= 712),
-        ("Navigation", yy < 110),
-        ("Search bar", (yy >= 530) & (yy < 640)),
-        ("Hero copy", yy < 530),
-        ("Features", np.ones((H, W), bool)),
-    ]:
+    for sec in project["sections"]:
+        if "circle" in sec:
+            cx, cy, r = sec["circle"]
+            region = (xx + 0.5 - cx) ** 2 + (yy + 0.5 - cy) ** 2 <= r ** 2
+        elif "rect" in sec:
+            x, y, w, h = sec["rect"]
+            region = (xx >= x) & (xx < x + w) & (yy >= y) & (yy < y + h)
+        else:
+            region = np.ones((H, W), bool)
         own = region & ~claimed
         claimed |= own
-        out.append((name, own))
+        out.append((sec["name"], own))
     return out
 
 
 def main():
     orig_p, plate_p, out = sys.argv[1:4]
+    proj_p = sys.argv[sys.argv.index("--project") + 1] if "--project" in sys.argv else \
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "projects", "glow", "project.json")
+    project = json.load(open(proj_p))
+    W, H = project["size"]
     os.makedirs(out, exist_ok=True)
     O = np.asarray(Image.open(orig_p).convert("RGB"))
     P = np.asarray(Image.open(plate_p).convert("RGB"))
@@ -54,7 +56,7 @@ def main():
     Image.fromarray(P).save(os.path.join(out, "00_background.png"))
     layers = [{"name": "Background (original pixels + smooth fill)", "file": "00_background.png"}]
     comp = P.copy()
-    for i, (name, own) in enumerate(sections(), 1):
+    for i, (name, own) in enumerate(sections(project, W, H), 1):
         m = own & fg
         rgba = np.zeros((H, W, 4), np.uint8)
         rgba[..., :3] = np.where(m[..., None], O, 0)

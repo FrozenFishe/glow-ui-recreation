@@ -30,7 +30,7 @@ const pxItem = (c, dy = 0) => {
 };
 // icons too: on the page they sit in flex layouts (0.5-1px off); the overlay puts them at their exact design boxes
 const shiftY = (c, dy) => ({ ...c, name: c.name + "_2", box: [c.box[0], c.box[1] + dy, c.box[2], c.box[3]] });
-const PX_ICONS = [...icons.filter((c) => c.name !== "logo_glow").map((c) => tuned(c.name) || c),
+const PX_ICONS = [...icons.map((c) => tuned(c.name) || c),
   ...["card_bookmark", "card_star"].map((n) => {
     const t = shiftY(tuned(n), 121); // card 2 reuses card 1's icons
     if (t.raster_box) t.raster_box = [t.raster_box[0], t.raster_box[1] + 121, t.raster_box[2], t.raster_box[3]];
@@ -113,6 +113,9 @@ const VARIANTS = {
   },
 };
 
+// newest render-vN.jpg of an editor (variants/<key>/), for the /design sliders
+const latest = (key) => readdirSync(`variants/${key}`).filter((f) => /^render-v\d+\.jpg$/.test(f))
+  .sort((a, b) => Number(a.match(/\d+/)[0]) - Number(b.match(/\d+/)[0])).pop();
 const STATS = [
   ["Ran", "First, with no prior knowledge", "Second, given coordinates, colours and fonts from the Affinity run"],
   ["Tokens used (context)", "≈174k (≈135k excluding ≈40k session overhead)", "≈146k"],
@@ -129,8 +132,9 @@ const STATS = [
   ["v5 tuned shapes: changed / SSIM", "0.163% / 0.9818", "0.064% / 0.9852"],
   ["v5 max-fidelity: changed / SSIM", "0.079% / 0.9847", "0.032% / 0.9867"],
   ["Photoshop v6 (same kit, best overall)", "0.054% / 0.9866 standard, 0.026% / 0.9880 max", "same"],
-  ["Latest: changed standard / max", "Affinity v6: 0.068% / 0.026% (SSIM 0.9882)", "PhotoCraft v6: 0.034% / 0.020% (best; SSIM 0.9881)"],
-  ["Latest: what moved it", "Background plate, shapes calibrated against Affinity's own render, ink gain, logo parts", "Background plate, ink gain (sub-pixel strokes via shape.edit), logo parts"],
+  ["Latest: changed standard / max", "Affinity v6: 0.068% / 0.026% (SSIM 0.9882)", "PhotoCraft v8: 0.020% / 0.005% (SSIM 0.9886); exact mode (v7): 0 px"],
+  ["Photoshop v9 / website v8 (same kit)", "Photoshop 0.024% / 0.004% (exact mode: 0 px); website 0.026% / 0.006%", "same"],
+  ["Latest: what moved it", "Background plate, shapes calibrated against Affinity's own render, ink gain, logo parts", "Background plate, ink gain (sub-pixel strokes via shape.edit), logo parts, photo edges + badge cut-out + clipped arc (v8)"],
   ["Measured-fix pass", "2 script runs after an Affinity restart (fonts), ≈15k tokens", "≈22 tool calls, ≈65k tokens (type.setStyle echoes)"],
   ["v2 headline", "Live text in the custom Glow Display font", "Traced outlines (the server started before the font was installed)"],
   ["Measured mismatch (tools/diffcheck.py)", "3.80% of pixels → 2.28% after measured corrections", "2.22% (traced headline) → 1.76% after measured corrections"],
@@ -161,12 +165,12 @@ function designPage(key) {
 <h1>Glow, recreated in ${v.name}</h1>
 <p class="lede">A one-to-one rebuild of the Glow landing-page design using ${esc(v.method)}. The photographic parts (hero photo, card thumbnails, brand logos) are slices cut from the original. Everything else is editable text and shapes. The live site at <a href="/">/</a> is responsive HTML and CSS built from these slices.</p>
 
-<h2>Original vs. ${v.name} v6</h2>
+<h2>Original vs. ${v.name} ${latest(key).match(/v\d+/)[0]}</h2>
 <p class="hint">Drag the handle to compare. v6: every text block traced from the original and auto-tuned (live text kept, hidden), original-pixel cutouts for tiny elements, the original's own background pixels, shapes calibrated against the tool's real render, per-renderer ink gain, the photographed phone bezel. See the benchmark in the README.</p>
-${slider("design/original.jpg?v=3", "Original", "design/render-v6.jpg?v=6", v.name + " v6")}
-<h2>${v.name} v1 → v6</h2>
+${slider("design/original.jpg?v=3", "Original", `design/${latest(key)}?v=8`, v.name + " " + latest(key).match(/v\d+/)[0])}
+<h2>${v.name} v1 → ${latest(key).match(/v\d+/)[0]}</h2>
 <p class="hint">v1 had hand-drawn icons, a single logo strip and lookalike fonts. v2 added traced icons and logos, a custom font and upscaled photos.</p>
-${slider("design/render.jpg?v=3", v.name + " v1", "design/render-v6.jpg?v=6", v.name + " v6")}
+${slider("design/render.jpg?v=3", v.name + " v1", `design/${latest(key)}?v=8`, v.name + " " + latest(key).match(/v\d+/)[0])}
 <p class="crumb" style="margin-top:28px"><a href="/framework">Glow UI framework →</a> <a href="https://github.com/FrozenFishe/glow-ui-recreation">Source on GitHub →</a></p>
 
 <h2>Affinity vs. PhotoCraft</h2>
@@ -294,7 +298,7 @@ for (const key of Object.keys(VARIANTS)) {
   writeFileSync(`${out}/framework.html`, frameworkPage());
   cpSync(`variants/${key}/render.jpg`, `${out}/design/render.jpg`);
   cpSync("variants/shared/original.jpg", `${out}/design/original.jpg`);
-  for (const r of ["render-v2.jpg", "render-v3.jpg", "render-v4.jpg", "render-v5.jpg", "render-v6.jpg"]) if (existsSync(`variants/${key}/${r}`)) cpSync(`variants/${key}/${r}`, `${out}/design/${r}`);
+  for (const r of readdirSync(`variants/${key}`).filter((f) => /^render-v\d+\.jpg$/.test(f))) if (existsSync(`variants/${key}/${r}`)) cpSync(`variants/${key}/${r}`, `${out}/design/${r}`);
   writeFileSync(`${out}/design.html`, designPage(key));
   writeFileSync(`${out}/design.css`, DESIGN_CSS);
   writeFileSync(`${out}/404.html`, NOT_FOUND);

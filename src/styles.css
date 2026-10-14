@@ -192,7 +192,7 @@ h1 .l2 em { margin-left: calc(-1.5 * var(--k)); }
   .pixel .search select { color: transparent; }
   .pixel .search input::placeholder { color: transparent; }
   .pixel .badge .arc { fill: transparent; }
-  .pixel .stage .ti:not(.logo-word), .pixel .logos { visibility: hidden; }  /* drawn by the overlay at exact positions */
+  .pixel .stage .ti, .pixel .logos { visibility: hidden; }  /* drawn by the overlay at exact positions */
   /* shapes are drawn by the overlay's shapes SVG: the CSS ones stay (clickable, focusable) but transparent */
   .pixel :is(.search, .loc-pill, .signup, .search button, .ring, .screen, .island, .app-search .box, .app-search .filter,
     .tiles div, .card, .book, .home-ind, .badge, .tabbar) { background: transparent !important; border-color: transparent !important; box-shadow: none !important; }

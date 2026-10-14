@@ -1,21 +1,24 @@
-# Glow UI recreation: pixel-perfect design rebuilds with Affinity, PhotoCraft and Claude
+# Glow UI recreation: pixel-perfect design rebuilds with Photoshop, PhotoCraft, Affinity and Claude
 
-A one-to-one recreation of a landing-page design (the **Glow** beauty marketplace), rebuilt in **PhotoCraft**, **Photoshop** and **Affinity**, all driven by Claude, and as a responsive **website** with a reusable UI framework, deployed on Cloudflare Workers.
+A one-to-one recreation of a landing-page design (the **Glow** beauty marketplace), rebuilt in **PhotoCraft**, **Photoshop** and **Affinity**, all driven by Claude, and as a responsive **website** with a reusable UI framework, deployed on Cloudflare Workers. The tools and the step-by-step method are packaged as a **replicable system**: one project file per design, so the same pipeline recreates any other site or mockup ([Recreate any design](#recreate-any-design-the-project-system)).
 
 ## Latest results
 
 **Perfect (exact mode): 0 pixels different** in Photoshop and PhotoCraft. The original is split into named, editable layers (background plus eight page sections) that rebuild it bit for bit. See [Exact mode](#exact-mode-a-literally-perfect-result).
 
-**Redrawn (vectors, shapes, traced text), % of pixels changed vs. the original:**
+**Built (redrawn: real shapes, traced vectors, live text underneath), % of pixels changed vs. the original:**
 
-| Tool | Exact mode | Redraw, standard | Redraw, max-fidelity |
-|---|---|---|---|
-| **PhotoCraft** | **0.000%** (v7) | **0.034%** (v6) | **0.020%** (v6) |
-| **Photoshop** | **0.000%** (v8) | 0.041% (v7) | 0.025% (v7) |
-| Website | — | 0.041% (v7) | 0.026% (v7) |
-| Affinity | — | 0.068% (v6) | 0.026% (v6) |
+| Tool | Exact mode | Built, standard | Built, max-fidelity | Previous best (standard / max) |
+|---|---|---|---|---|
+| **PhotoCraft** | **0.000%** (v7) | **0.020%** (v8) | 0.005% (v8) | 0.034 / 0.020 |
+| **Photoshop** | **0.000%** (v8) | 0.024% (v9) | **0.004%** (v9) | 0.041 / 0.025 |
+| **Website** | — | 0.026% (v8) | 0.006% (v8) | 0.041 / 0.026 |
+| Affinity | — | 0.068% (v6) | 0.026% (v6) | 0.163 / 0.079 |
 
-A redraw can't reach exactly 0: every renderer anti-aliases edges its own way. Under ~0.05% is invisible side by side. Full history and method in [Results](#results).
+- **Standard:** vectors for everything except tiny details.
+- **Max-fidelity:** every traced element (text, icons, logos) as its original-pixel cutout, over the built shapes, photos and background.
+
+The built versions are now within **0.004–0.026%** of the original. That's 40–160 pixels out of 1.57 million, each off by a few levels at an edge, so they're invisible side by side. How: [Built versions near-perfect](#built-versions-near-perfect-photo-edges).
 
 This repo has everything: the tools that made the recreations accurate, the editor build scripts and files, the website, the design system, and a playbook for getting recreations right.
 
@@ -32,28 +35,29 @@ The `/design` pages have drag-to-compare sliders (original vs. the latest versio
 
 ## Contents
 
-1. [Results](#results)
-2. [What made the recreations accurate](#what-made-the-recreations-accurate): the fixes
-3. [The pipeline](#the-pipeline)
-4. [Tools](#tools): slicer, font finder, custom font builder, photo enhancer, diff checker, tuner, shape tuner, backdrop extractor, kit builder, calibration, ink gain, logo parts, exact layers, benchmark
-5. [Affinity guide](#affinity-guide) · [Photoshop guide](#photoshop-guide)
-6. [PhotoCraft guide](#photocraft-guide)
-7. [Glow UI framework](#glow-ui-framework)
-8. [Website and deployment](#website-and-deployment)
-9. [Affinity vs. PhotoCraft: token usage](#affinity-vs-photocraft-token-usage)
-10. [Checklist for a perfect 1:1 recreation](#checklist-for-a-perfect-11-recreation)
-11. [Known limits and ideas](#known-limits-and-ideas)
-12. [Repo layout](#repo-layout) · [Credits and licences](#credits-and-licences)
+1. [Results](#results): benchmark, ranking, [built versions near-perfect](#built-versions-near-perfect-photo-edges), [exact mode](#exact-mode-a-literally-perfect-result)
+2. [What made the recreations accurate](#what-made-the-recreations-accurate): the fixes, and [lessons from the last 0.1%](#lessons-from-the-last-01)
+3. [Recreate any design: the project system](#recreate-any-design-the-project-system): `project.json` + `tools/recreate.py`
+4. [The pipeline](#the-pipeline)
+5. [Tools](#tools): slicer, font finder, custom font builder, photo enhancer, tuner, shape tuner (squircles, real background), backdrop/plate, kit builder (photo edges), calibration, ink gain, logo parts, clips, rim cleaner, exact layers, orchestrator, benchmark, diff checker
+6. [Affinity guide](#affinity-guide) · [Photoshop guide](#photoshop-guide)
+7. [PhotoCraft guide](#photocraft-guide)
+8. [Glow UI framework](#glow-ui-framework)
+9. [Website and deployment](#website-and-deployment)
+10. [Affinity vs. PhotoCraft: token usage](#affinity-vs-photocraft-token-usage)
+11. [Checklist for a perfect 1:1 recreation](#checklist-for-a-perfect-11-recreation)
+12. [Known limits and ideas](#known-limits-and-ideas)
+13. [Repo layout](#repo-layout) · [Credits and licences](#credits-and-licences)
 
 ---
 
 ## Results
 
-**Latest round** (PhotoCraft v6, Photoshop v7, Affinity v6, website v7): the original's own background pixels, shapes calibrated against each tool's real render, per-renderer ink gain, and split-out logo parts. Every tool beat its previous best. **v5**: v4 plus tuned shapes and a max-fidelity mode, rebuilt in four tools (website, Affinity, PhotoCraft, Photoshop) from one kit. **v4** (tuned pixel-exact): everything in v3, plus auto-tuned vectors, original-pixel cutouts for tiny elements, the extracted background and lossless photos. **v3** (pixel-exact): every text block is traced from the original, with the photographed bezel and the measured colours. **v2** It uses traced icons and logos, a custom font traced from the design, AI-upscaled photos and shared design tokens. **v1** was the first pass, with hand-drawn icons, one flat logo strip and lookalike fonts.
+**Newest** (PhotoCraft v8, Photoshop v9, website v8): photo edges, the badge cut out of the phone, a clipped badge arc, the wordmark at its exact position, and the shape tuner fitting against the real background (see [below](#built-versions-near-perfect-photo-edges)); plus **exact mode** (PhotoCraft v7, Photoshop v8). **Previous round** (PhotoCraft v6, Photoshop v7, Affinity v6, website v7): the original's own background pixels, shapes calibrated against each tool's real render, per-renderer ink gain, and split-out logo parts. Every tool beat its previous best. **v5**: v4 plus tuned shapes and a max-fidelity mode, rebuilt in four tools (website, Affinity, PhotoCraft, Photoshop) from one kit. **v4** (tuned pixel-exact): everything in v3, plus auto-tuned vectors, original-pixel cutouts for tiny elements, the extracted background and lossless photos. **v3** (pixel-exact): every text block is traced from the original, with the photographed bezel and the measured colours. **v2** It uses traced icons and logos, a custom font traced from the design, AI-upscaled photos and shared design tokens. **v1** was the first pass, with hand-drawn icons, one flat logo strip and lookalike fonts.
 
-| PhotoCraft v6 (0.034%, best) | Photoshop v7 (0.041%) | Website v7 (0.041%) | Affinity v6 (0.068%) |
+| PhotoCraft v8 (0.020%, best standard) | Photoshop v9 (0.024%; 0.004% max, best) | Website v8 (0.026%) | Affinity v6 (0.068%) |
 |---|---|---|---|
-| ![PhotoCraft v6](docs/images/photocraft-v6.jpg) | ![Photoshop v7](docs/images/photoshop-v7.jpg) | ![Website v7](docs/images/website-v7.jpg) | ![Affinity v6](docs/images/affinity-v6.jpg) |
+| ![PhotoCraft v8](docs/images/photocraft-v8.jpg) | ![Photoshop v9](docs/images/photoshop-v9.jpg) | ![Website v8](docs/images/website-v8.jpg) | ![Affinity v6](docs/images/affinity-v6.jpg) |
 
 <details><summary>v2 renders</summary>
 
@@ -103,14 +107,20 @@ Generated by [`tools/benchmark.py`](tools/benchmark.py) against the original des
 | PhotoCraft v4 | 0.143 | 0.9815 | 0.356 | 1.754 | 34.12 |
 | PhotoCraft v5 | 0.064 | 0.9852 | 0.321 | 1.666 | 36.20 |
 | PhotoCraft v5 max-fidelity | 0.032 | 0.9867 | 0.238 | 1.277 | 38.45 |
-| **PhotoCraft v6** | 0.034 | 0.9873 | 0.265 | 1.461 | 37.29 |
-| **PhotoCraft v6 max-fidelity** | 0.020 | 0.9881 | 0.194 | 1.066 | 39.16 |
+| PhotoCraft v6 | 0.034 | 0.9873 | 0.265 | 1.461 | 37.29 |
+| PhotoCraft v6 max-fidelity | 0.020 | 0.9881 | 0.194 | 1.066 | 39.16 |
+| **PhotoCraft v7 exact mode** | 0.000 | 1.0000 | 0.000 | 0.000 | inf |
+| **PhotoCraft v8** | 0.020 | 0.9878 | 0.258 | 1.450 | 37.68 |
+| **PhotoCraft v8 max-fidelity** | 0.005 | 0.9886 | 0.187 | 1.044 | 39.78 |
 | Photoshop v5 | 0.104 | 0.9840 | 0.289 | 1.596 | 35.09 |
 | Photoshop v5 max-fidelity | 0.076 | 0.9854 | 0.205 | 1.068 | 36.70 |
 | Photoshop v6 | 0.054 | 0.9866 | 0.271 | 1.478 | 36.52 |
 | Photoshop v6 max-fidelity | 0.026 | 0.9880 | 0.187 | 1.027 | 38.97 |
-| **Photoshop v7** | 0.041 | 0.9872 | 0.263 | 1.471 | 36.77 |
-| **Photoshop v7 max-fidelity** | 0.025 | 0.9882 | 0.181 | 1.031 | 39.09 |
+| Photoshop v7 | 0.041 | 0.9872 | 0.263 | 1.471 | 36.77 |
+| Photoshop v7 max-fidelity | 0.025 | 0.9882 | 0.181 | 1.031 | 39.09 |
+| **Photoshop v8 exact mode** | 0.000 | 1.0000 | 0.000 | 0.000 | inf |
+| **Photoshop v9** | 0.024 | 0.9877 | 0.255 | 1.450 | 37.28 |
+| **Photoshop v9 max-fidelity** | 0.004 | 0.9887 | 0.173 | 1.019 | 39.99 |
 | Website v2 | 5.137 | 0.8728 | 2.772 | 8.817 | 18.25 |
 | Website v2, measured corrections | 2.514 | 0.9320 | 1.539 | 4.741 | 23.78 |
 | Website v3 | 0.217 | 0.9773 | 0.610 | 2.083 | 32.76 |
@@ -119,19 +129,21 @@ Generated by [`tools/benchmark.py`](tools/benchmark.py) against the original des
 | Website v5 max-fidelity | 0.077 | 0.9849 | 0.238 | 1.226 | 37.20 |
 | Website v6 | 0.108 | 0.9835 | 0.327 | 1.621 | 35.14 |
 | Website v6 max-fidelity | 0.070 | 0.9855 | 0.233 | 1.216 | 37.47 |
-| **Website v7** | 0.041 | 0.9869 | 0.271 | 1.527 | 36.52 |
-| **Website v7 max-fidelity** | 0.026 | 0.9880 | 0.187 | 1.066 | 38.85 |
+| Website v7 | 0.041 | 0.9869 | 0.271 | 1.527 | 36.52 |
+| Website v7 max-fidelity | 0.026 | 0.9880 | 0.187 | 1.066 | 38.85 |
+| **Website v8** | 0.026 | 0.9874 | 0.263 | 1.463 | 36.94 |
+| **Website v8 max-fidelity** | 0.006 | 0.9886 | 0.177 | 1.027 | 39.79 |
 
-**Current ranking** (best version of each tool, % of pixels changed; previous best in brackets):
+**Current ranking** (built versions, best of each tool; previous round in brackets):
 
-| Rank | Tool | Standard | Max-fidelity | SSIM (max) | PSNR (max) |
-|---|---|---|---|---|---|
-| 1 | **PhotoCraft v6** | **0.034%** (0.064) | **0.020%** (0.032) | 0.9881 | **39.16 dB** |
-| 2 | Photoshop v7 | 0.041% (0.054) | 0.025% (0.026) | **0.9882** | 39.09 dB |
-| 3 | Website v7 | 0.041% (0.108) | 0.026% (0.070) | 0.9880 | 38.85 dB |
-| 4 | Affinity v6 | 0.068% (0.163) | 0.026% (0.079) | **0.9882** | 39.07 dB |
+| Rank | Tool | Standard | Max-fidelity | SSIM (max) | PSNR (max) | Exact mode |
+|---|---|---|---|---|---|---|
+| 1 | **Photoshop v9** | 0.024% (0.041) | **0.004%** (0.025) | **0.9887** | **39.99 dB** | 0 px (v8) |
+| 2 | **PhotoCraft v8** | **0.020%** (0.034) | 0.005% (0.020) | 0.9886 | 39.78 dB | 0 px (v7) |
+| 3 | Website v8 | 0.026% (0.041) | 0.006% (0.026) | 0.9886 | 39.79 dB | — |
+| 4 | Affinity v6 | 0.068% | 0.026% | 0.9882 | 39.07 dB | — |
 
-The four are now within 0.006% of each other in max-fidelity mode. Affinity's remaining gap in standard mode is how it anti-aliases vector edges: it draws them lighter than the other three, and ink gain only recovers part of that.
+Photoshop and PhotoCraft swap places depending on the mode: PhotoCraft's ink-gain strokes make its standard (vector) mode the best, while Photoshop's anti-aliasing makes its max mode the best. Affinity wasn't part of this round. Its v6 build script would take the same kit changes (`--photo-edges 2`, the clipped arc), but it draws shapes from its own script rather than the kit SVG, so the screen and badge geometry would need porting.
 
 All four rebuild the same kit (`tools/make_kit.py`), so the differences come from how each one renders.
 
@@ -160,18 +172,49 @@ What's left is how a renderer anti-aliases a clean vector edge, compared with ho
 
 **Prediction vs result.** Before v4 I estimated 0.05–0.1% changed. v4 reached **0.14% (website), 0.14% (PhotoCraft) and 0.25% (Affinity)**: a 35–55% reduction from v3 and 3× lower colour error than v2. That's short of the estimate. The vector edges are the limit: tuning thresholds, offsets and colours removed 17–37% of their error, and only cutting them out as pixels removes the rest.
 
+#### Built versions near-perfect: photo edges
+
+The goal for this round was to get the **built** versions (real shapes and vectors, not the original's pixels) as close to exact mode as possible. Each tool's remaining error was mapped to the element it came from (`where` analysis: changed pixels attributed to each element's and shape's box). Almost all of it was in four places:
+
+| Where (website v7, max mode, 411 px) | px | Cause |
+|---|---|---|
+| Phone screen outline | 109 | The screen's edge in the photo is physical: a 1px glass highlight along the top, none on the sides, and Apple's smooth corners. No flat fill + outline reproduces it. |
+| Trusted badge rim (+ the arc text box over it) | 181 | The badge's grey rim is shaded where it overlaps the phone and the photo. |
+| "glow" wordmark | 58 | The page drew the untuned slicer trace in its flex layout instead of the tuned one at its exact box. |
+| Cards, island, Book buttons | 49 | Edge anti-aliasing. |
+
+**What worked, in order** (website max mode, % changed):
+
+| Step | Website max | What it is |
+|---|---|---|
+| v7 | 0.026 | |
+| Wordmark in the exact-position overlay, recalibrated | 0.025 | `build.mjs`: `logo_glow` joins the other icons in the pixel overlay (58 → 1 px there). Measured together with a fresh calibration of the website's shapes. |
+| **Photo edges** (`make_kit.py --photo-edges 2`) | 0.017 | Shapes that sit directly on the photo (the phone screen, the tab bar's bottom, the badge) are inset 2px with no border, so their outermost edge is the photo's own. Their fills and everything inside them stay built and live. It's the same idea as the photographed bezel the rebuilds have used since v3. |
+| **Badge subtracted from the phone** | 0.010 | Where the badge overlaps the phone, the drawn screen covered the photo's badge rim. The badge's disc is now cut out of the screen and tab bar fills, written as plain path geometry (`minus_disc` in `make_kit.py`) because Photoshop's SVG import ignores masks and clip paths. |
+| **Badge arc clipped** (`tools/clip_elements.py`) | **0.006** | The "TRUSTED BY" arc's box reached the badge rim, so its trace had 2 rim fragments and its cutout painted the rim in the text colour. Clipping it to the badge's inner circle fixed both. |
+
+The same kit then took **Photoshop to 0.024 / 0.004** and **PhotoCraft to 0.020 / 0.005**.
+
+**Tried and measured, not kept (they're still available as options):**
+- **Rim cleaning** (`tools/clean_rims.py`): replace the photo's own edge under each drawn shape with the colour outside it, so each tool's edge blends over clean background. It made the small shapes inside the phone perfect (0 px), but made the screen and badge much worse (website 0.026 → 0.12), because their edges are physical. Applied to the small shapes only, it came out even with v7, so photo edges replaced it.
+- **Fitting the screen as a squircle with a glass highlight:** `tune_shapes.py` now supports a `squircle` kind (top and bottom radius plus corner smoothing; iOS-style continuous corners), and `--stroke-widths` fits an inner highlight. The fit was good (edge error 12.9 → 7.5), but the highlight exists on the top edge only, and a uniform border made the sides too bright. Photo edges win here; the squircle kind stays for designs with flat UI screens.
+- **Ink gain in Photoshop** (duplicate vector layer at partial opacity): worse. Photoshop's edges already match.
+
+**Shape tuning against the real background.** `tune_shapes.py` used to guess what lies under each shape from its surroundings. That fails for shapes over a photo, as with the badge, whose border colour came out almost white. `--under image` now scores every candidate composited over the actual layer underneath, plus every enclosing shape (a card under its Book button). `--edge-band N` scores only pixels within N px of the outline, for large shapes whose interior holds other content.
+
 #### Exact mode: a literally perfect result
 
 **0.000%.** A redraw can't reach exactly zero: every renderer anti-aliases edges its own way, so the rebuilds level off around 0.02–0.04%. Exact mode is a different deliverable. [`tools/exact_layers.py`](tools/exact_layers.py) splits the original into a background layer (the plate) and eight section layers: Navigation, Hero copy, Search bar, Features, Hero photo, Phone, Badge and Brand strip. Each section layer is the original's own pixels over that section's foreground, opaque, with no overlaps, so the stack composites back to the original bit for bit. Hiding a section leaves clean background behind it. The redrawn vector version sits underneath in the same file, one visibility toggle away. Its scores are the ones in the tables above, and those measure recreation quality; exact mode scores zero by construction.
 
 | Exact mode | Differing pixels | Max channel diff | Changed % | SSIM | PSNR |
 |---|---|---|---|---|---|
-| Photoshop v8 ([`exact.jsx`](editors/photoshop/exact.jsx), `glow_ps_v8.psd`) | **0** | 0 | 0.000 | 1.0000 | ∞ |
-| PhotoCraft v7 (`glow_v7.pcraft`: the 9 PNGs in a top group, placed at 0,0) | **0** | 0 | 0.000 | 1.0000 | ∞ |
+| Photoshop v8/v9 ([`exact.jsx`](editors/photoshop/exact.jsx), `glow_ps_v8.psd` over the v7 rebuild, `glow_ps_v9.psd` over the v9 rebuild) | **0** | 0 | 0.000 | 1.0000 | ∞ |
+| PhotoCraft v7/v8 (`glow_v7.pcraft`, `glow_v8.pcraft`: the 9 PNGs in a top group, placed at 0,0) | **0** | 0 | 0.000 | 1.0000 | ∞ |
 
 ```bash
 tools/.venv/bin/python tools/exact_layers.py variants/shared/original.jpg framework/backdrop_plate.webp ~/Downloads/glow_v5_kit/exact
-# Photoshop: build_v7.jsx, export_v7.jsx, then exact.jsx (adds the group on top, exports, saves glow_ps_v8.psd)
+# Photoshop: build_v7.jsx, export_v7.jsx, then exact.jsx (adds the group on top, exports, saves glow_ps_v9.psd)
+# or, for any project: tools/recreate.py <name> exact
 ```
 
 **What the latest round added** (each step measured on its own; standard mode):
@@ -284,6 +327,21 @@ These are the problems we hit in v1 and the fix for each. The fixes apply equall
 | Text sat about 0.2 em too high in Affinity. | Calibrate **first-baseline offsets** per font, measured with `diffcheck.py` (frame top = baseline − 0.73 × size for Helvetica Neue, 0.735 for Figtree, 0.75 for Bodoni 72, 0.702 for Glow Display). | `build_glow_v2.js` |
 | Affinity showed every Figtree weight as 300. | Affinity misreads Figtree's variable-weight file. Generate **fixed-weight instances** with `fonttools varLib.instancer` (400/500/600/700) and install those. | see [Fonts](#fonts-in-the-editors) |
 
+### Lessons from the last 0.1%
+
+What the step from about 0.1% to 0.005% taught. Each point is measured; see the benchmark tables above.
+
+1. **Attribute the error before fixing it.** Map every changed pixel to the element or shape whose box it falls in. Every round, two or three items held more than half the error, and they were rarely the ones that looked worst by eye.
+2. **The renderer is part of the recreation.** The same kit scores differently in each tool, so calibrate in a loop with the real renderer (`calibrate.py`), measured on the max-fidelity export, where only shapes differ.
+3. **Anti-aliasing density differs per renderer.** Affinity, PhotoCraft and Chrome draw filled paths lighter than Photoshop; a per-element hairline stroke in the fill colour (`inkgain.py`) corrects it. Check that the tool honours sub-pixel strokes first: Photoshop's SVG import doesn't.
+4. **Don't redraw what's physical.** A photographed screen edge or a shaded badge rim isn't a vector outline. Let the photo provide the edge (`--photo-edges`) and build what's inside it.
+5. **Things that overlap need geometry, not just stacking.** The drawn screen covered the photo's badge rim; subtracting the disc fixed it. Write the result as plain paths, because importers drop masks and clip paths.
+6. **Boxes leak.** An element's box can include a neighbour's edge (the badge arc and the rim). Clip elements to their real region (`clip_elements.py`).
+7. **Tune against what's really underneath** (`tune_shapes.py --under`), not a guess from the surroundings.
+8. **Ship what can't be traced as original pixels, small and named:** strip edges, logo taglines, multi-tone marks (`split_parts.py`), the background plate. Each one is a separate named element, so the result stays editable.
+9. **Keep "built" and "exact" apart.** Exact mode scores 0 by construction. The built version's score is the one that measures recreation quality, so report both, separately.
+10. **Every refactor gets a byte-for-byte check.** Turning the pipeline into the project system was verified by regenerating every kit and exact-mode file and comparing them with `cmp`.
+
 ### Results of the tools on this design
 
 ![Traced components: original pixels (top) vs traced vector (bottom), 4× zoom](docs/images/components-sheet.jpg)
@@ -297,6 +355,67 @@ These are the problems we hit in v1 and the fix for each. The fixes apply equall
 ![Real-ESRGAN enhancement](docs/images/upscale-comparison.jpg)
 
 *Above: a plain 1× slice enlarged (left) vs. enhanced (right).*
+
+---
+
+## Recreate any design: the project system
+
+Everything design-specific lives in one file, `projects/<name>/project.json`; every tool is generic. [`projects/glow/project.json`](projects/glow/project.json) is the full worked example. [`tools/recreate.py`](tools/recreate.py) runs the steps:
+
+```bash
+tools/setup.sh                                          # once: potrace, Python env, Real-ESRGAN
+tools/.venv/bin/python tools/recreate.py new acme ~/designs/acme-landing.png   # scaffold projects/acme/
+# 1. fill projects/acme/specs/*.json and project.json (see the reference below)
+tools/.venv/bin/python tools/recreate.py acme all       # slice, tune, parts, clips, plate, shapes, exact
+tools/.venv/bin/python tools/recreate.py acme kit photoshop --photo-edges 2 --out ~/acme_kit
+# 2. build in each tool from the kit (scripts in editors/), export standard + max views
+tools/.venv/bin/python tools/recreate.py acme calibrate photoshop ~/acme/render_max.png   # 2-3 rounds: rebuild kit, re-render
+tools/.venv/bin/python tools/recreate.py acme inkgain website 0=r0.png 0.05=r1.png 0.1=r2.png 0.15=r3.png
+tools/.venv/bin/python tools/recreate.py acme bench "Photoshop=render.png" "Photoshop max=render_max.png"
+tools/.venv/bin/python tools/recreate.py acme diff render.png  # region report + heatmap
+```
+
+The whole chain was tested on a fresh scaffolded project: slice → tune → plate → shapes → kit → exact, with the exact layers recompositing to 0 differing pixels. Refactoring Glow onto the project system changed no output: every kit file and exact-mode layer is byte-identical to before (`cmp`).
+
+### The steps and what each needs
+
+| Step | Command | Needs in the project | Produces |
+|---|---|---|---|
+| 1. Trace elements and text | `slice` | `specs/components.json`, `specs/text.json`: `[{"name", "box": [x,y,w,h], "threshold"?, "split"?}]` | raw traces (`build/components`, `build/text`) |
+| 2. Tune traces | `tune` | (step 1) | tuned vectors + original-pixel cutouts; tiny elements switch to cutouts |
+| 3. Split parts | `parts` | `specs/parts.json`: `[{"parent", "name", "box", "cut_parent"}]` | parts as tiny cutout elements |
+| 4. Clip elements | `clips` | `specs/clips.json`: `[{"name", "circle": [cx,cy,r]}]` or `"rect"` | traces and cutouts limited to their region |
+| 5. Background | `plate` | `photos` (their boxes are masked) | `backdrop.png` (smooth) + `backdrop_plate.webp` (original background pixels where visible) |
+| 6. Fit shapes | `shapes [--under img] [--edge-band N]` | `specs/shapes.json`: rect / circle / squircle with fill, stroke | `build/shapes_tuned.json` |
+| 7. Kit per renderer | `kit <tool> [--photo-edges N]` | `drawn`, `photos`, `strips`, `repeat` | photo slices, shapes SVG, vector SVGs, cutout layers |
+| 8. Calibrate | `calibrate <tool> <max render>` | a max-fidelity render from that tool | `calibration_<tool>.json` (used by step 7) |
+| 9. Ink gain | `inkgain <tool> W=render ...` | renders with every vector stroked at W | `ink_gain_<tool>.json` (used by step 7) |
+| 10. Exact mode | `exact` | `sections` | background + section layers that recomposite to the original |
+| 11. Score | `bench`, `diff` | renders | benchmark table; per-region report and heatmap |
+
+### `project.json` reference
+
+| Key | Meaning |
+|---|---|
+| `design`, `size` | The design image and its size in px. All coordinates everywhere are design px. |
+| `specs`, `raw`, `manifests` | Where specs live, where raw traces go, where tuned manifests go. |
+| `shapes`, `shapes_tuned` | Shape specs for `tune_shapes.py`, and the tuned result. |
+| `parts`, `clips` | Inputs for `split_parts.py` and `clip_elements.py`. |
+| `plate`, `backdrop` | Background outputs (step 5). |
+| `calibration`, `ink_gain` | Per-renderer files; `{tool}` is replaced by the renderer name. |
+| `photos` | `[{"name", "file", "box", "patch_from_plate"?: [[x,y,w,h]]}]`: lossless slices. A patch replaces a bit of the slice that belongs to something drawn on top (text the slice cuts into). |
+| `photo_under` | The photo that drawn shapes sit on (rim cleaning applies to it). |
+| `strips` | `[{"name", "file", "box"}]`: rows or columns shipped as original pixels (a blended divider). |
+| `repeat` | `[{"name", "dx", "dy"}]`: an element drawn again at an offset (card 2's icons). |
+| `drawn` | Every drawn shape, in drawing order: `{"name", "kind": rect / circle / squircle / line, "box" or "points", "r", "rb", "k", "kb", "fill", "stroke", "over_photo"?, "subtract"?: [names], "follow"?: squircle}`. Tuned values from `shapes_tuned` override these by name. |
+| `rims` | Shapes whose photo edge `clean_rims.py` may clean (when not using photo edges). |
+| `sections` | Exact-mode sections in priority order: `{"name", "rect"}` / `{"name", "circle"}` / `{"name", "rest": true}`. |
+
+### What stays per design
+
+- **The website's HTML and CSS.** The page itself is the design, so it's hand-built: `src/index.html`, `styles.css`, `build.mjs`. The pixel-mode layer is generic and carries over: the plate background, the shapes SVG overlay, and traced vectors and cutouts at exact design coordinates (`.px` items with `--x --y --w --h`). The live HTML text sits underneath, transparent.
+- **Editor build scripts.** The Photoshop scripts only place kit files, so they work for any project; change the kit path. Affinity's script draws shapes itself and is Glow-specific. PhotoCraft builds by commands, driven by an agent from the kit.
+- **Fonts.** Run `fontmatch.py` per text style. When nothing scores 0.80 or above, build the font from the design with `glyphfont.py`.
 
 ---
 
@@ -323,6 +442,7 @@ flowchart LR
 4. **Build:** Affinity uses a pasted JavaScript build script; PhotoCraft uses batched commands plus an SVG import. Both read the same manifest and tokens.
 5. **Verify:** run `diffcheck.py` on the export. Apply the shifts it reports, and fix letter-spacing from ink-edge widths. Re-run until every region's leftover shift is ≤ 0.5px, then check zoomed crops by eye (scores can miss garbled glyphs).
 6. **Ship:** the website uses the same components, tokens and fonts. `npm run deploy:*` publishes it.
+7. **Close the last 0.1%** (v4–v9): tune traces and shapes, add the plate, split parts and clip elements, build a kit per renderer (calibration, ink gain, photo edges), and benchmark standard, max and exact separately. [`tools/recreate.py`](tools/recreate.py) runs all of it from one project file.
 
 ---
 
@@ -473,16 +593,23 @@ tools/.venv/bin/python tools/tune_shapes.py design.jpg tools/glow_shapes.json to
 - Each candidate is scored on an 8× supersampled render. Outside the shape it compares against the original pixels; at the edge, against the local surround.
 - Traced elements, photos (`--exclude-box`) and shapes nested inside are excluded. A result is only kept if it beats the starting values.
 - The website applies the tuned values through a generated `framework/shapes.css`. Flex and grid children get a top-left-anchored `scale`, so resizing them doesn't push their neighbours along.
+- **Kinds:** `rect` (one corner radius), `circle`, and **`squircle`**: a rounded rectangle with a top radius `r`, bottom radius `rb` and corner smoothing `k` / `kb`. Each corner is one cubic Bézier; `k = 0.5523` is a circular arc, and larger values give the flatter, continuous corner of iOS screens and app icons.
+- **`--under image`**: score each candidate composited over the real layer underneath (for example the plate with the photo slice), plus every enclosing shape painted in, instead of estimating the background from the surroundings. Use it for shapes over photos.
+- **`--edge-band N`**: score only pixels within N px of the outline, for large shapes whose interior holds other content (a phone screen full of UI).
+- **`--stroke-widths 0.5,1,1.5`**: also fit the border width. **`--only a,b`** tunes just those shapes; **`--max-move`** caps how far geometry may move.
 
 ### `make_kit.py`: the editor import kit
 
 ```bash
-tools/.venv/bin/python tools/make_kit.py ~/Downloads/glow_v5_kit [--calibration tools/calibration_photoshop.json] [--ink ink.json | --ink-all 0.1]
+tools/.venv/bin/python tools/make_kit.py ~/Downloads/glow_v5_kit [--project projects/glow/project.json] [--calibration tools/calibration_photoshop.json]
+    [--ink ink.json | --ink-all 0.1] [--photo-edges 2] [--no-clean-rims]
 ```
 
 **What it writes:** everything an editor needs, at design coordinates — the backdrop and full-resolution `backdrop_plate.png`, `strip_edge.png`, lossless photo slices (the hero with the "About Us" sliver cleaned), `shapes_tuned.svg` + `shapes_tuned.json`, `vectors_tuned.svg`, `vectors_tiny_hidden.svg` and `vectors_all.svg`, `cutouts_tiny.png`, and `cutouts_all_max_fidelity.png`. The intended layer order is in the script's docstring.
 - `--calibration` applies a renderer's measured shape corrections (`calibrate.py`).
 - `--ink` / `--ink-all` stroke the traced vectors in their own colour (`inkgain.py`). Only for renderers that honour sub-pixel SVG strokes: Photoshop's SVG import doesn't.
+- `--photo-edges N` insets the shapes marked `over_photo` by N px with no border, so their outermost edge comes from the photo. It also subtracts the listed discs (the badge) from them, written as plain polygon paths, simplified with Ramer-Douglas-Peucker to about 240 points for the screen. This is what took every tool to 0.004–0.006% in max mode.
+- Everything design-specific (shape list and order, photo slices, strips, repeats) comes from the project file.
 
 ### `calibrate.py`: correct shapes against a tool's real render
 
@@ -516,6 +643,34 @@ tools/.venv/bin/python tools/split_parts.py design.jpg variants/shared/component
 ```
 
 Some parts of a logo can't be a single-colour vector at 1×. Benefit's 4px "SAN FRANCISCO" tagline drops out of the trace entirely, and the elleebana tree is multi-tone (a shaded canopy), so its flat trace was one grey blob. Each part in `tools/glow_parts.json` becomes its own element: a trace plus an original-pixel cutout, in `raster` mode like every other tiny element. With `cut_parent`, the parent's subpaths inside the part's box are removed. Parts carry `part_of`, so max-fidelity mode skips them (the parent's full cutout already contains them). This took 0.010–0.011% off standard mode in every tool.
+
+### `clip_elements.py`: keep an element inside its region
+
+```bash
+tools/.venv/bin/python tools/clip_elements.py variants/shared/text_all_tuned/manifest.json tools/glow_clips.json
+```
+
+Removes the subpaths whose centre falls outside the region, and zeroes the cutout's alpha there. Regions are `{"circle": [cx, cy, r]}` or `{"rect": [x, y, w, h]}`. Use it when an element's box overlaps a neighbouring edge. The badge's "TRUSTED BY" arc had picked up 2 rim fragments and 297 rim pixels; clipping it took the website's max mode from 0.010% to 0.006%.
+
+### `clean_rims.py`: remove a photo's own edges under drawn shapes
+
+```bash
+tools/.venv/bin/python tools/clean_rims.py hero_slice.png hero_clean.png --shapes tools/glow_shapes_tuned.json --x0 712 --y0 0
+```
+
+When shapes are drawn over a photo slice that already contains them, every edge gets anti-aliased twice. This replaces a band from 2px inside to 2px outside each outline with the colour 3px out, sampled along the normal from a signed-distance field (rounded rects with per-corner radii). Shapes are processed in drawing order, so nested ones sample their parent's interior. `make_kit.py` applies it unless `--photo-edges` is used. It's right for flat UI drawn over a screenshot. It's wrong for physical edges (a photographed device or a shaded rim), where photo edges win. `paint_parents()` builds the matching background image for `tune_shapes.py --under`.
+
+### `exact_layers.py`: the original as named layers
+
+```bash
+tools/.venv/bin/python tools/exact_layers.py design.jpg framework/backdrop_plate.webp out/exact [--project projects/glow/project.json]
+```
+
+Writes the plate plus one opaque, non-overlapping layer per section (the original's pixels over that section's foreground), and `layers.json` with names in stacking order. It verifies that the recomposite equals the original (0 differing pixels) before reporting. The editors place each PNG at (0,0) in a top group.
+
+### `recreate.py`: the orchestrator
+
+See [Recreate any design](#recreate-any-design-the-project-system). It runs every tool above with the project's paths, so a new design only needs its specs and `project.json`.
 
 ### `backdrop.py`: extract the original's empty background
 
@@ -614,9 +769,11 @@ im.transform = Transform.createTranslate(x, y).multiply(Transform.createScale(0.
 Photoshop 2026, installed locally, was driven with ExtendScript through AppleScript. The scripts are in [`editors/photoshop/`](editors/photoshop/), with helpers and text in `lib.jsx` and `text.jsx`:
 - v5: `build.jsx` + `export.jsx`.
 - v6: `build_v6.jsx` + `export_v6.jsx`, which add the strip edge.
-- **v7: `build_v7.jsx` + `export_v7.jsx`.** These add the background plate, calibrated shapes and the split-out logo parts. Build the kit with `make_kit.py ~/Downloads/glow_v5_kit --calibration tools/calibration_photoshop.json`.
+- v7: `build_v7.jsx` + `export_v7.jsx`. These add the background plate, calibrated shapes and the split-out logo parts.
+- v8: v7 + [`exact.jsx`](editors/photoshop/exact.jsx), which adds the exact-mode group on top (0 differing pixels).
+- **v9: the same scripts on the v9 kit**, built with `make_kit.py ~/Downloads/glow_v5_kit --calibration tools/calibration_photoshop.json --photo-edges 2`. That adds photo edges, the badge subtracted from the phone and the clipped badge arc. Then `exact.jsx` adds the exact group and saves `glow_ps_v9.psd`. Scores: **0.024% standard, 0.004% max, exact 0 px.**
 
-The layered results are `glow_ps_v5.psd`, `glow_ps_v6.psd` and **`glow_ps_v7.psd`**.
+The layered results are `glow_ps_v5.psd` … **`glow_ps_v9.psd`**. In v9, the exact group is visible by default; hide it to see the rebuild.
 
 > When a script is fed in as text (`do javascript (read POSIX file …)`), `#include` paths must be absolute. Rewrite `#include "lib.jsx"` to the absolute path in a run copy. Build the kit first with `tools/make_kit.py ~/Downloads/glow_v5_kit`.
 
@@ -640,6 +797,14 @@ osascript -e 'tell application "Adobe Photoshop 2026" to do javascript (read POS
 - **Adobe's MCP connector:** this session also has a "claude.ai Adobe" MCP connector, but it is cloud-based and needs signing in (`/mcp`). Driving the installed app needs no connector.
 
 ## PhotoCraft guide
+
+**Latest: `glow_v8.pcraft`** (0.020% standard, 0.005% max; exact group 0 px), built from v6/v7 by an agent with the v9 kit's geometry:
+- **Replacing shape geometry:** `shape.edit` on the screen and tab bar layers takes the kit's polygon paths (about 240 and 112 points) and keeps each layer's id, name and z-order. The badge became an ellipse 135px across with no border.
+- **Swapping a traced vector:** the tx_badge_arc path was replaced by the clipped trace placed at its box origin.
+- **Re-placing raster layers:** the cutout layers were re-placed at (0,0) with the regenerated PNGs. Their ids change: 983 → 1033 and 980 → 1034.
+- **Files must be inside PhotoCraft's automation root.** It couldn't read the kit PNGs from a temp folder; copy them under the root first.
+- **Large path edits are expensive in tokens:** the command echoes the whole path back. Simplify paths first (the kit's RDP pass) or import from a file.
+- **Exact mode:** 9 full-canvas PNGs in a top group. Paste results report offset (0,0) for full-canvas sources, so verify with a test export instead (0 differing pixels).
 
 **How it connects:**
 - `photocraft-cli mcp` runs a headless engine over stdio.
@@ -815,6 +980,16 @@ Token figures come from the context counter, not a billing meter. The runs weren
 - [ ] Check the seams where slices meet backgrounds.
 - [ ] Iterate until differences are ≤ 1px. Compare v1 and v2 with the sliders on `/design`.
 
+**The last 0.1% (per renderer)**
+- [ ] Attribute changed pixels to elements and shapes. Fix the top two or three first.
+- [ ] Background: `backdrop.py --plate`, so the original's background pixels show wherever nothing is drawn.
+- [ ] Blended edges and untraceable bits as small original-pixel elements (`strips`, `split_parts.py`).
+- [ ] Shapes over photos: `tune_shapes.py --under`. Physical edges → `--photo-edges 2`; flat UI over a screenshot → rim cleaning.
+- [ ] Overlaps: `subtract` discs from the shapes underneath; clip elements whose boxes leak (`clip_elements.py`).
+- [ ] Calibrate each renderer 2–3 rounds on its max-fidelity export (`recreate.py <name> calibrate <tool> ...`).
+- [ ] Ink gain for renderers that draw fills light and honour sub-pixel strokes (`inkgain.py`).
+- [ ] Benchmark standard, max and exact separately, and keep each version's PNGs in `docs/benchmark/`.
+
 ---
 
 ## Known limits and ideas
@@ -824,6 +999,9 @@ Token figures come from the context counter, not a billing meter. The runs weren
 - **Small-text font matching** can't separate close candidates at 1×. Super-resolution before matching might help.
 - **PhotoCraft's headline** is outlines in v2 because the server started before the font was installed. Restart the server and swap in live text.
 - **Affinity fonts:** Affinity caches fonts until restarted. After replacing the variable Figtree with fixed weights (and updating Glow Display), a restart gave the correct Regular, Medium, SemiBold and Bold.
+- **Physical edges can't be redrawn exactly.** The phone's glass highlight and the badge's shaded rim come from the photo (photo edges). A design with a flat UI screen would use rim cleaning and a fitted squircle instead.
+- **Affinity wasn't updated in the latest round.** Its script draws shapes itself, so photo edges, the badge subtraction and the squircle need porting into `build_glow_v6.js`.
+- **The benefit wordmark's hairline serifs** are the largest remaining standard-mode error in every tool. They're thinner than a 1× trace can hold.
 - **Ideas:** auto-detect components (no manual boxes), centreline tracing for stroke icons (to get editable strokes instead of filled outlines), and a token exporter for Figma / Tailwind.
 
 ---
@@ -831,19 +1009,21 @@ Token figures come from the context counter, not a billing meter. The runs weren
 ## Repo layout
 
 ```
+projects/<name>/      project.json per design (projects/glow/ is the worked example); new ones via tools/recreate.py new
 src/                  website (index.html, styles.css)
 framework/            Glow UI: tokens.json, glow.css, backdrop(.png, _plate.webp), strip_edge.png, shapes_tuned.svg
                       (+ generated icons.svg, fonts/, logos/)
 tools/                slicer.py, fontmatch.py, glyphfont.py, enhance.py, diffcheck.py, tune.py, tune_shapes.py,
-                      backdrop.py, make_kit.py, calibrate.py, inkgain.py, split_parts.py, exact_layers.py, benchmark.py, setup.sh,
-                      specs, regions, glow_shapes(_tuned).json, glow_parts.json,
+                      backdrop.py, make_kit.py, calibrate.py, inkgain.py, split_parts.py, clip_elements.py, clean_rims.py,
+                      exact_layers.py, recreate.py, benchmark.py, setup.sh,
+                      specs, regions, glow_shapes(_tuned).json, glow_parts.json, glow_clips.json,
                       calibration_<tool>.json, ink_gain_<tool>.json
 fonts/                font specs, fontmatch reports, out/ = Glow Display OTF + WOFF2
 variants/<editor>/    each editor's photo slices (+ _hd enhanced) and v1/v2 renders
 variants/shared/      original design, traced components (manifest.json, SVG, PNG), traced headline outlines
 editors/affinity/     build_glow_v1.js … build_glow_v6.js (v6 = plate, calibration, ink gain, logo parts), .af files
-editors/photocraft/   glow_v1.pcraft … glow_v7.pcraft (v7 = v6 + exact group), traced SVGs
-editors/photoshop/    lib.jsx, build(_v6|_v7).jsx, text.jsx, export(_v6|_v7).jsx, exact.jsx, glow_ps_v5…v8.psd
+editors/photocraft/   glow_v1.pcraft … glow_v8.pcraft (v7 = v6 + exact group, v8 = v7 + photo edges), traced SVGs
+editors/photoshop/    lib.jsx, build(_v6|_v7).jsx, text.jsx, export(_v6|_v7).jsx, exact.jsx, glow_ps_v5…v9.psd
 docs/benchmark/       every version's export/screenshot + results.md / results.json
 build.mjs             builds dist/<editor>: site + /design + /framework
 wrangler.*.jsonc      Cloudflare Workers configs

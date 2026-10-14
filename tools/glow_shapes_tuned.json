@@ -151,8 +151,8 @@
   "r": 11.375,
   "fill": "#020202",
   "tune": {
-   "err_before": 6.951,
-   "err_after": 3.21
+   "err_before": 4.025,
+   "err_after": 3.94
   }
  },
  {
@@ -161,16 +161,16 @@
   "box": [
    1099.25,
    307.875,
-   228.0,
+   227.875,
    37
   ],
-  "r": 8.375,
+  "r": 9.125,
   "fill": "#FEFEFE",
   "stroke": "#FDFDFD",
   "sw": 1,
   "tune": {
-   "err_before": 1.459,
-   "err_after": 0.486
+   "err_before": 1.071,
+   "err_after": 1.07
   }
  },
  {
@@ -187,8 +187,9 @@
   "stroke": "#FDFDFD",
   "sw": 1,
   "tune": {
-   "err_before": 1.611,
-   "err_after": 0.774
+   "err_before": 1.51,
+   "err_after": 1.51,
+   "kept": true
   }
  },
  {
@@ -203,8 +204,9 @@
   "r": 10.0,
   "fill": "#EFEDEB",
   "tune": {
-   "err_before": 1.211,
-   "err_after": 1.092
+   "err_before": 1.161,
+   "err_after": 1.161,
+   "kept": true
   }
  },
  {
@@ -219,8 +221,9 @@
   "r": 10.0,
   "fill": "#EFEDEB",
   "tune": {
-   "err_before": 0.963,
-   "err_after": 0.894
+   "err_before": 1.019,
+   "err_after": 1.019,
+   "kept": true
   }
  },
  {
@@ -235,8 +238,9 @@
   "r": 9.875,
   "fill": "#F0EDEB",
   "tune": {
-   "err_before": 1.05,
-   "err_after": 0.991
+   "err_before": 1.133,
+   "err_after": 1.133,
+   "kept": true
   }
  },
  {
@@ -246,13 +250,13 @@
    1263.65,
    401.375,
    48.125,
-   77.125
+   77.0
   ],
-  "r": 9.75,
+  "r": 9.125,
   "fill": "#EEECE9",
   "tune": {
-   "err_before": 1.194,
-   "err_after": 0.936
+   "err_before": 1.072,
+   "err_after": 1.069
   }
  },
  {
@@ -267,8 +271,9 @@
   "r": 9.0,
   "fill": "#EFEDEA",
   "tune": {
-   "err_before": 1.038,
-   "err_after": 0.981
+   "err_before": 1.085,
+   "err_after": 1.085,
+   "kept": true
   }
  },
  {
@@ -285,26 +290,27 @@
   "stroke": "#F9F9F9",
   "sw": 1,
   "tune": {
-   "err_before": 1.838,
-   "err_after": 0.822
+   "err_before": 1.091,
+   "err_after": 1.091,
+   "kept": true
   }
  },
  {
   "name": "card_2",
   "kind": "rect",
   "box": [
-   1097.625,
+   1097.75,
    655.75,
-   269.5,
+   269.0,
    112.125
   ],
-  "r": 10.625,
+  "r": 11.25,
   "fill": "#FCFBFB",
-  "stroke": "#FCFCFB",
-  "sw": 1,
+  "stroke": "#FBFBFA",
+  "sw": 0.5,
   "tune": {
-   "err_before": 2.506,
-   "err_after": 2.106
+   "err_before": 2.646,
+   "err_after": 2.565
   }
  },
  {
@@ -319,8 +325,9 @@
   "r": 9.75,
   "fill": "#080808",
   "tune": {
-   "err_before": 9.346,
-   "err_after": 4.804
+   "err_before": 5.696,
+   "err_after": 5.696,
+   "kept": true
   }
  },
  {
@@ -333,10 +340,10 @@
    23.375
   ],
   "r": 10.875,
-  "fill": "#070707",
+  "fill": "#070808",
   "tune": {
-   "err_before": 10.423,
-   "err_after": 3.564
+   "err_before": 4.237,
+   "err_after": 4.234
   }
  },
  {
@@ -351,8 +358,8 @@
   "r": 2,
   "fill": "#060606",
   "tune": {
-   "err_before": 8.389,
-   "err_after": 2.282
+   "err_before": 2.892,
+   "err_after": 2.888
   }
  },
  {
