@@ -1,0 +1,76 @@
+{
+ "text": "Authentic Korean",
+ "box": [
+  80,
+  236,
+  464,
+  62
+ ],
+ "verdict": "near-exact match",
+ "ranking": [
+  {
+   "rank": 1,
+   "font": "Inter 300",
+   "source": "google",
+   "score": 0.8477,
+   "font_size_px": 63.56,
+   "tracking_em": -0.048
+  },
+  {
+   "rank": 2,
+   "font": "Kripa 400",
+   "source": "google",
+   "score": 0.8388,
+   "font_size_px": 60.53,
+   "tracking_em": -0.046
+  },
+  {
+   "rank": 3,
+   "font": "Google Sans Flex 300",
+   "source": "google",
+   "score": 0.8353,
+   "font_size_px": 65.19,
+   "tracking_em": -0.05
+  },
+  {
+   "rank": 4,
+   "font": "Libre Franklin 300",
+   "source": "google",
+   "score": 0.8342,
+   "font_size_px": 63.03,
+   "tracking_em": -0.052
+  },
+  {
+   "rank": 5,
+   "font": "Kripa 300",
+   "source": "google",
+   "score": 0.8305,
+   "font_size_px": 60.53,
+   "tracking_em": -0.044
+  },
+  {
+   "rank": 6,
+   "font": "Plus Jakarta Text Light",
+   "source": "system:~/Library/Fonts/PlusJakartaText-Light.otf",
+   "score": 0.8304,
+   "font_size_px": 62.01,
+   "tracking_em": -0.067
+  },
+  {
+   "rank": 7,
+   "font": "Inter Tight 400",
+   "source": "google",
+   "score": 0.8295,
+   "font_size_px": 62.51,
+   "tracking_em": -0.005
+  },
+  {
+   "rank": 8,
+   "font": "Plus Jakarta Sans 400",
+   "source": "google",
+   "score": 0.829,
+   "font_size_px": 62.01,
+   "tracking_em": -0.049
+  }
+ ]
+}

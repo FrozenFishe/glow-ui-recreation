@@ -1,0 +1,27 @@
+Google Fonts candidates: 1771
+1 extra bytes in post.stringData array
+1 extra bytes in post.stringData array
+1 extra bytes in post.stringData array
+1 extra bytes in post.stringData array
+1 extra bytes in post.stringData array
+1 extra bytes in post.stringData array
+1 extra bytes in post.stringData array
+1 extra bytes in post.stringData array
+1 extra bytes in post.stringData array
+144733 extra bytes in post.stringData array
+71807 extra bytes in post.stringData array
+1 extra bytes in post.stringData array
+1 extra bytes in post.stringData array
+1 extra bytes in post.stringData array
+1 extra bytes in post.stringData array
+1 extra bytes in post.stringData array
+Scoring 2009 fonts…
+ 1. 0.848  Inter 300                                     size 63.56px  tracking -0.05em  [google]
+ 2. 0.839  Kripa 400                                     size 60.53px  tracking -0.05em  [google]
+ 3. 0.835  Google Sans Flex 300                          size 65.19px  tracking -0.05em  [google]
+ 4. 0.834  Libre Franklin 300                            size 63.03px  tracking -0.05em  [google]
+ 5. 0.831  Kripa 300                                     size 60.53px  tracking -0.04em  [google]
+ 6. 0.830  Plus Jakarta Text Light                       size 62.01px  tracking -0.07em  [system]
+ 7. 0.830  Inter Tight 400                               size 62.51px  tracking -0.01em  [google]
+ 8. 0.829  Plus Jakarta Sans 400                         size 62.01px  tracking -0.05em  [google]
+verdict: near-exact match

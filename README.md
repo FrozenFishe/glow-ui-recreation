@@ -33,6 +33,41 @@ The `/design` pages have drag-to-compare sliders (original vs. the latest versio
 
 ---
 
+## Second design: GlowSeoul (Photoshop + the full toolchain)
+
+The project system's second real run: the **GlowSeoul** Korean-skincare landing page (1672×941), recreated with every tool in this repo plus **Photoshop 2026** for the photo work. Live: **[glowseoul.i-quietus.workers.dev](https://glowseoul.i-quietus.workers.dev)** · [/design](https://glowseoul.i-quietus.workers.dev/design) (compare sliders, benchmark) · modes: [`?mode=code`](https://glowseoul.i-quietus.workers.dev/?mode=code), [`?mode=max`](https://glowseoul.i-quietus.workers.dev/?mode=max), [`?mode=exact`](https://glowseoul.i-quietus.workers.dev/?mode=exact).
+
+| Mode (Chrome 1672×941 at 1×, `tools/benchmark.py`) | % changed | SSIM | ΔE2000 mean | PSNR dB |
+|---|---|---|---|---|
+| **Pixel (default):** traced vectors, tuned, with ink gain | **0.004** | 0.9965 | 0.243 | 38.73 |
+| Max: original-pixel cutouts | 0.018 | 0.9944 | 0.247 | 38.23 |
+| **Exact:** the original as 9 layers (verified live: 0 px) | 0.000 | 1.0000 | 0.000 | ∞ |
+| Code: live text in the traced fonts + Inter, fitted | 1.886 | 0.9590 | 0.872 | 23.30 |
+
+| Original | Website (pixel mode) |
+|---|---|
+| ![GlowSeoul original](docs/images/glowseoul-original.jpg) | ![GlowSeoul website](docs/images/glowseoul-website.jpg) |
+
+**What's different from Glow: the UI sits on a photo.** All of the copy, pills and the button are drawn over the harbour photo, so there's no clean background to reuse. Photoshop rebuilt one:
+1. `projects/glowseoul/tools/mask.py` finds every UI pixel (the original vs. a 31px median, per text block, plus the pill and button shapes) → `build/ui_mask.png`.
+2. [`editors/photoshop/slice.jsx`](projects/glowseoul/editors/photoshop/slice.jsx) loads the mask as a channel, runs **Content-Aware Fill** (colour adaptation on), adds named **user slices** (hero, six category thumbnails, the flag) and exports each slice with Save for Web, then saves `glowseoul_slices.psd` with the slices in it.
+   - Exporting with user slices in the document makes Save for Web write *every* slice into an `images/` folder, so the script exports first (crop → export → history back) and adds the slices last.
+3. `tools/plate.py` puts the clean hero over the original strip, with the cards filled from the strip's own row colours → `build/plate.png`.
+
+PhotoCraft's content-aware fill was tried too. With automatic sampling it pulled texture from the category strip into the sky, so this run is Photoshop only.
+
+**Then the standard pipeline** (`tools/recreate.py glowseoul …`):
+- `slice` + `tune`: 22 icons and 27 text lines traced and sub-pixel tuned. The 9 smallest (labels, plane, one arrow, the shipping line) switch to original-pixel cutouts.
+- **Custom fonts, `glyphfont.py`:** `fontmatch.py` found Inter for the headline (0.848) and body (0.793), but nothing above 0.77 for the logo serif or 0.67 for the italic. So three fonts were built from the design itself: **GlowSeoul Serif** (logo), **GlowSeoul Display** (headline) and **GlowSeoul Italic** ("Australia"). Specs are in `projects/glowseoul/specs/fonts/`.
+- `shapes`: the button and six cards (`tune_shapes.py --under build/plate.png`). The frosted search field and shipping pill are fitted as colour + opacity over the plate (`tools/fit_pills.py`): the search field comes out 94% opaque.
+- `inkgain`: a five-width sweep (0–0.4 px), picked per element: 0.28% → 0.195% changed (strict count).
+- `exact`: 8 sections plus the background.
+- **Code mode**: `sites/glowseoul/fit_code.py` fits each live text line's offset, size and letter-spacing to its ink box over 5 render rounds (2.66% → 1.89%).
+
+The site is `sites/glowseoul/` (`node build.mjs`, `npx wrangler deploy -c wrangler.jsonc`), generated from the project's manifests. Below 900px it switches to a normal responsive layout. **Headless Chrome's minimum window width is 500px**, so a `--window-size=390,…` screenshot is a crop of a 500px layout. Don't debug mobile overflow from it.
+
+---
+
 ## Contents
 
 1. [Results](#results): benchmark, ranking, [built versions near-perfect](#built-versions-near-perfect-photo-edges), [exact mode](#exact-mode-a-literally-perfect-result)

@@ -1,0 +1,32 @@
+{
+ "family": "GlowSeoul Display",
+ "style": "Light",
+ "otf": "GlowSeoulDisplay-Light.otf",
+ "woff2": "GlowSeoulDisplay-Light.woff2",
+ "font_size_px": 64.35,
+ "characters": ",ADKSacdehiklnortuv",
+ "kerning_pairs": 24,
+ "line_sizes_px": {
+  "Authentic Korean": 64.35,
+  "Skincare, Delivered": 64.35,
+  "to": 64.35
+ },
+ "note": "Set the font size to font_size_px (image pixels) to reproduce the design; add a fallback font for characters not listed.",
+ "proof": {
+  "Authentic Korean": {
+   "iou": 0.828,
+   "size_px": 64.4,
+   "warning": null
+  },
+  "Skincare, Delivered": {
+   "iou": 0.916,
+   "size_px": 64.4,
+   "warning": null
+  },
+  "to": {
+   "iou": 0.913,
+   "size_px": 64.4,
+   "warning": null
+  }
+ }
+}

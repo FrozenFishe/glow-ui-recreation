@@ -1,0 +1,61 @@
+{
+ "jpeg_quality": null,
+ "rows": [
+  {
+   "label": "Floor: original re-saved as JPEG qNone",
+   "changed_pct": 0.0,
+   "ssim": 0.9916,
+   "dE_mean": 0.98,
+   "dE_p95": 2.476,
+   "psnr": 42.42
+  },
+  {
+   "label": "Floor: original re-saved as JPEG q95",
+   "changed_pct": 0.0,
+   "ssim": 0.9949,
+   "dE_mean": 0.871,
+   "dE_p95": 2.137,
+   "psnr": 44.57
+  },
+  {
+   "label": "Website code mode (live text, traced fonts)",
+   "changed_pct": 1.886,
+   "ssim": 0.959,
+   "dE_mean": 0.872,
+   "dE_p95": 1.515,
+   "psnr": 23.3
+  },
+  {
+   "label": "Website pixel, before ink gain",
+   "changed_pct": 0.004,
+   "ssim": 0.9961,
+   "dE_mean": 0.25,
+   "dE_p95": 1.37,
+   "psnr": 38.11
+  },
+  {
+   "label": "Website pixel (default)",
+   "changed_pct": 0.004,
+   "ssim": 0.9965,
+   "dE_mean": 0.243,
+   "dE_p95": 1.368,
+   "psnr": 38.73
+  },
+  {
+   "label": "Website max",
+   "changed_pct": 0.018,
+   "ssim": 0.9944,
+   "dE_mean": 0.247,
+   "dE_p95": 1.363,
+   "psnr": 38.23
+  },
+  {
+   "label": "Website exact",
+   "changed_pct": 0.0,
+   "ssim": 1.0,
+   "dE_mean": 0.0,
+   "dE_p95": 0.0,
+   "psnr": Infinity
+  }
+ ]
+}

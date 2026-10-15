@@ -1,0 +1,272 @@
+[
+ {
+  "name": "tx_nav_shop",
+  "box": [
+   325,
+   30,
+   44,
+   22
+  ],
+  "threshold": 0.45
+ },
+ {
+  "name": "tx_nav_best",
+  "box": [
+   420,
+   30,
+   90,
+   20
+  ],
+  "threshold": 0.45
+ },
+ {
+  "name": "tx_nav_skincare",
+  "box": [
+   535,
+   30,
+   68,
+   22
+  ],
+  "threshold": 0.45
+ },
+ {
+  "name": "tx_nav_makeup",
+  "box": [
+   652,
+   31,
+   64,
+   22
+  ],
+  "threshold": 0.45
+ },
+ {
+  "name": "tx_nav_brands",
+  "box": [
+   766,
+   30,
+   57,
+   20
+  ],
+  "threshold": 0.45
+ },
+ {
+  "name": "tx_nav_about",
+  "box": [
+   872,
+   30,
+   52,
+   20
+  ],
+  "threshold": 0.45
+ },
+ {
+  "name": "tx_search",
+  "box": [
+   1177,
+   33,
+   142,
+   16
+  ],
+  "threshold": 0.45
+ },
+ {
+  "name": "tx_ship",
+  "box": [
+   131,
+   182,
+   224,
+   15
+  ],
+  "threshold": 0.45
+ },
+ {
+  "name": "tx_head_1",
+  "box": [
+   75,
+   235,
+   474,
+   60
+  ],
+  "threshold": 0.45
+ },
+ {
+  "name": "tx_head_2",
+  "box": [
+   75,
+   304,
+   522,
+   67
+  ],
+  "threshold": 0.45
+ },
+ {
+  "name": "tx_head_3",
+  "box": [
+   75,
+   371,
+   324,
+   64
+  ],
+  "threshold": 0.45
+ },
+ {
+  "name": "tx_p1",
+  "box": [
+   77,
+   457,
+   418,
+   27
+  ],
+  "threshold": 0.45
+ },
+ {
+  "name": "tx_p2",
+  "box": [
+   77,
+   486,
+   434,
+   28
+  ],
+  "threshold": 0.45
+ },
+ {
+  "name": "tx_p3",
+  "box": [
+   77,
+   514,
+   147,
+   25
+  ],
+  "threshold": 0.45
+ },
+ {
+  "name": "tx_cta",
+  "box": [
+   115,
+   577,
+   130,
+   22
+  ],
+  "threshold": 0.45
+ },
+ {
+  "name": "tx_f1a",
+  "box": [
+   114,
+   667,
+   93,
+   18
+  ],
+  "threshold": 0.45
+ },
+ {
+  "name": "tx_f1b",
+  "box": [
+   114,
+   684,
+   98,
+   17
+  ],
+  "threshold": 0.45
+ },
+ {
+  "name": "tx_f2a",
+  "box": [
+   287,
+   667,
+   90,
+   18
+  ],
+  "threshold": 0.45
+ },
+ {
+  "name": "tx_f2b",
+  "box": [
+   287,
+   684,
+   59,
+   19
+  ],
+  "threshold": 0.45
+ },
+ {
+  "name": "tx_f3a",
+  "box": [
+   448,
+   667,
+   103,
+   20
+  ],
+  "threshold": 0.45
+ },
+ {
+  "name": "tx_f3b",
+  "box": [
+   448,
+   684,
+   91,
+   18
+  ],
+  "threshold": 0.45
+ },
+ {
+  "name": "tx_toners",
+  "box": [
+   194,
+   871,
+   48,
+   16
+  ],
+  "threshold": 0.45
+ },
+ {
+  "name": "tx_serums",
+  "box": [
+   465,
+   871,
+   48,
+   16
+  ],
+  "threshold": 0.45
+ },
+ {
+  "name": "tx_moisturisers",
+  "box": [
+   731,
+   871,
+   77,
+   16
+  ],
+  "threshold": 0.45
+ },
+ {
+  "name": "tx_sunscreens",
+  "box": [
+   990,
+   871,
+   71,
+   16
+  ],
+  "threshold": 0.45
+ },
+ {
+  "name": "tx_masks",
+  "box": [
+   1226,
+   871,
+   79,
+   16
+  ],
+  "threshold": 0.45
+ },
+ {
+  "name": "tx_cleansers",
+  "box": [
+   1475,
+   871,
+   63,
+   16
+  ],
+  "threshold": 0.45
+ }
+]

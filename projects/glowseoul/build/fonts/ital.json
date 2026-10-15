@@ -1,0 +1,76 @@
+{
+ "text": "Australia",
+ "box": [
+  148,
+  372,
+  246,
+  66
+ ],
+ "verdict": "no good match: build a custom font with glyphfont.py",
+ "ranking": [
+  {
+   "rank": 1,
+   "font": "Times Italic",
+   "source": "system:/System/Library/Fonts/Times.ttc",
+   "score": 0.6673,
+   "font_size_px": 74.95,
+   "tracking_em": -0.062
+  },
+  {
+   "rank": 2,
+   "font": "Libertinus Serif 400 italic",
+   "source": "google",
+   "score": 0.6598,
+   "font_size_px": 72.98,
+   "tracking_em": -0.052
+  },
+  {
+   "rank": 3,
+   "font": "PT Serif 400 italic",
+   "source": "google",
+   "score": 0.6565,
+   "font_size_px": 68.2,
+   "tracking_em": -0.057
+  },
+  {
+   "rank": 4,
+   "font": "Baskervville 500 italic",
+   "source": "google",
+   "score": 0.6497,
+   "font_size_px": 70.51,
+   "tracking_em": -0.077
+  },
+  {
+   "rank": 5,
+   "font": "Chiron Sung HK 500 italic",
+   "source": "google",
+   "score": 0.6461,
+   "font_size_px": 65.0,
+   "tracking_em": -0.07
+  },
+  {
+   "rank": 6,
+   "font": "STIX Two Text 400 italic",
+   "source": "google",
+   "score": 0.6401,
+   "font_size_px": 72.35,
+   "tracking_em": -0.077
+  },
+  {
+   "rank": 7,
+   "font": ".New York Regular Italic",
+   "source": "system:/System/Library/Fonts/NewYorkItalic.ttf",
+   "score": 0.6312,
+   "font_size_px": 71.72,
+   "tracking_em": -0.008
+  },
+  {
+   "rank": 8,
+   "font": "IBM Plex Serif 400 italic",
+   "source": "google",
+   "score": 0.6215,
+   "font_size_px": 67.1,
+   "tracking_em": -0.061
+  }
+ ]
+}

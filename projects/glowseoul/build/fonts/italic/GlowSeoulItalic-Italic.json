@@ -1,0 +1,20 @@
+{
+ "family": "GlowSeoul Italic",
+ "style": "Italic",
+ "otf": "GlowSeoulItalic-Italic.otf",
+ "woff2": "GlowSeoulItalic-Italic.woff2",
+ "font_size_px": 69.44,
+ "characters": "Aailrstu",
+ "kerning_pairs": 2,
+ "line_sizes_px": {
+  "Australia": 69.44
+ },
+ "note": "Set the font size to font_size_px (image pixels) to reproduce the design; add a fallback font for characters not listed.",
+ "proof": {
+  "Australia": {
+   "iou": 0.938,
+   "size_px": 69.4,
+   "warning": null
+  }
+ }
+}

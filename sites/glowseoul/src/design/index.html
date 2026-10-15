@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GlowSeoul recreation notes</title>
+<style>
+:root{--bg:#faf8f9;--ink:#1b293c;--muted:#5d6672;--line:#e4e1e3}
+*{box-sizing:border-box;margin:0}body{font:15px/1.6 Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+main{max-width:1100px;margin:0 auto;padding:32px 16px 64px}h1{font-size:28px;letter-spacing:-.5px}h2{font-size:18px;margin:36px 0 10px}
+p,li{color:var(--muted);max-width:760px}a{color:inherit}
+.cmp{position:relative;--pos:50%;border:1px solid var(--line);border-radius:10px;overflow:hidden;aspect-ratio:1672/941}
+.cmp img{position:absolute;inset:0;width:100%;height:100%;display:block}.cmp .b{clip-path:inset(0 0 0 var(--pos))}
+.cmp input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize}
+.cmp::after{content:"";position:absolute;top:0;bottom:0;left:var(--pos);width:2px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.2)}
+table{border-collapse:collapse;width:100%;font-size:14px;margin-top:8px}td,th{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left}
+.lbl{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin:6px 0 16px}
+</style>
+</head>
+<body><main>
+<h1>GlowSeoul: design → code</h1>
+<p>A 1:1 recreation of the GlowSeoul landing page, built with the <a href="https://github.com/FrozenFishe/glow-ui-recreation">glow-ui-recreation</a> toolchain and Photoshop 2026. <a href="/">Live site</a> · <a href="/?mode=code">code mode</a> · <a href="/?mode=max">max</a> · <a href="/?mode=exact">exact</a></p>
+<h2>Original vs. the site (pixel mode, default)</h2>
+<div class="cmp"><img src="original.webp" alt="Original design"><img class="b" src="pixel.webp" alt="Website render"><input type="range" min="0" max="100" value="50" aria-label="Compare" oninput="this.parentNode.style.setProperty('--pos',this.value+'%')"></div>
+<div class="lbl"><span>Original</span><span>Website</span></div>
+<h2>Original vs. code mode (live text in fonts traced from the design)</h2>
+<div class="cmp"><img src="original.webp" alt="Original design"><img class="b" src="code.webp" alt="Code mode render"><input type="range" min="0" max="100" value="50" aria-label="Compare" oninput="this.parentNode.style.setProperty('--pos',this.value+'%')"></div>
+<div class="lbl"><span>Original</span><span>Code mode</span></div>
+<h2>Benchmark (tools/benchmark.py, Chrome 1672×941 at 1×)</h2>
+<table><tr><th>Mode</th><th>% changed</th><th>SSIM</th><th>ΔE2000 mean</th><th>PSNR dB</th></tr>
+<tr><td><b>Pixel (default)</b>: traced vectors + ink gain</td><td><b>0.004</b></td><td>0.9965</td><td>0.243</td><td>38.73</td></tr>
+<tr><td>Pixel before ink gain</td><td>0.004</td><td>0.9961</td><td>0.250</td><td>38.11</td></tr>
+<tr><td>Max (original-pixel cutouts)</td><td>0.018</td><td>0.9944</td><td>0.247</td><td>38.23</td></tr>
+<tr><td>Exact (original as 9 layers)</td><td>0.000</td><td>1.0000</td><td>0.000</td><td>∞</td></tr>
+<tr><td>Code (live text, traced + Inter fonts)</td><td>1.886</td><td>0.9590</td><td>0.872</td><td>23.30</td></tr></table>
+<h2>How it was made</h2>
+<ul>
+<li><b>Photoshop 2026 (ExtendScript):</b> content-aware fill under a computed UI mask gave a clean hero photo; named user slices for the hero, six category thumbnails and the flag, exported with Save for Web.</li>
+<li><b>slicer.py + tune.py:</b> 22 icons and 27 text lines traced to vectors, sub-pixel tuned, with original-pixel cutouts for the tiniest.</li>
+<li><b>glyphfont.py:</b> three fonts built from the design itself: GlowSeoul Serif (logo), GlowSeoul Display (headline), GlowSeoul Italic (“Australia”). fontmatch.py picked Inter for the body text.</li>
+<li><b>tune_shapes.py + fit_pills.py:</b> button and cards fitted to 1/8 px; the frosted pills solved as colour + opacity over the plate.</li>
+<li><b>inkgain.py:</b> per-element hairline strokes from a 5-width sweep. <b>fit_code.py:</b> live-text size, spacing and offsets fitted over 5 render rounds.</li>
+<li><b>exact_layers.py:</b> the original as a background plus 8 named section layers.</li>
+</ul>
+<h2>Clean plate (Photoshop content-aware fill)</h2>
+<img src="plate.webp" alt="Clean plate" style="width:100%;border-radius:10px;border:1px solid var(--line)">
+</main></body></html>

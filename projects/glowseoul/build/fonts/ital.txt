@@ -1,0 +1,16 @@
+Google Fonts candidates: 272
+1 extra bytes in post.stringData array
+1 extra bytes in post.stringData array
+1 extra bytes in post.stringData array
+1 extra bytes in post.stringData array
+1 extra bytes in post.stringData array
+Scoring 381 fonts…
+ 1. 0.667  Times Italic                                  size 74.95px  tracking -0.06em  [system]
+ 2. 0.660  Libertinus Serif 400 italic                   size 72.98px  tracking -0.05em  [google]
+ 3. 0.656  PT Serif 400 italic                           size 68.2px  tracking -0.06em  [google]
+ 4. 0.650  Baskervville 500 italic                       size 70.51px  tracking -0.08em  [google]
+ 5. 0.646  Chiron Sung HK 500 italic                     size 65.0px  tracking -0.07em  [google]
+ 6. 0.640  STIX Two Text 400 italic                      size 72.35px  tracking -0.08em  [google]
+ 7. 0.631  .New York Regular Italic                      size 71.72px  tracking -0.01em  [system]
+ 8. 0.622  IBM Plex Serif 400 italic                     size 67.1px  tracking -0.06em  [google]
+verdict: no good match: build a custom font with glyphfont.py

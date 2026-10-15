@@ -1,0 +1,46 @@
+[
+ {
+  "name": "Background (original pixels + smooth fill)",
+  "file": "00_background.png"
+ },
+ {
+  "name": "Navigation (original pixels)",
+  "file": "01_navigation.png",
+  "pixels": 28067
+ },
+ {
+  "name": "Shipping badge (original pixels)",
+  "file": "02_shipping_badge.png",
+  "pixels": 14894
+ },
+ {
+  "name": "Headline (original pixels)",
+  "file": "03_headline.png",
+  "pixels": 50216
+ },
+ {
+  "name": "Intro (original pixels)",
+  "file": "04_intro.png",
+  "pixels": 18958
+ },
+ {
+  "name": "Button (original pixels)",
+  "file": "05_button.png",
+  "pixels": 11982
+ },
+ {
+  "name": "Features (original pixels)",
+  "file": "06_features.png",
+  "pixels": 11530
+ },
+ {
+  "name": "Categories (original pixels)",
+  "file": "07_categories.png",
+  "pixels": 125266
+ },
+ {
+  "name": "Hero photo (original pixels)",
+  "file": "08_hero_photo.png",
+  "pixels": 0
+ }
+]

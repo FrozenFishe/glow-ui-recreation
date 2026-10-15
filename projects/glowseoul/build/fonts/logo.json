@@ -1,0 +1,76 @@
+{
+ "text": "GlowSeoul",
+ "box": [
+  76,
+  22,
+  160,
+  36
+ ],
+ "verdict": "close lookalike",
+ "ranking": [
+  {
+   "rank": 1,
+   "font": "Parastoo 400",
+   "source": "google",
+   "score": 0.7697,
+   "font_size_px": 43.01,
+   "tracking_em": -0.02
+  },
+  {
+   "rank": 2,
+   "font": "Alike 400",
+   "source": "google",
+   "score": 0.7647,
+   "font_size_px": 32.79,
+   "tracking_em": -0.027
+  },
+  {
+   "rank": 3,
+   "font": "Frank Ruhl Libre 400",
+   "source": "google",
+   "score": 0.759,
+   "font_size_px": 35.4,
+   "tracking_em": -0.03
+  },
+  {
+   "rank": 4,
+   "font": "Palatino Regular",
+   "source": "system:/System/Library/Fonts/Palatino.ttc",
+   "score": 0.7579,
+   "font_size_px": 33.9,
+   "tracking_em": -0.044
+  },
+  {
+   "rank": 5,
+   "font": "Abhaya Libre 500",
+   "source": "google",
+   "score": 0.7564,
+   "font_size_px": 39.22,
+   "tracking_em": -0.065
+  },
+  {
+   "rank": 6,
+   "font": "Newsreader 60pt Regular",
+   "source": "system:~/Library/Fonts/Newsreader_60pt-Regular.ttf",
+   "score": 0.7557,
+   "font_size_px": 33.61,
+   "tracking_em": -0.027
+  },
+  {
+   "rank": 7,
+   "font": "GFS Didot 400",
+   "source": "google",
+   "score": 0.7455,
+   "font_size_px": 34.78,
+   "tracking_em": -0.036
+  },
+  {
+   "rank": 8,
+   "font": "Lora 500",
+   "source": "google",
+   "score": 0.7443,
+   "font_size_px": 32.26,
+   "tracking_em": -0.032
+  }
+ ]
+}

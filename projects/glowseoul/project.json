@@ -1,0 +1,106 @@
+{
+ "name": "glowseoul",
+ "title": "GlowSeoul Korean skincare landing page",
+ "design": "projects/glowseoul/design.png",
+ "size": [
+  1672,
+  941
+ ],
+ "specs": {
+  "components": "projects/glowseoul/specs/components.json",
+  "text": "projects/glowseoul/specs/text.json",
+  "regions": "projects/glowseoul/specs/regions.json"
+ },
+ "raw": {
+  "components": "projects/glowseoul/build/components",
+  "text": "projects/glowseoul/build/text"
+ },
+ "manifests": {
+  "components": "projects/glowseoul/build/components_tuned/manifest.json",
+  "text": "projects/glowseoul/build/text_tuned/manifest.json"
+ },
+ "shapes": "projects/glowseoul/specs/shapes.json",
+ "shapes_tuned": "projects/glowseoul/build/shapes_tuned.json",
+ "parts": "projects/glowseoul/specs/parts.json",
+ "clips": "projects/glowseoul/specs/clips.json",
+ "plate": "projects/glowseoul/build/plate.png",
+ "backdrop": "projects/glowseoul/build/backdrop.png",
+ "calibration": "projects/glowseoul/build/calibration_{tool}.json",
+ "ink_gain": "projects/glowseoul/build/ink_gain_{tool}.json",
+ "build": "projects/glowseoul/build",
+ "photos": [],
+ "strips": [],
+ "photo_under": null,
+ "repeat": [],
+ "drawn": [],
+ "rims": [],
+ "sections": [
+  {
+   "name": "Navigation",
+   "rect": [
+    0,
+    0,
+    1672,
+    82
+   ]
+  },
+  {
+   "name": "Shipping badge",
+   "rect": [
+    70,
+    160,
+    350,
+    60
+   ]
+  },
+  {
+   "name": "Headline",
+   "rect": [
+    60,
+    225,
+    560,
+    220
+   ]
+  },
+  {
+   "name": "Intro",
+   "rect": [
+    60,
+    445,
+    480,
+    100
+   ]
+  },
+  {
+   "name": "Button",
+   "rect": [
+    60,
+    550,
+    280,
+    70
+   ]
+  },
+  {
+   "name": "Features",
+   "rect": [
+    60,
+    640,
+    520,
+    80
+   ]
+  },
+  {
+   "name": "Categories",
+   "rect": [
+    0,
+    815,
+    1672,
+    126
+   ]
+  },
+  {
+   "name": "Hero photo",
+   "rest": true
+  }
+ ]
+}

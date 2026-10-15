@@ -1,0 +1,76 @@
+{
+ "text": "Discover the best of K-beauty \u2014 from cult-favourite",
+ "box": [
+  80,
+  458,
+  410,
+  24
+ ],
+ "verdict": "close lookalike",
+ "ranking": [
+  {
+   "rank": 1,
+   "font": "Inter 400",
+   "source": "google",
+   "score": 0.7932,
+   "font_size_px": 16.86,
+   "tracking_em": -0.013
+  },
+  {
+   "rank": 2,
+   "font": ".SF NS Rounded Regular",
+   "source": "system:/System/Library/Fonts/SFNSRounded.ttf",
+   "score": 0.7914,
+   "font_size_px": 17.9,
+   "tracking_em": 0.019
+  },
+  {
+   "rank": 3,
+   "font": "Google Sans Flex 400",
+   "source": "google",
+   "score": 0.7909,
+   "font_size_px": 17.19,
+   "tracking_em": 0.003
+  },
+  {
+   "rank": 4,
+   "font": "Inter Tight 400",
+   "source": "google",
+   "score": 0.7892,
+   "font_size_px": 16.86,
+   "tracking_em": 0.033
+  },
+  {
+   "rank": 5,
+   "font": "Bpmf Huninn 400",
+   "source": "google",
+   "score": 0.785,
+   "font_size_px": 17.19,
+   "tracking_em": -0.026
+  },
+  {
+   "rank": 6,
+   "font": "Figtree 400",
+   "source": "google",
+   "score": 0.7848,
+   "font_size_px": 17.54,
+   "tracking_em": -0.01
+  },
+  {
+   "rank": 7,
+   "font": "Huninn 400",
+   "source": "google",
+   "score": 0.7848,
+   "font_size_px": 17.19,
+   "tracking_em": -0.016
+  },
+  {
+   "rank": 8,
+   "font": "Figtree Regular",
+   "source": "system:~/Library/Fonts/Figtree-Regular.ttf",
+   "score": 0.7847,
+   "font_size_px": 17.54,
+   "tracking_em": -0.01
+  }
+ ]
+}

@@ -1,0 +1,27 @@
+Google Fonts candidates: 721
+1 extra bytes in post.stringData array
+1 extra bytes in post.stringData array
+1 extra bytes in post.stringData array
+1 extra bytes in post.stringData array
+1 extra bytes in post.stringData array
+1 extra bytes in post.stringData array
+1 extra bytes in post.stringData array
+1 extra bytes in post.stringData array
+1 extra bytes in post.stringData array
+144733 extra bytes in post.stringData array
+71807 extra bytes in post.stringData array
+1 extra bytes in post.stringData array
+1 extra bytes in post.stringData array
+1 extra bytes in post.stringData array
+1 extra bytes in post.stringData array
+1 extra bytes in post.stringData array
+Scoring 972 fonts…
+ 1. 0.770  Parastoo 400                                  size 43.01px  tracking -0.02em  [google]
+ 2. 0.765  Alike 400                                     size 32.79px  tracking -0.03em  [google]
+ 3. 0.759  Frank Ruhl Libre 400                          size 35.4px  tracking -0.03em  [google]
+ 4. 0.758  Palatino Regular                              size 33.9px  tracking -0.04em  [system]
+ 5. 0.756  Abhaya Libre 500                              size 39.22px  tracking -0.07em  [google]
+ 6. 0.756  Newsreader 60pt Regular                       size 33.61px  tracking -0.03em  [system]
+ 7. 0.746  GFS Didot 400                                 size 34.78px  tracking -0.04em  [google]
+ 8. 0.744  Lora 500                                      size 32.26px  tracking -0.03em  [google]
+verdict: close lookalike
