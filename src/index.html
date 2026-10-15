@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="pixel max">
+<html lang="en" class="pixel max exact">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -108,7 +108,7 @@
   <footer class="made"><!--made-with--></footer>
 </div>
 <script>
-  // pixel-exact mode shows traced text on desktop; once the visitor types or picks a city, show the live text instead
+  // pixel-exact and exact modes show the original's text on desktop; once the visitor types or picks a city, show the live text instead
   const f = document.querySelector(".search");
   const root = document.documentElement;
   f.addEventListener("input", () => root.classList.toggle("typed", !!f.querySelector("input").value));

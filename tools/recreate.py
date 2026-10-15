@@ -13,6 +13,7 @@ on a photo, which discs to subtract), the exact-mode sections, parts and clips. 
   tools/recreate.py <name> shapes [--under img] [--edge-band N] [--only a,b] [--stroke-widths ..]   fit drawn shapes (tune_shapes.py)
   tools/recreate.py <name> kit <tool> [--photo-edges N] [--out dir]   editor/web kit for one renderer (make_kit.py)
   tools/recreate.py <name> exact [--out dir]            exact mode: original as layers     (exact_layers.py)
+  tools/recreate.py <name> webexact <layers-dir> [--split N] [--out dir]   exact layers for the website (web_exact.py)
   tools/recreate.py <name> calibrate <tool> <render_max.png>          one calibration round (calibrate.py)
   tools/recreate.py <name> inkgain <tool> W=render.png [W=render.png ...]                      (inkgain.py)
   tools/recreate.py <name> diff <render.png>            region report + heatmap            (diffcheck.py)
@@ -137,6 +138,10 @@ def step(name, cmd, args):
     elif cmd == "exact":
         run(PY, T("exact_layers.py"), design, R(p["plate"]), opt("--out", R(os.path.join(p["build"], "exact"))),
             "--project", R(f"projects/{name}/project.json"))
+    elif cmd == "webexact":
+        # <layers-dir>: the exact layers exported from an editor (PhotoCraft: show one layer of the Exact group at a
+        # time and doc_export it), or the PNGs exact_layers.py wrote; --split is the stage height in design px
+        run(PY, T("web_exact.py"), args[0], opt("--out", R("framework/exact")), "--split", opt("--split", "894"))
     elif cmd == "calibrate":
         tool, render = args[0], args[1]
         cal = per_tool(p, "calibration", tool)

@@ -42,3 +42,4 @@
 | Website v7 max-fidelity | 0.026 | 0.9880 | 0.187 | 1.066 | 38.85 |
 | **Website v8** | 0.026 | 0.9874 | 0.263 | 1.463 | 36.94 |
 | **Website v8 max-fidelity** | 0.006 | 0.9886 | 0.177 | 1.027 | 39.79 |
+| **Website v9 exact mode (PhotoCraft layers)** | 0.000 | 1.0000 | 0.000 | 0.000 | inf |

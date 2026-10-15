@@ -1,0 +1,128 @@
+{
+ "W": 1536,
+ "H": 1024,
+ "split": 894,
+ "layers": [
+  {
+   "name": "00_background",
+   "part": "stage",
+   "file": "00_background_stage.webp",
+   "box": [
+    0,
+    0,
+    1536,
+    894
+   ]
+  },
+  {
+   "name": "00_background",
+   "part": "brands",
+   "file": "00_background_brands.webp",
+   "box": [
+    0,
+    894,
+    1536,
+    130
+   ]
+  },
+  {
+   "name": "01_badge",
+   "part": "stage",
+   "file": "01_badge_stage.webp",
+   "box": [
+    1356,
+    728,
+    148,
+    148
+   ]
+  },
+  {
+   "name": "02_phone",
+   "part": "stage",
+   "file": "02_phone_stage.webp",
+   "box": [
+    1068,
+    174,
+    330,
+    703
+   ]
+  },
+  {
+   "name": "03_brand_strip",
+   "part": "stage",
+   "file": "03_brand_strip_stage.webp",
+   "box": [
+    705,
+    892,
+    831,
+    2
+   ]
+  },
+  {
+   "name": "03_brand_strip",
+   "part": "brands",
+   "file": "03_brand_strip_brands.webp",
+   "box": [
+    105,
+    894,
+    1431,
+    113
+   ]
+  },
+  {
+   "name": "04_hero_photo",
+   "part": "stage",
+   "file": "04_hero_photo_stage.webp",
+   "box": [
+    712,
+    0,
+    824,
+    892
+   ]
+  },
+  {
+   "name": "05_navigation",
+   "part": "stage",
+   "file": "05_navigation_stage.webp",
+   "box": [
+    41,
+    0,
+    671,
+    110
+   ]
+  },
+  {
+   "name": "06_search_bar",
+   "part": "stage",
+   "file": "06_search_bar_stage.webp",
+   "box": [
+    51,
+    536,
+    661,
+    96
+   ]
+  },
+  {
+   "name": "07_hero_copy",
+   "part": "stage",
+   "file": "07_hero_copy_stage.webp",
+   "box": [
+    47,
+    110,
+    665,
+    402
+   ]
+  },
+  {
+   "name": "08_features",
+   "part": "stage",
+   "file": "08_features_stage.webp",
+   "box": [
+    64,
+    648,
+    648,
+    244
+   ]
+  }
+ ]
+}

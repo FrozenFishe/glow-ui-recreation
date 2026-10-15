@@ -322,6 +322,14 @@
    "psnr": 38.85
   },
   {
+   "label": "Website v9 exact mode (PhotoCraft layers)",
+   "changed_pct": 0.0,
+   "ssim": 1.0,
+   "dE_mean": 0.0,
+   "dE_p95": 0.0,
+   "psnr": null
+  },
+  {
    "label": "**Website v8**",
    "changed_pct": 0.026,
    "ssim": 0.9874,
