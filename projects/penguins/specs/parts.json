@@ -1,0 +1,46 @@
+[
+ {
+  "parent": "logo_icon",
+  "name": "logo_icon_tones",
+  "box": [
+   82,
+   7,
+   31,
+   39
+  ],
+  "cut_parent": true
+ },
+ {
+  "parent": "ic_people",
+  "name": "ic_people_tones",
+  "box": [
+   725,
+   697,
+   38,
+   32
+  ],
+  "cut_parent": true
+ },
+ {
+  "parent": "ic_leaf",
+  "name": "ic_leaf_tones",
+  "box": [
+   457,
+   695,
+   34,
+   38
+  ],
+  "cut_parent": true
+ },
+ {
+  "parent": "st_heart",
+  "name": "st_heart_tones",
+  "box": [
+   633,
+   1000,
+   31,
+   28
+  ],
+  "cut_parent": true
+ }
+]

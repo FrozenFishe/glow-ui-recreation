@@ -136,8 +136,10 @@ def shapes_svg(tuned, photo_edges=0, project=None):
             stroke = t.get("stroke", it.get("stroke")) if t else it.get("stroke")
             if E and it.get("over_photo"):
                 S.append(f'<circle id="{n}" cx="{x + d / 2}" cy="{y + d / 2}" r="{d / 2 - E}" fill="{fill}"/>')
-            else:
+            elif stroke:
                 S.append(f'<circle id="{n}" cx="{x + d / 2}" cy="{y + d / 2}" r="{d / 2 - 0.5}" fill="{fill}" stroke="{stroke}" stroke-width="1"/>')
+            else:  # fill only: no border, so no half-stroke inset
+                S.append(f'<circle id="{n}" cx="{x + d / 2}" cy="{y + d / 2}" r="{d / 2}" fill="{fill}"/>')
         elif kind == "squircle":
             sc = {**it, **(t or {})}
             (x0, y0, w0, h0), rt, rb = sc["box"], sc["r"], sc.get("rb", sc["r"])

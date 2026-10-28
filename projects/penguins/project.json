@@ -1,0 +1,270 @@
+{
+ "name": "penguins",
+ "title": "Fluttering Penguins charity homepage",
+ "design": "projects/penguins/design.png",
+ "size": [
+  1214,
+  1295
+ ],
+ "specs": {
+  "components": "projects/penguins/specs/components.json",
+  "text": "projects/penguins/specs/text.json",
+  "regions": "projects/penguins/specs/regions.json"
+ },
+ "raw": {
+  "components": "projects/penguins/build/components",
+  "text": "projects/penguins/build/text"
+ },
+ "manifests": {
+  "components": "projects/penguins/build/components_tuned/manifest.json",
+  "text": "projects/penguins/build/text_tuned/manifest.json"
+ },
+ "shapes": "projects/penguins/specs/shapes.json",
+ "shapes_tuned": "projects/penguins/build/shapes_tuned.json",
+ "parts": "projects/penguins/specs/parts.json",
+ "clips": "projects/penguins/specs/clips.json",
+ "plate": "projects/penguins/build/plate.png",
+ "backdrop": "projects/penguins/build/backdrop.png",
+ "calibration": "projects/penguins/build/calibration_{tool}.json",
+ "ink_gain": "projects/penguins/build/ink_gain_{tool}.json",
+ "build": "projects/penguins/build",
+ "photos": [],
+ "strips": [],
+ "photo_under": null,
+ "repeat": [],
+ "drawn": [
+  {
+   "name": "nav_btn",
+   "kind": "rect",
+   "box": [
+    943,
+    9.5,
+    118,
+    35
+   ],
+   "r": 17.5,
+   "fill": "#2F5DA7"
+  },
+  {
+   "name": "nav_underline",
+   "kind": "rect",
+   "box": [
+    405,
+    52.5,
+    46,
+    2.5
+   ],
+   "r": 0,
+   "fill": "#235293"
+  },
+  {
+   "name": "hero_btn",
+   "kind": "rect",
+   "box": [
+    89.5,
+    375,
+    150,
+    44.5
+   ],
+   "r": 22,
+   "fill": "#FEFEFE",
+   "over_photo": true
+  },
+  {
+   "name": "story_btn",
+   "kind": "rect",
+   "box": [
+    607,
+    1246,
+    153,
+    38
+   ],
+   "r": 19,
+   "fill": "#FEFEFE",
+   "stroke": "#899DC3",
+   "sw": 1
+  },
+  {
+   "name": "mis_circle_1",
+   "kind": "circle",
+   "box": [
+    168,
+    684,
+    58.5,
+    58.5
+   ],
+   "fill": "#D2E8FE"
+  },
+  {
+   "name": "mis_circle_2",
+   "kind": "circle",
+   "box": [
+    445,
+    684,
+    58.5,
+    58.5
+   ],
+   "fill": "#D5F5E6"
+  },
+  {
+   "name": "mis_circle_3",
+   "kind": "circle",
+   "box": [
+    715,
+    684,
+    58.5,
+    58.5
+   ],
+   "fill": "#E6E5FE"
+  },
+  {
+   "name": "mis_circle_4",
+   "kind": "circle",
+   "box": [
+    991,
+    684,
+    58.5,
+    58.5
+   ],
+   "fill": "#FDEAC3"
+  },
+  {
+   "name": "stat_circle_1",
+   "kind": "circle",
+   "box": [
+    83,
+    990,
+    46,
+    46
+   ],
+   "fill": "#C8E4FD"
+  },
+  {
+   "name": "stat_circle_2",
+   "kind": "circle",
+   "box": [
+    264,
+    990,
+    46,
+    46
+   ],
+   "fill": "#D3F6E8"
+  },
+  {
+   "name": "stat_circle_3",
+   "kind": "circle",
+   "box": [
+    444,
+    990,
+    46,
+    46
+   ],
+   "fill": "#D9DCFE"
+  },
+  {
+   "name": "stat_circle_4",
+   "kind": "circle",
+   "box": [
+    624,
+    990,
+    46,
+    46
+   ],
+   "fill": "#FAE1FD"
+  },
+  {
+   "name": "col_divider_1",
+   "kind": "line",
+   "points": [
+    336.5,
+    694,
+    336.5,
+    827
+   ],
+   "stroke": "#F5F6F9"
+  },
+  {
+   "name": "col_divider_2",
+   "kind": "line",
+   "points": [
+    607.5,
+    694,
+    607.5,
+    827
+   ],
+   "stroke": "#F6F7F9"
+  },
+  {
+   "name": "col_divider_3",
+   "kind": "line",
+   "points": [
+    880.5,
+    694,
+    880.5,
+    827
+   ],
+   "stroke": "#F6F8FA"
+  }
+ ],
+ "rims": [],
+ "sections": [
+  {
+   "name": "Navigation",
+   "rect": [
+    0,
+    0,
+    1214,
+    55
+   ]
+  },
+  {
+   "name": "Hero copy",
+   "rect": [
+    80,
+    125,
+    420,
+    305
+   ]
+  },
+  {
+   "name": "Hero photo",
+   "rect": [
+    0,
+    55,
+    1214,
+    477
+   ]
+  },
+  {
+   "name": "Mission",
+   "rect": [
+    0,
+    532,
+    1214,
+    328
+   ]
+  },
+  {
+   "name": "Impact",
+   "rect": [
+    0,
+    860,
+    1214,
+    225
+   ]
+  },
+  {
+   "name": "Story photo",
+   "rect": [
+    0,
+    1085,
+    580,
+    210
+   ]
+  },
+  {
+   "name": "Story",
+   "rest": true
+  }
+ ]
+}

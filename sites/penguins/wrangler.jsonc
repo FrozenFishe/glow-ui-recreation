@@ -1,0 +1,12 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "fluttering-penguins",
+  "main": "worker.js",
+  "compatibility_date": "2026-10-14",
+  "assets": { "directory": "./dist", "binding": "ASSETS", "not_found_handling": "404-page", "run_worker_first": ["/api/*"] },
+  "kv_namespaces": [{ "binding": "FORMS", "id": "c1b1421e68b946a3ac3aa2bbc92b50df" }],
+  "routes": [
+    { "pattern": "flutteringpenguins.win", "custom_domain": true },
+    { "pattern": "www.flutteringpenguins.win", "custom_domain": true }
+  ]
+}

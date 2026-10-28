@@ -1,0 +1,196 @@
+[
+ {
+  "name": "nav_btn",
+  "kind": "rect",
+  "box": [
+   943.25,
+   9.5,
+   117.75,
+   34.75
+  ],
+  "r": 17.5,
+  "fill": "#255397",
+  "tune": {
+   "err_before": 7.743,
+   "err_after": 2.138
+  }
+ },
+ {
+  "name": "nav_underline",
+  "kind": "rect",
+  "box": [
+   406.625,
+   53.375,
+   43.0,
+   1.75
+  ],
+  "r": 1.0,
+  "fill": "#5D81B1",
+  "tune": {
+   "err_before": 14.842,
+   "err_after": 9.215
+  }
+ },
+ {
+  "name": "hero_btn",
+  "kind": "rect",
+  "box": [
+   89.75,
+   375.25,
+   150.25,
+   44.75
+  ],
+  "r": 23.0,
+  "fill": "#FDFDFE",
+  "tune": {
+   "err_before": 2.994,
+   "err_after": 1.657
+  }
+ },
+ {
+  "name": "story_btn",
+  "kind": "rect",
+  "box": [
+   607.25,
+   1246.5,
+   152.125,
+   36.625
+  ],
+  "r": 19,
+  "fill": "#FCFDFD",
+  "stroke": "#6381B1",
+  "tune": {
+   "err_before": 7.622,
+   "err_after": 1.679
+  },
+  "sw": 1
+ },
+ {
+  "name": "mis_circle_1",
+  "kind": "circle",
+  "box": [
+   168.25,
+   683.75,
+   59.0,
+   59.0
+  ],
+  "fill": "#D2E8FD",
+  "r": 0,
+  "tune": {
+   "err_before": 0.852,
+   "err_after": 0.652
+  }
+ },
+ {
+  "name": "mis_circle_2",
+  "kind": "circle",
+  "box": [
+   444.375,
+   683.875,
+   59.125,
+   59.125
+  ],
+  "fill": "#D3F4E5",
+  "r": 0,
+  "tune": {
+   "err_before": 1.169,
+   "err_after": 0.726
+  }
+ },
+ {
+  "name": "mis_circle_3",
+  "kind": "circle",
+  "box": [
+   714.625,
+   683.875,
+   59.0,
+   59.0
+  ],
+  "fill": "#E4E3FD",
+  "r": 0,
+  "tune": {
+   "err_before": 0.951,
+   "err_after": 0.633
+  }
+ },
+ {
+  "name": "mis_circle_4",
+  "kind": "circle",
+  "box": [
+   990.5,
+   684.125,
+   58.875,
+   58.875
+  ],
+  "fill": "#FEEBC7",
+  "r": 0,
+  "tune": {
+   "err_before": 1.154,
+   "err_after": 0.621
+  }
+ },
+ {
+  "name": "stat_circle_1",
+  "kind": "circle",
+  "box": [
+   83.375,
+   990.25,
+   46.25,
+   46.25
+  ],
+  "fill": "#CDE6FD",
+  "r": 0,
+  "tune": {
+   "err_before": 1.074,
+   "err_after": 0.736
+  }
+ },
+ {
+  "name": "stat_circle_2",
+  "kind": "circle",
+  "box": [
+   264.25,
+   990.25,
+   46.125,
+   46.125
+  ],
+  "fill": "#D3F5E6",
+  "r": 0,
+  "tune": {
+   "err_before": 1.027,
+   "err_after": 0.683
+  }
+ },
+ {
+  "name": "stat_circle_3",
+  "kind": "circle",
+  "box": [
+   443.5,
+   990.125,
+   46.25,
+   46.25
+  ],
+  "fill": "#DCDDFD",
+  "r": 0,
+  "tune": {
+   "err_before": 0.92,
+   "err_after": 0.599
+  }
+ },
+ {
+  "name": "stat_circle_4",
+  "kind": "circle",
+  "box": [
+   625.125,
+   990.25,
+   46.25,
+   46.25
+  ],
+  "fill": "#FBE1FC",
+  "r": 0,
+  "tune": {
+   "err_before": 1.05,
+   "err_after": 0.548
+  }
+ }
+]

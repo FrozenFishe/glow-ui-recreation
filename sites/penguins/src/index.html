@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ko" class="pixel">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fluttering Penguins | 펭귄과 지구를 지키는 비영리 단체</title>
+<meta name="description" content="Fluttering Penguins는 기후변화로 위협받는 펭귄과 그들의 서식지를 보호하고, 지속 가능한 지구를 위해 노력하는 한국의 비영리 단체입니다.">
+<link rel="icon" href="assets/favicon.png">
+<link rel="preload" as="image" href="__PLATE__" fetchpriority="high">
+<link rel="stylesheet" href="styles.css?v=__CSSV__">
+<script>
+  // desktop modes: pixel = traced vectors at design coordinates (default), max = original-pixel cutouts for every
+  // element, exact = the original as layers (0 px different at 1x), code = live text in Pretendard.
+  (function () {
+    var h = document.documentElement, m = new URLSearchParams(location.search).get('mode');
+    if (m === 'max' || m === 'exact') h.classList.add('max');
+    if (m === 'exact') h.classList.add('exact');
+    if (m === 'code' || m === 'bare') h.classList.remove('pixel');
+    if (m === 'bare') h.classList.add('bare');
+    function fit() { h.style.setProperty('--s', Math.min(innerWidth, 1600) / 1214); }
+    fit(); addEventListener('resize', fit);
+  })();
+</script>
+</head>
+<body>
+<div class="stage">
+  <header class="nav">
+    <a class="brand" href="/" aria-label="Fluttering Penguins 홈"><img class="mlogo" src="px/logo_icon_tones.webp" alt="" width="35" height="43"><span class="t" data-n="tx_logo">Fluttering Penguins</span></a>
+    <nav class="menu" aria-label="주 메뉴">
+      <a class="t" data-n="tx_nav_home" href="/" aria-current="page">홈</a><i class="shape" data-n="nav_underline"></i>
+      <a class="t" data-n="tx_nav_about" href="#about">소개</a>
+      <a class="t" data-n="tx_nav_biz" href="#mission">사업</a>
+      <a class="t" data-n="tx_nav_support" href="#donate">후원하기</a>
+      <a class="t" data-n="tx_nav_news" href="#story">소식</a>
+    </nav>
+    <a class="shape btn navbtn" data-n="nav_btn" href="#donate"><span class="mi">♡</span><span class="t" data-n="tx_navbtn">지금 후원하기</span></a>
+    <label class="lang"><span class="t" data-n="tx_lang">한국어</span><select aria-label="언어 선택"><option>한국어</option><option>English</option></select></label>
+  </header>
+
+  <section class="hero" id="about">
+    <p class="t eyebrow" data-n="tx_hero_eyebrow">작은 마음이, 큰 변화를 만듭니다</p>
+    <h1 class="head"><span class="t" data-n="tx_head_1">Fluttering Penguins는</span> <span class="t" data-n="tx_head_2">지금, 더 많은 생명을</span> <span class="t" data-n="tx_head_3">지키고 있습니다.</span></h1>
+    <p class="intro"><span class="t" data-n="tx_hero_p1">우리는 기후변화로 위협받는 펭귄과 그들의 서식지를 보호하고,</span> <span class="t" data-n="tx_hero_p2">지속 가능한 지구를 위해 노력하는 한국의 비영리 단체입니다.</span></p>
+    <div class="ctas">
+      <a class="shape btn" data-n="hero_btn" href="#donate"><span class="mi">♥</span><span class="t" data-n="tx_btn1">지금 후원하기</span></a>
+      <a class="btn ghost" data-n="btn2" href="#mission"><span class="t" data-n="tx_btn2">단체 소개 보기</span></a>
+    </div>
+  </section>
+
+  <section class="mission" id="mission">
+    <p class="t eyebrow" data-n="tx_mis_eyebrow">OUR MISSION</p>
+    <h2 class="t" data-n="tx_mis_title">우리가 하는 일</h2>
+    <p class="lead"><span class="t" data-n="tx_mis_p1">Fluttering Penguins는 펭귄 보호, 기후 변화 대응, 그리고 지속 가능한 환경을 위한</span> <span class="t" data-n="tx_mis_p2">다양한 활동을 펼치고 있습니다.</span></p>
+    <div class="cols">
+      <article><i class="shape circ" data-n="mis_circle_1"><img src="px/ic_penguin.webp" alt=""></i><h3 class="t" data-n="tx_col1_title">펭귄 보호</h3><p><span class="t" data-n="tx_col1_l1">멸종 위기에 처한 펭귄의 서식지 보전과</span> <span class="t" data-n="tx_col1_l2">개체 수 증가를 위해 활동합니다.</span></p></article>
+      <article><i class="shape circ" data-n="mis_circle_2"><img src="px/ic_leaf_tones.webp" alt=""></i><h3 class="t" data-n="tx_col2_title">기후 변화 대응</h3><p><span class="t" data-n="tx_col2_l1">지구 온난화의 영향을 줄이기 위한</span> <span class="t" data-n="tx_col2_l2">환경 캠페인과 교육을 진행합니다.</span></p></article>
+      <article><i class="shape circ" data-n="mis_circle_3"><img src="px/ic_people_tones.webp" alt=""></i><h3 class="t" data-n="tx_col3_title">지역사회 참여</h3><p><span class="t" data-n="tx_col3_l1">지속 가능한 미래를 위한</span> <span class="t" data-n="tx_col3_l2">지역사회와의 협력을 강화합니다.</span></p></article>
+      <article><i class="shape circ" data-n="mis_circle_4"><img src="px/ic_cap.webp" alt=""></i><h3 class="t" data-n="tx_col4_title">교육 및 인식 개선</h3><p><span class="t" data-n="tx_col4_l1">다음 세대에게 더 나은 지구를 물려주기 위해</span> <span class="t" data-n="tx_col4_l2">환경 교육과 인식 개선 활동을 합니다.</span></p></article>
+    </div>
+    <i class="rule" data-n="col_divider_1"></i><i class="rule" data-n="col_divider_2"></i><i class="rule" data-n="col_divider_3"></i>
+  </section>
+
+  <section class="impact" id="donate">
+    <p class="t eyebrow" data-n="tx_imp_eyebrow">OUR IMPACT</p>
+    <h2 class="t" data-n="tx_imp_title">함께 만들어가는 변화</h2>
+    <p class="t lead" data-n="tx_imp_p">지금까지 많은 분들의 사랑과 후원으로 우리는 다음과 같은 성과를 만들어냈습니다.</p>
+    <dl class="stats">
+      <div><i class="shape circ" data-n="stat_circle_1"><img src="px/st_penguin.webp" alt=""></i><dd class="t num" data-n="tx_stat1_num">12,350+</dd><dt class="t" data-n="tx_stat1_label">보호한 펭귄 수</dt></div>
+      <div><i class="shape circ" data-n="stat_circle_2"><img src="px/st_leaf.webp" alt=""></i><dd class="t num" data-n="tx_stat2_num">8</dd><dt class="t" data-n="tx_stat2_label">보호구역 조성</dt></div>
+      <div><i class="shape circ" data-n="stat_circle_3"><img src="px/st_people.webp" alt=""></i><dd class="t num" data-n="tx_stat3_num">25,000+</dd><dt class="t" data-n="tx_stat3_label">기부자 수</dt></div>
+      <div><i class="shape circ" data-n="stat_circle_4"><img src="px/st_heart_tones.webp" alt=""></i><dd class="t num" data-n="tx_stat4_num">100%</dd><dt class="t" data-n="tx_stat4_label">후원금 전액 사용</dt></div>
+    </dl>
+  </section>
+
+  <section class="story" id="story">
+    <img class="photo" src="assets/story_photo.webp" width="467" height="190" alt="하늘을 올려다보는 황제펭귄 새끼">
+    <p class="t eyebrow" data-n="tx_story_eyebrow">OUR STORY</p>
+    <h2 class="t" data-n="tx_story_title">작은 날개짓이 만드는 큰 세상</h2>
+    <p class="lead"><span class="t" data-n="tx_story_p1">Fluttering Penguins는 한국에서 시작된 비영리 단체로,</span> <span class="t" data-n="tx_story_p2">펭귄과 지구의 미래를 위해 오늘도 활동하고 있습니다.</span> <span class="t" data-n="tx_story_p3">우리가 함께하는 작은 실천이 더 많은 생명을 지킬 수 있습니다.</span></p>
+    <a class="shape btn outline" data-n="story_btn" href="#story"><span class="t" data-n="tx_story_btn">우리의 이야기 보기</span><span class="mi">→</span></a>
+  </section>
+
+  <!--pixel-->
+</div>
+</body>
+</html>

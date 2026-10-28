@@ -1,0 +1,18 @@
+{
+ "box": [
+  254.25,
+  374.75,
+  140.5,
+  45.5
+ ],
+ "r": 22.75,
+ "colour": "#6CAAF0",
+ "opacity": 0.4267,
+ "shadow_opacity": 0.2293,
+ "shadow_sigma": 4,
+ "ring": {
+  "width": 1.0,
+  "colour": "#FFFFFF",
+  "opacity": 0.9298
+ }
+}
